@@ -35,7 +35,7 @@ import java.util.Set;
         "users"
 })
 @Entity
-@Table(name = "roles")
+@Table(name = "c_roles")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +52,7 @@ public class Role {
     private Timestamp changed;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",
+    @JoinTable(name = "l_user_role",
             joinColumns = @JoinColumn(name = "id_role"),
             inverseJoinColumns = @JoinColumn(name = "id_user")
     )

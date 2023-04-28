@@ -159,6 +159,7 @@ create table public.c_document_type
         constraint document_type_document_type_key
             unique,
     created          timestamp(6),
+    changed          timestamp(6),
     is_deleted       boolean default false not null
 
 );
@@ -219,6 +220,7 @@ alter table public.c_roles
 create table public.users
 (
     id_user       bigserial not null
+        primary key
         constraint user_id_user_key
             unique,
     email         varchar(30)                                           not null
@@ -261,17 +263,20 @@ create index changed_doc_index
 
 create table public.l_user_role
 (
-    id bigserial not null
-        primary key
-        unique,
-    id_user bigint not null
-        unique
+    id_user bigint                                                  not null
+        constraint user_role_id_user_key
+            unique
         constraint user_user
-            references public.users (id_user),
-    id_role bigint not null
-        unique
+            references public.users,
+    id_role bigint                                                  not null
+        constraint user_role_id_role_key
+            unique
         constraint user_role
-            references public.c_roles
+            references public.c_roles,
+        id    bigserial not null
+        primary key
+        unique
+
 );
 
 alter table public.l_user_role

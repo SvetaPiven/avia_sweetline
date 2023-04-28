@@ -212,7 +212,7 @@ values  (1, 'Passport', '2023-02-23 13:44:42.000000', null, false),
         (4, 'Driver license', '2023-02-23 13:45:28.000000', null, false),
         (5, 'Biometric passport', '2023-02-23 13:46:38.000000', null, false);
 
-insert into public.tickets (id_ticket, id_pass, id_ticket_status, price, id_flight, id_place, created, changed, is_deleted, id_ticket_class, id_airline)
+insert into public.tickets (id_ticket, id_pass, id_ticket_status, price, id_flight, number_place, created, changed, is_deleted, id_ticket_class, id_airline)
 values  (3, 58, 2, 249.29, 6, 'A13', '2023-02-28 14:26:40.741053', null, false, 2, 10),
         (4, 7, 5, 487.99, 8, 'A17', '2023-02-28 14:26:40.999627', null, false, 2, 6),
         (7, 81, 2, 151.13, 2, 'A11', '2023-02-28 14:26:41.621722', null, false, 1, 7),
@@ -546,13 +546,13 @@ values  (3, 4, 'MP2643444', 3, '2023-02-23 14:08:25.000000', null, false),
         (51, 2, 'MP2683606', 59, '2023-02-28 14:03:53.171823', null, false),
         (29, 5, 'MP4629884', 79, '2023-02-28 14:03:42.458020', null, false);
 
-insert into public.roles (id_role, role_name, created, changed)
-values  (1, 'ROLE_USER', '2023-04-09 11:19:32.000000', null),
-        (2, 'ROLE_ADMIN', '2023-04-09 07:29:45.405278', null),
-        (4, 'ROLE_MODERATOR', '2023-04-09 07:29:52.355271', null),
-        (3, 'ROLE_OTHER', '2023-04-09 07:29:52.253814', null);
+insert into public.c_roles (id_role, role_name, created, changed, is_deleted)
+values  (1, 'ROLE_USER', '2023-04-09 11:19:32.000000', null, false),
+        (2, 'ROLE_ADMIN', '2023-04-09 07:29:45.405278', null, false),
+        (4, 'ROLE_MODERATOR', '2023-04-09 07:29:52.355271', null, false),
+        (3, 'ROLE_OTHER', '2023-04-09 07:29:52.253814', null, false);
 
-insert into public.c_user_role (id_user, id_role, id)
+insert into public.l_user_role (id_user, id_role, id)
 values  (1, 1, 1),
         (2, 2, 2),
         (7, 3, 3),
