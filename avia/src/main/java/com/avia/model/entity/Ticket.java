@@ -57,8 +57,8 @@ public class Ticket {
     @Column(name = "id_airline", insertable=false, updatable=false)
     private Long idAirline;
 
-    @Column(name = "id_place")
-    private String idPlace;
+    @Column(name = "number_place")
+    private String numberPlace;
 
     @Column
     private BigDecimal price;
@@ -72,7 +72,7 @@ public class Ticket {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_airline")
     @JsonBackReference
     private Airline airlines;

@@ -1,6 +1,7 @@
 package com.avia.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -74,26 +75,27 @@ public class Flight {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "flights", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "flights", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_flight_status", insertable = false, updatable = false)
     @JsonBackReference
     private FlightStatus flightStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_departure_airport", referencedColumnName = "id_airport")
     @JsonBackReference
     private Airport departure;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_arrival_airport", referencedColumnName = "id_airport")
     @JsonBackReference
     private Airport arrival;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_plane_type", insertable = false, updatable = false)
     @JsonBackReference
     private PlaneType planeTypes;

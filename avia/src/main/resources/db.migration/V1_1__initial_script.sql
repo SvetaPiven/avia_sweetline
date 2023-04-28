@@ -159,8 +159,8 @@ create table public.c_document_type
         constraint document_type_document_type_key
             unique,
     created          timestamp(6),
-    changed          timestamp(6),
-    is_deleted       boolean default false                                                   not null
+    is_deleted       boolean default false not null
+
 );
 
 alter table public.c_document_type
@@ -181,7 +181,7 @@ create table public.tickets
     id_flight        bigint                not null
         constraint id_flight_fk
             references public.flights,
-    id_place         varchar(5),
+    number_place       varchar(5),
     created          timestamp(6),
     changed          timestamp(6),
     is_deleted       boolean default false not null,
@@ -202,17 +202,18 @@ create index changed_index
 create index created_index
     on public.tickets (created desc);
 
-create table public.roles
+create table public.c_roles
 (
-    id_role   bigserial not null
-        primary key
-        unique,
-    role_name varchar(100)                                     not null,
-    created   timestamp(6)                                     not null,
-    changed   timestamp(6)
+    id_role    serial not null
+        constraint roles_pkey
+            primary key,
+    role_name  varchar(100)                                           not null,
+    created    timestamp(6)                                           not null,
+    changed    timestamp(6),
+    is_deleted boolean default false                                  not null
 );
 
-alter table public.roles
+alter table public.c_roles
     owner to development;
 
 create table public.users
@@ -258,21 +259,21 @@ alter table public.document_pass
 create index changed_doc_index
     on public.document_pass (changed desc);
 
-create index created_doc__index
-    on public.document_pass (created desc);
-
-create table public.user_role
+create table public.l_user_role
 (
-    id_user serial not null
+    id bigserial not null
+        primary key
+        unique,
+    id_user bigint not null
         unique
         constraint user_user
             references public.users (id_user),
     id_role bigint not null
         unique
         constraint user_role
-            references public.roles
+            references public.c_roles
 );
 
-alter table public.user_role
+alter table public.l_user_role
     owner to development;
 

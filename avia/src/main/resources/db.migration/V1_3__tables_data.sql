@@ -552,8 +552,8 @@ values  (1, 'ROLE_USER', '2023-04-09 11:19:32.000000', null),
         (4, 'ROLE_MODERATOR', '2023-04-09 07:29:52.355271', null),
         (3, 'ROLE_OTHER', '2023-04-09 07:29:52.253814', null);
 
-insert into public.user_role (id_user, id_role)
-values  (1, 1),
-        (2, 2),
-        (7, 3),
-        (17, 4);
+insert into public.c_user_role (id_user, id_role, id)
+values  (1, 1, 1),
+        (2, 2, 2),
+        (7, 3, 3),
+        (17, 4, 4);
