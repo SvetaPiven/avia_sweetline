@@ -20,6 +20,7 @@ import lombok.ToString;
 
 import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Setter
@@ -46,10 +47,10 @@ public class Airport {
     private String city;
 
     @Column
-    private Double longitude;
+    private Float longitude;
 
     @Column
-    private Double latitude;
+    private Float latitude;
 
     @Column
     private String timezone;
@@ -61,16 +62,16 @@ public class Airport {
     private Timestamp changed;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @Column
     private String country;
 
     @OneToMany(mappedBy = "departure", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<Flight> departureAirport = Collections.emptySet();
+    private Set<Flight> departureAirport = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "arrival", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<Flight> arrivalAirport = Collections.emptySet();
+    private Set<Flight> arrivalAirport = new LinkedHashSet<>();
 }

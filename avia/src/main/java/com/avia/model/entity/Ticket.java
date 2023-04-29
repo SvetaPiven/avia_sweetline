@@ -55,7 +55,7 @@ public class Ticket {
     private Long idFlight;
 
     @Column(name = "id_airline", insertable=false, updatable=false)
-    private Long idAirline;
+    private Integer idAirline;
 
     @Column(name = "number_place")
     private String numberPlace;

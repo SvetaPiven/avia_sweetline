@@ -99,4 +99,5 @@ public class Flight {
     @JoinColumn(name = "id_plane_type", insertable = false, updatable = false)
     @JsonBackReference
     private PlaneType planeTypes;
+
 }

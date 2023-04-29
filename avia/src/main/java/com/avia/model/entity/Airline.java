@@ -1,6 +1,7 @@
 package com.avia.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,6 +22,7 @@ import lombok.ToString;
 
 import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Setter
@@ -46,16 +48,20 @@ public class Airline {
     @Column(name = "code_airline")
     private String codeAirline;
 
+    @JsonIgnore
     @Column
     private Timestamp created;
 
+    @JsonIgnore
     @Column
     private Timestamp changed;
 
+    @JsonIgnore
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "airlines", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<Ticket> tickets = Collections.emptySet();
+    private Set<Ticket> tickets = new LinkedHashSet<>();
 }
