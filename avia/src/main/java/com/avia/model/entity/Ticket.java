@@ -29,10 +29,10 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {
-        "airlines", "ticketStatus", "ticketClass", "flights", "passengers"
+        "airlines", "ticketStatus", "ticketClass", "flight", "passenger"
 })
 @ToString(exclude = {
-        "airlines", "ticketStatus", "ticketClass", "flights", "passengers"
+        "airlines", "ticketStatus", "ticketClass", "flight", "passenger"
 })
 @Entity
 @Table(name = "tickets")
@@ -46,10 +46,10 @@ public class Ticket {
     private Long idPass;
 
     @Column(name = "id_ticket_status", insertable=false, updatable=false)
-    private Long idTicketStatus;
+    private Integer idTicketStatus;
 
     @Column(name = "id_ticket_class", insertable=false, updatable=false)
-    private Long idTicketClass;
+    private Integer idTicketClass;
 
     @Column(name = "id_flight", insertable=false, updatable=false)
     private Long idFlight;
@@ -75,7 +75,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_airline")
     @JsonBackReference
-    private Airline airlines;
+    private Airline airline;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ticket_status")
@@ -91,11 +91,11 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_flight")
     @JsonBackReference
-    private Flight flights;
+    private Flight flight;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pass")
     @JsonBackReference
-    private Passenger passengers;
+    private Passenger passenger;
 
 }

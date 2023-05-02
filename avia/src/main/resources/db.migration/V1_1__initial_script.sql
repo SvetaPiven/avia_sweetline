@@ -138,6 +138,7 @@ create table public.passengers
     full_name   varchar(50)           not null,
     personal_id varchar(50)           not null
         unique,
+    miles       float4,
     created     timestamp(6),
     changed     timestamp(6),
     is_deleted  boolean default false not null
@@ -175,7 +176,7 @@ create table public.tickets
     id_pass          bigint
         constraint id_pass_fk
             references public.passengers,
-    id_ticket_status bigint                not null
+    id_ticket_status int                not null
         constraint id_ticket_status_fk
             references public.c_ticket_status,
     price            numeric(10, 2)        not null,
@@ -186,10 +187,10 @@ create table public.tickets
     created          timestamp(6),
     changed          timestamp(6),
     is_deleted       boolean default false not null,
-    id_ticket_class  bigint                not null
+    id_ticket_class  int                not null
         constraint id_ticket_class_fk
             references public.c_ticket_class,
-    id_airline       bigint                not null
+    id_airline       int                not null
         constraint airlines_fk
             references public.c_airlines
 );

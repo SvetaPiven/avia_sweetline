@@ -61,7 +61,7 @@ public class Airline {
     private Boolean isDeleted = false;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "airlines", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Ticket> tickets = new LinkedHashSet<>();
 }

@@ -76,7 +76,7 @@ public class Flight {
     private Boolean isDeleted;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "flights", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
 

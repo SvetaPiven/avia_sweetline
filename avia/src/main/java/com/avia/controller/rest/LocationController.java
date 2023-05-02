@@ -2,9 +2,11 @@ package com.avia.controller.rest;
 
 import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
+import com.avia.model.entity.Passenger;
 import com.avia.model.entity.Ticket;
 import com.avia.repository.AirportRepository;
 import com.avia.repository.FlightRepository;
+import com.avia.repository.PassengerRepository;
 import com.avia.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -26,22 +29,43 @@ public class LocationController {
 
     private final TicketRepository ticketRepository;
 
-    @GetMapping("/{passengerId}")
-    public ResponseEntity<Double> calculatePassengerMiles(@PathVariable Long passengerId) {
-        List<Ticket> tickets = ticketRepository.findTicketByIdPass(passengerId);
-        double passengerMiles = 0;
-        for (Ticket ticket : tickets) {
-            Flight flight = flightRepository.findById(ticket.getIdFlight())
-                    .orElseThrow(() -> new IllegalArgumentException("Flight not found"));
-            Airport departureAirport = airportRepository.findById(flight.getIdDepartureAirport())
-                    .orElseThrow(() -> new IllegalArgumentException("Departure airport not found"));
-            Airport arrivalAirport = airportRepository.findById(flight.getIdArrivalAirport())
-                    .orElseThrow(() -> new IllegalArgumentException("Arrival airport not found"));
-            double distance = calculateDistance(departureAirport.getLatitude(), departureAirport.getLongitude(),
-                    arrivalAirport.getLatitude(), arrivalAirport.getLongitude());
-            passengerMiles += distance;
+    private final PassengerRepository passengerRepository;
+
+    @GetMapping("/calculate")
+    public ResponseEntity<String> calculatePassengerMiles() {
+        List<Passenger> passengers = passengerRepository.findAll();
+        for (Passenger passenger : passengers) {
+            List<Ticket> tickets = ticketRepository.findTicketByIdPass(passenger.getIdPass());
+            double passengerMiles = 0;
+            for (Ticket ticket : tickets) {
+                if (ticket.getIdTicketStatus() == 5) {
+                    Flight flight = flightRepository.findById(ticket.getIdFlight())
+                            .orElseThrow(() -> new IllegalArgumentException("Flight not found"));
+                    Airport departureAirport = airportRepository.findById(flight.getIdDepartureAirport())
+                            .orElseThrow(() -> new IllegalArgumentException("Departure airport not found"));
+                    Airport arrivalAirport = airportRepository.findById(flight.getIdArrivalAirport())
+                            .orElseThrow(() -> new IllegalArgumentException("Arrival airport not found"));
+                    double distance = calculateDistance(departureAirport.getLatitude(), departureAirport.getLongitude(),
+                            arrivalAirport.getLatitude(), arrivalAirport.getLongitude());
+
+                    if (flight.getIdFlightStatus() == 4) {
+                        if (ticket.getIdTicketClass() == 2) {
+                            passengerMiles += distance * 1.5;
+                        } else {
+                            passengerMiles += distance;
+                        }
+                        BigDecimal ticketPrice = ticket.getPrice();
+                        BigDecimal discount = BigDecimal.valueOf(passengerMiles / 100);
+                        ticketPrice = ticketPrice.subtract(discount);
+                        ticket.setPrice(ticketPrice);
+                        ticketRepository.save(ticket);
+                    }
+                }
+            }
+            passenger.setMiles(passengerMiles);
+            passengerRepository.save(passenger);
         }
-        return ResponseEntity.ok(passengerMiles);
+        return ResponseEntity.ok("Miles calculated for all passengers.");
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {

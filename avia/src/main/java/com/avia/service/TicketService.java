@@ -1,9 +1,12 @@
 package com.avia.service;
 
+import com.avia.dto.TicketCreateDto;
+import com.avia.dto.TicketUpdateDto;
 import com.avia.model.entity.Ticket;
 
-import java.util.List;
-
 public interface TicketService {
-    List<Ticket> findAll();
+
+    Ticket createTicket(TicketCreateDto ticketCreateDto);
+
+    Ticket updateTicket(Long id, TicketUpdateDto ticketUpdateDto);
 }

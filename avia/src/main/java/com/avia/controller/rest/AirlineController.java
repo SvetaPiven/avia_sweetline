@@ -1,8 +1,11 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.Airline;
+import com.avia.model.entity.DocumentPass;
 import com.avia.repository.AirlineRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,10 +15,16 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/airlines")
+@RequestMapping("/rest/airlines")
 public class AirlineController {
 
     private final AirlineRepository airlineRepository;
+
+    @GetMapping()
+    public ResponseEntity<List<Airline>> getAllAirlines() {
+        List<Airline> airlines = airlineRepository.findAll();
+        return new ResponseEntity<>(airlines, HttpStatus.OK);
+    }
 
     @GetMapping("/popular")
     public List<Airline> getPopularAirlines() {

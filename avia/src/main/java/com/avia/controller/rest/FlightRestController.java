@@ -45,7 +45,7 @@ public class FlightRestController {
                 .idArrivalAirport(flightDto.getIdArrivalAirport())
                 .departureTime(flightDto.getDepartureTime())
                 .arrivalTime(flightDto.getArrivalTime())
-                .idFlightStatus(1l)
+                .idFlightStatus(1L)
                 .created(Timestamp.valueOf(LocalDateTime.now()))
                 .isDeleted(false)
                 .build();
