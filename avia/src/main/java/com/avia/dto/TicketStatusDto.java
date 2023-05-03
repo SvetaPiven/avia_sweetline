@@ -9,16 +9,13 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * A DTO for the {@link com.avia.model.entity.Airline} entity
+ * A DTO for the {@link com.avia.model.entity.TicketStatus} entity
  */
 @Data
-public class AirlineDto implements Serializable {
-    private Integer idAirline;
-    @Size(max = 50)
+public class TicketStatusDto implements Serializable {
+    private Integer idTicketStatus;
+    @Size(max = 20)
     @NotNull
-    private String nameAirline;
-    @Size(max = 3)
-    @NotNull
-    private String codeAirline;
+    private String nameTicketStatus;
     private Set<Ticket> tickets;
 }

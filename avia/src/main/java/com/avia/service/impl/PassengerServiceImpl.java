@@ -5,13 +5,11 @@ import com.avia.dto.PassengerCreateDto;
 import com.avia.dto.PassengerUpdateDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.PassengerCreateMapper;
-import com.avia.mapper.PassengerMapper;
 import com.avia.mapper.PassengerUpdateMapper;
 import com.avia.model.entity.Passenger;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -39,7 +37,6 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public Passenger createPassenger(PassengerCreateDto passengerCreateDto) {
         Passenger passenger = passengerCreateMapper.toEntity(passengerCreateDto);
-        //passenger.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         return passengerRepository.save(passenger);
     }
 
@@ -47,9 +44,8 @@ public class PassengerServiceImpl implements PassengerService {
     public Passenger updatePassenger(Long id, PassengerUpdateDto passengerUpdateDto) {
         Optional<Passenger> passengerOptional = passengerRepository.findById(id);
         if (passengerOptional.isPresent()) {
-            Passenger passenger = passengerOptional.get();
-          //  passenger.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-            passenger = passengerUpdateMapper.partialUpdate(passengerUpdateDto, passenger);
+            Passenger passenger = passengerUpdateMapper.partialUpdate(passengerUpdateDto, passengerOptional.get());;
+            passenger.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             return passengerRepository.save(passenger);
         } else {
             throw new EntityNotFoundException("Passenger not found with id " + id);

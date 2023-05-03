@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,12 +30,6 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {
-        "users"
-})
-@ToString(exclude = {
-        "users"
-})
 @Entity
 @Table(name = "c_roles")
 public class Role {
@@ -42,7 +38,9 @@ public class Role {
     @Column(name = "id_role")
     private Integer idRole;
 
-    @Column(name = "role_name")
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "role_name", nullable = false, length = 100)
     private String roleName;
 
     @Column
@@ -51,6 +49,8 @@ public class Role {
     @Column
     private Timestamp changed;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "l_user_role",
             joinColumns = @JoinColumn(name = "id_role"),

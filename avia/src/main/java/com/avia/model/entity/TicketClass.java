@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,21 +30,17 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {
-        "tickets"
-})
-@ToString(exclude = {
-        "tickets"
-})
 @Entity
 @Table(name = "c_ticket_class")
 public class TicketClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ticket_class")
+    @Column(name = "id_ticket_class", nullable = false)
     private Integer idTicketClass;
 
-    @Column(name = "name_class")
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "name_class", nullable = false, length = 30)
     private String nameClass;
 
     @Column
@@ -51,10 +49,13 @@ public class TicketClass {
     @Column
     private Timestamp changed;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @NotNull
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
-    @OneToMany(mappedBy = "ticketClass", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "idTicketClass", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
 }

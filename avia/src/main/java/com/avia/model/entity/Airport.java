@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,31 +30,34 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"departureAirport", "arrivalAirport"
-})
-@ToString(exclude = {"departureAirport", "arrivalAirport"
-})
 @Entity
 @Table(name = "airports")
 public class Airport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_airport")
+    @Column(name = "id_airport", nullable = false)
     private Long idAirport;
 
-    @Column(name = "name_airport")
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "name_airport", nullable = false, length = 50)
     private String nameAirport;
 
-    @Column
+    @Size(max = 50)
+    @NotNull
+    @Column(nullable = false)
     private String city;
 
-    @Column
+    @NotNull
+    @Column(nullable = false)
     private Float longitude;
 
-    @Column
+    @NotNull
+    @Column(nullable = false)
     private Float latitude;
 
-    @Column
+    @NotNull
+    @Column(nullable = false)
     private String timezone;
 
     @Column
@@ -61,17 +66,24 @@ public class Airport {
     @Column
     private Timestamp changed;
 
+    @NotNull
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
-    @Column
+    @Size(max = 30)
+    @NotNull
+    @Column(nullable = false, length = 30)
     private String country;
 
-    @OneToMany(mappedBy = "departure", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private Set<Flight> departureAirport = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "arrival", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private Set<Flight> arrivalAirport = new LinkedHashSet<>();
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "idArrivalAirport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonManagedReference
+//    private Set<Flight> flightsArrival = new LinkedHashSet<>();
+//
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "idDepartureAirport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonManagedReference
+//    private Set<Flight> flightsDeparture = new LinkedHashSet<>();
 }

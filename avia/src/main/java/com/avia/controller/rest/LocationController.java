@@ -35,21 +35,21 @@ public class LocationController {
     public ResponseEntity<String> calculatePassengerMiles() {
         List<Passenger> passengers = passengerRepository.findAll();
         for (Passenger passenger : passengers) {
-            List<Ticket> tickets = ticketRepository.findTicketByIdPass(passenger.getIdPass());
+            List<Ticket> tickets = ticketRepository.findTicketByIdPass(passenger);
             double passengerMiles = 0;
             for (Ticket ticket : tickets) {
-                if (ticket.getIdTicketStatus() == 5) {
-                    Flight flight = flightRepository.findById(ticket.getIdFlight())
+                if (ticket.getIdTicketStatus().getIdTicketStatus() == 5) {
+                    Flight flight = flightRepository.findById(ticket.getIdFlight().getIdFlight())
                             .orElseThrow(() -> new IllegalArgumentException("Flight not found"));
-                    Airport departureAirport = airportRepository.findById(flight.getIdDepartureAirport())
+                    Airport departureAirport = airportRepository.findById(flight.getIdDepartureAirport().getIdAirport())
                             .orElseThrow(() -> new IllegalArgumentException("Departure airport not found"));
-                    Airport arrivalAirport = airportRepository.findById(flight.getIdArrivalAirport())
+                    Airport arrivalAirport = airportRepository.findById(flight.getIdArrivalAirport().getIdAirport())
                             .orElseThrow(() -> new IllegalArgumentException("Arrival airport not found"));
                     double distance = calculateDistance(departureAirport.getLatitude(), departureAirport.getLongitude(),
                             arrivalAirport.getLatitude(), arrivalAirport.getLongitude());
 
-                    if (flight.getIdFlightStatus() == 4) {
-                        if (ticket.getIdTicketClass() == 2) {
+                    if (flight.getIdFlightStatus().getIdFlightStatus() == 4) {
+                        if (ticket.getIdTicketClass().getIdTicketClass() == 2) {
                             passengerMiles += distance * 1.5;
                         } else {
                             passengerMiles += distance;

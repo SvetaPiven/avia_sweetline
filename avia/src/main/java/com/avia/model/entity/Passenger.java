@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -35,10 +37,14 @@ public class Passenger {
     @Column(name = "id_pass", nullable = false)
     private Long idPass;
 
-    @Column(name = "full_name", nullable = false)
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "full_name", nullable = false, length = 50)
     private String fullName;
 
-    @Column(name = "personal_id", nullable = false)
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "personal_id", nullable = false, length = 50)
     private String personalId;
 
     @Column
@@ -50,18 +56,19 @@ public class Passenger {
     @Column
     private Timestamp changed;
 
-    @Column(name = "is_deleted")
+    @NotNull
+    @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "idPass", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "passengers", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "idPass", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private Set<DocumentPass> documentPasses = Collections.emptySet();
 }

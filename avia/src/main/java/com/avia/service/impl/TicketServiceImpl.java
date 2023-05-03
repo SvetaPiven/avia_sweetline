@@ -40,31 +40,31 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public Ticket createTicket(TicketCreateDto ticketCreateDto) {
-        Passenger passenger = passengerRepository.findById(ticketCreateDto.getIdPass()).orElseThrow(() ->
-                new EntityNotFoundException("Passenger with id " + ticketCreateDto.getIdPass() + " not found"));
+        Passenger passenger = passengerRepository.findById(ticketCreateDto.getIdPass().getIdPass()).orElseThrow(() ->
+                new EntityNotFoundException("Passenger with id " + ticketCreateDto.getIdPass().getIdPass() + " not found"));
         Ticket ticket = ticketCreateMapper.toEntity(ticketCreateDto);
-        ticket.setIdPass(passenger.getIdPass());
-        ticket.setPassenger(passenger);
+        //ticket.getIdPass().setIdPass(passenger.getIdPass());
+        ticket.setIdPass(passenger);
 
-        TicketClass ticketClass = ticketClassRepository.findById(ticketCreateDto.getIdTicketClass()).orElseThrow(() ->
-                new EntityNotFoundException("Ticket class with id " + ticketCreateDto.getIdTicketClass() + " not found"));
-        ticket.setIdTicketClass(ticketClass.getIdTicketClass());
-        ticket.setTicketClass(ticketClass);
+        TicketClass ticketClass = ticketClassRepository.findById(ticketCreateDto.getIdTicketClass().getIdTicketClass()).orElseThrow(() ->
+                new EntityNotFoundException("Ticket class with id " + ticketCreateDto.getIdTicketClass().getIdTicketClass() + " not found"));
+        //ticket.getIdTicketClass().setIdTicketClass(ticketClass.getIdTicketClass());
+        ticket.setIdTicketClass(ticketClass);
 
         TicketStatus ticketStatus = ticketStatusRepository.findById(6).orElseThrow(() ->
-                new EntityNotFoundException("Ticket status class with id " + ticketCreateDto.getIdTicketStatus() + " not found"));
-        ticket.setIdTicketStatus(ticketStatus.getIdTicketStatus());
-        ticket.setTicketStatus(ticketStatus);
+                new EntityNotFoundException("Ticket status class with id " + ticketCreateDto.getIdTicketStatus().getIdTicketStatus() + " not found"));
+        //ticket.getIdTicketStatus().setIdTicketStatus(ticketCreateDto.getIdTicketStatus().getIdTicketStatus());
+        ticket.setIdTicketStatus(ticketStatus);
 
-        Flight flight = flightRepository.findById(ticketCreateDto.getIdFlight()).orElseThrow(() ->
-                new EntityNotFoundException("Flight with id " + ticketCreateDto.getIdFlight() + " not found"));
-        ticket.setIdFlight(flight.getIdFlight());
-        ticket.setFlight(flight);
+        Flight flight = flightRepository.findById(ticketCreateDto.getIdFlight().getIdFlight()).orElseThrow(() ->
+                new EntityNotFoundException("Flight with id " + ticketCreateDto.getIdFlight().getIdFlight() + " not found"));
+        //ticket.getIdFlight().setIdFlight(flight.getIdFlight());
+        ticket.setIdFlight(flight);
 
-        Airline airline = airlineRepository.findById(ticketCreateDto.getIdAirline()).orElseThrow(() ->
-                new EntityNotFoundException("Airline with id " + ticketCreateDto.getIdAirline() + " not found"));
-        ticket.setIdAirline(airline.getIdAirline());
-        ticket.setAirline(airline);
+        Airline airline = airlineRepository.findById(ticketCreateDto.getIdAirline().getIdAirline()).orElseThrow(() ->
+                new EntityNotFoundException("Airline with id " + ticketCreateDto.getIdAirline().getIdAirline() + " not found"));
+        //ticket.getIdAirline().setIdAirline(airline.getIdAirline());
+        ticket.setIdAirline(airline);
 
         return ticketRepository.save(ticket);
     }

@@ -1,10 +1,8 @@
 package com.avia.controller.rest;
 
 import com.avia.dto.PassengerCreateDto;
-import com.avia.dto.PassengerDto;
 import com.avia.dto.PassengerUpdateDto;
 import com.avia.exception.EntityNotFoundException;
-import com.avia.mapper.PassengerMapper;
 import com.avia.model.entity.Passenger;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 

@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,37 +30,57 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {
-        "airlines", "ticketStatus", "ticketClass", "flight", "passenger"
-})
-@ToString(exclude = {
-        "airlines", "ticketStatus", "ticketClass", "flight", "passenger"
-})
 @Entity
 @Table(name = "tickets")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ticket")
+    @Column(name = "id_ticket", nullable = false)
     private Long idTicket;
 
-    @Column(name = "id_pass", insertable=false, updatable=false)
-    private Long idPass;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pass")
+    @JsonBackReference
+    private Passenger idPass;
 
-    @Column(name = "id_ticket_status", insertable=false, updatable=false)
-    private Integer idTicketStatus;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_ticket_status", nullable = false)
+    @JsonBackReference
+    private TicketStatus idTicketStatus;
 
-    @Column(name = "id_ticket_class", insertable=false, updatable=false)
-    private Integer idTicketClass;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_ticket_class", nullable = false)
+    @JsonBackReference
+    private TicketClass idTicketClass;
 
-    @Column(name = "id_flight", insertable=false, updatable=false)
-    private Long idFlight;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_flight", nullable = false)
+    @JsonBackReference
+    private Flight idFlight;
 
-    @Column(name = "id_airline", insertable=false, updatable=false)
-    private Integer idAirline;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_airline", nullable = false)
+    @JsonBackReference
+    private Airline idAirline;
 
-    @Column(name = "number_place")
-    private String numberPlace;
+    @Size(max = 5)
+    @Column(name = "number_place", length = 5)
+    private String idPlace;
 
     @Column
     private BigDecimal price;
@@ -69,33 +91,35 @@ public class Ticket {
     @Column
     private Timestamp changed;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @NotNull
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_airline")
-    @JsonBackReference
-    private Airline airline;
+//    @NotNull
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "id_airline", nullable = false)
+//    @JsonBackReference
+//    private Airline idAirline;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ticket_status")
-    @JsonBackReference
-    private TicketStatus ticketStatus;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_ticket_status")
+//    @JsonBackReference
+//    private TicketStatus ticketStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ticket_class")
-    @JsonBackReference
-    private TicketClass ticketClass;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_ticket_class")
+//    @JsonBackReference
+//    private TicketClass ticketClass;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_flight")
-    @JsonBackReference
-    private Flight flight;
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_flight")
+//    @JsonBackReference
+//    private Flight flight;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pass")
-    @JsonBackReference
-    private Passenger passenger;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_pass")
+//    @JsonBackReference
+//    private Passenger passenger;
 
 }

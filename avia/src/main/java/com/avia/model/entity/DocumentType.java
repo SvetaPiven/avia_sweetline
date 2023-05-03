@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,19 +30,17 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"documentPass"
-})
-@ToString(exclude = {"documentPass"
-})
 @Entity
 @Table(name = "c_document_type")
 public class DocumentType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_document_type")
+    @Column(name = "id_document_type", nullable = false)
     private Integer idDocumentType;
 
-    @Column(name = "doc_type")
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "doc_type", nullable = false, length = 30)
     private String docType;
 
     @Column
@@ -49,10 +49,13 @@ public class DocumentType {
     @Column
     private Timestamp changed;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @NotNull
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
-    @OneToMany(mappedBy = "documentType", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "idDocumentType", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<DocumentPass> documentPass = Collections.emptySet();
+    private Set<DocumentPass> documentPasses = Collections.emptySet();
 }

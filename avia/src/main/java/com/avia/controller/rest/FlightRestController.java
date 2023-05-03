@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.dto.FlightDto;
+import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
 import com.avia.repository.FlightRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,25 +36,25 @@ public class FlightRestController {
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Flight> createFlight(@RequestBody FlightDto flightDto) {
-
-        Flight build = Flight.builder()
-                .flightNumber(flightDto.getFlightNumber())
-                .idPlaneType(flightDto.getIdPlaneType())
-                .idDepartureAirport(flightDto.getIdDepartureAirport())
-                .idArrivalAirport(flightDto.getIdArrivalAirport())
-                .departureTime(flightDto.getDepartureTime())
-                .arrivalTime(flightDto.getArrivalTime())
-                .idFlightStatus(1L)
-                .created(Timestamp.valueOf(LocalDateTime.now()))
-                .isDeleted(false)
-                .build();
-
-        Flight createdFlight = flightRepository.save(build);
-
-        return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity<Flight> createFlight(@RequestBody FlightDto flightDto) {
+//
+//        Flight build = Flight.builder()
+//                .flightNumber(flightDto.getFlightNumber())
+//                .idPlaneType(flightDto.getIdPlaneType())
+//                .idDepartureAirport(flightDto.getIdDepartureAirport())
+//                .idArrivalAirport(flightDto.getIdArrivalAirport())
+//                .departureTime(flightDto.getDepartureTime())
+//                .arrivalTime(flightDto.getArrivalTime())
+//                .idFlightStatus(1L)
+//                .created(Timestamp.valueOf(LocalDateTime.now()))
+//                .isDeleted(false)
+//                .build();
+//
+//        Flight createdFlight = flightRepository.save(build);
+//
+//        return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Flight> getFlightById(@PathVariable("id") Long id) {
@@ -61,29 +62,29 @@ public class FlightRestController {
         return flight.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Flight> updateFlight(@PathVariable("id") Long id, @RequestBody FlightDto flightDto) {
-        Optional<Flight> optionalFlight = flightRepository.findById(id);
-
-        if (optionalFlight.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Flight flight = optionalFlight.get();
-
-        flight.setFlightNumber(flightDto.getFlightNumber());
-        flight.setIdPlaneType(flightDto.getIdPlaneType());
-        flight.setIdDepartureAirport(flightDto.getIdDepartureAirport());
-        flight.setIdArrivalAirport(flightDto.getIdArrivalAirport());
-        flight.setDepartureTime(flightDto.getDepartureTime());
-        flight.setArrivalTime(flightDto.getArrivalTime());
-        flight.setIdFlightStatus(flightDto.getIdFlightStatus());
-        flight.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-
-        Flight updated = flightRepository.save(flight);
-
-        return new ResponseEntity<>(updated, HttpStatus.OK);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Flight> updateFlight(@PathVariable("id") Long id, @RequestBody FlightDto flightDto) {
+//        Optional<Flight> optionalFlight = flightRepository.findById(id);
+//
+//        if (optionalFlight.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        Flight flight = optionalFlight.get();
+//
+//        flight.setFlightNumber(flightDto.getFlightNumber());
+//        flight.setIdPlaneType(flightDto.getIdPlaneType());
+//        flight.setIdDepartureAirport(flightDto.getIdDepartureAirport());
+//        flight.setIdArrivalAirport(flightDto.getIdArrivalAirport());
+//        flight.setDepartureTime(flightDto.getDepartureTime());
+//        flight.setArrivalTime(flightDto.getArrivalTime());
+//        flight.setIdFlightStatus(flightDto.getIdFlightStatus());
+//        flight.setChanged(Timestamp.valueOf(LocalDateTime.now()));
+//
+//        Flight updated = flightRepository.save(flight);
+//
+//        return new ResponseEntity<>(updated, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFlight(@PathVariable("id") Long id) {
@@ -98,7 +99,7 @@ public class FlightRestController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Flight>> getFlightByIdArrivalAirport(@RequestParam(value = "id") Long id) {
+    public ResponseEntity<List<Flight>> getFlightByIdArrivalAirport(@RequestParam(value = "id") Airport id) {
         List<Flight> flights = flightRepository.findFlightByIdArrivalAirport(id);
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }

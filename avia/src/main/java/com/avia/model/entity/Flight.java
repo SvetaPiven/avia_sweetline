@@ -14,6 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -31,39 +33,57 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {
-        "tickets", "flightStatus", "departure", "arrival", "planeTypes"
-})
-@ToString(exclude = {
-        "tickets", "flightStatus", "departure", "arrival", "planeTypes"
-})
 @Entity
 @Table(name = "flights")
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_flight")
+    @Column(name = "id_flight", nullable = false)
     private Long idFlight;
 
-    @Column(name = "flight_number")
+    @Size(max = 10)
+    @NotNull
+    @Column(name = "flight_number", nullable = false, length = 10)
     private String flightNumber;
 
-    @Column(name = "id_plane_type")
-    private Long idPlaneType;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
+    @JoinColumn(name = "id_plane_type", nullable = false)
+    private PlaneType idPlaneType;
 
-    @Column(name = "id_departure_airport", insertable=false, updatable=false)
-    private Long idDepartureAirport;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_departure_airport", referencedColumnName = "id_airport", nullable = false)
+    @JsonBackReference
+    private Airport idDepartureAirport;
 
-    @Column(name = "id_arrival_airport", insertable=false, updatable=false)
-    private Long idArrivalAirport;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_arrival_airport", referencedColumnName = "id_airport", nullable = false)
+    @JsonBackReference
+    private Airport idArrivalAirport;
 
-    @Column(name = "id_flight_status")
-    private Long idFlightStatus;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_flight_status", nullable = false)
+    @JsonBackReference
+    private FlightStatus idFlightStatus;
 
-    @Column(name = "departure_time")
+    @NotNull
+    @Column(name = "departure_time", nullable = false)
     private Timestamp departureTime;
 
-    @Column(name = "arrival_time")
+    @NotNull
+    @Column(name = "arrival_time", nullable = false)
     private Timestamp arrivalTime;
 
     @Column
@@ -72,32 +92,35 @@ public class Flight {
     @Column
     private Timestamp changed;
 
+    @NotNull
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idFlight", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_flight_status", insertable = false, updatable = false)
+//    @JsonBackReference
+//    private FlightStatus flightStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_flight_status", insertable = false, updatable = false)
-    @JsonBackReference
-    private FlightStatus flightStatus;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_departure_airport", referencedColumnName = "id_airport")
+//    @JsonBackReference
+//    private Airport departure;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_departure_airport", referencedColumnName = "id_airport")
-    @JsonBackReference
-    private Airport departure;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_arrival_airport", referencedColumnName = "id_airport")
+//    @JsonBackReference
+//    private Airport arrival;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_arrival_airport", referencedColumnName = "id_airport")
-    @JsonBackReference
-    private Airport arrival;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_plane_type", insertable = false, updatable = false)
-    @JsonBackReference
-    private PlaneType planeTypes;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_plane_type", insertable = false, updatable = false)
+//    @JsonBackReference
+//    private PlaneType planeTypes;
 
 }

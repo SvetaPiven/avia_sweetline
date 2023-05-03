@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -26,26 +28,33 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"documentType", "passengers"
-})
-@ToString(exclude = {"documentType", "passengers"
-})
 @Entity
 @Table(name = "document_pass")
 public class DocumentPass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_document_pass")
+    @Column(name = "id_document_pass", nullable = false)
     private Long idDocumentPass;
 
-    @Column(name = "id_document_type", insertable=false, updatable=false)
-    private Long idDocumentType;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
+    @JoinColumn(name = "id_document_type", nullable = false)
+    private DocumentType idDocumentType;
 
-    @Column(name = "document_num")
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "document_num", nullable = false)
     private String documentNum;
 
-    @Column(name = "id_pass", insertable=false, updatable=false)
-    private Long idPass;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_pass", nullable = false)
+    @JsonBackReference
+    private Passenger idPass;
 
     @Column
     private Timestamp created;
@@ -53,17 +62,18 @@ public class DocumentPass {
     @Column
     private Timestamp changed;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @NotNull
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_document_type")
-    @JsonBackReference
-    private DocumentType documentType;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_document_type")
+//    @JsonBackReference
+//    private DocumentType documentType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pass")
-    @JsonBackReference
-    private Passenger passengers;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_pass")
+//    @JsonBackReference
+//    private Passenger passengers;
 }

@@ -1,7 +1,8 @@
 package com.avia.mapper;
 
-import com.avia.dto.DocumentPassDto;
-import com.avia.model.entity.DocumentPass;
+import com.avia.dto.TicketStatusDto;
+import com.avia.model.entity.TicketStatus;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -10,11 +11,11 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-public interface DocumentPassMapper {
-    DocumentPass toEntity(DocumentPassDto documentPassDt);
+public interface TicketStatusMapper {
+    TicketStatus toEntity(TicketStatusDto ticketStatusDto);
 
-    DocumentPassDto toDto(DocumentPass documentPass);
+    TicketStatusDto toDto(TicketStatus ticketStatus);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    DocumentPass partialUpdate(DocumentPassDto documentPassDt, @MappingTarget DocumentPass documentPass);
+    TicketStatus partialUpdate(TicketStatusDto ticketStatusDto, @MappingTarget TicketStatus ticketStatus);
 }

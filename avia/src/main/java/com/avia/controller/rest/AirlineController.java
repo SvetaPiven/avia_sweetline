@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.model.entity.Airline;
 import com.avia.model.entity.DocumentPass;
+import com.avia.model.entity.Ticket;
 import com.avia.repository.AirlineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor

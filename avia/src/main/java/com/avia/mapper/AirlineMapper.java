@@ -2,6 +2,7 @@ package com.avia.mapper;
 
 import com.avia.dto.AirlineDto;
 import com.avia.model.entity.Airline;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

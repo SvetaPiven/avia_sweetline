@@ -14,6 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -31,29 +33,25 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {
-        //"passengers",
-        "roles"
-})
-@ToString(exclude = {
-        //"passengers",
-        "roles"
-})
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user")
+    @Column(name = "id_user", nullable = false)
     private Long idUser;
 
-    @Column
+    @Size(max = 30)
+    @NotNull
+    @Column(nullable = false, length = 30)
     private String email;
 
-    @Column(name = "user_password")
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "user_password", nullable = false, length = 30)
     private String userPassword;
 
-    @Column(name = "id_pass", insertable = false, updatable = false)
+    @Column(name = "id_pass")
     private Long idPass;
 
     @Column
@@ -62,9 +60,12 @@ public class User {
     @Column
     private Timestamp changed;
 
+    @NotNull
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("users")
     private Set<Role> roles = Collections.emptySet();

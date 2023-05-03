@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,21 +30,17 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {
-        "flights"
-})
-@ToString(exclude = {
-        "flights"
-})
 @Entity
 @Table(name = "c_flight_status")
 public class FlightStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_flight_status")
+    @Column(name = "id_flight_status", nullable = false)
     private Integer idFlightStatus;
 
-    @Column(name = "name_flight_status")
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "name_flight_status", nullable = false, length = 30)
     private String nameFlightStatus;
 
     @Column
@@ -51,10 +49,13 @@ public class FlightStatus {
     @Column
     private Timestamp changed;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @NotNull
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
-    @OneToMany(mappedBy = "flightStatus", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "idFlightStatus", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Flight> flights = Collections.emptySet();
 }

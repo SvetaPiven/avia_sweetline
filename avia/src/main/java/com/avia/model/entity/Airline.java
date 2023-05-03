@@ -12,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -30,22 +32,22 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"tickets"
-})
-@ToString(exclude = {"tickets"
-})
 @Entity
 @Table(name = "c_airlines")
 public class Airline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_airline")
+    @Column(name = "id_airline", nullable = false)
     private Integer idAirline;
 
-    @Column(name = "name_airline")
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "name_airline", nullable = false, length = 50)
     private String nameAirline;
 
-    @Column(name = "code_airline")
+    @Size(max = 3)
+    @NotNull
+    @Column(name = "code_airline", nullable = false, length = 3)
     private String codeAirline;
 
     @JsonIgnore
@@ -56,12 +58,17 @@ public class Airline {
     @Column
     private Timestamp changed;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @NotNull
     @JsonIgnore
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "idAirline", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Ticket> tickets = new LinkedHashSet<>();
 }

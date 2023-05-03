@@ -14,7 +14,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {AirlineMapper.class, FlightMapper.class, PassengerMapper.class, TicketClass.class, TicketStatus.class})
+        uses = {PassengerMapper.class, TicketStatusMapper.class, FlightMapper.class, AirlineMapper.class})
 public interface TicketUpdateMapper {
     @Mappings({
             @Mapping(target = "idTicket", ignore = true),

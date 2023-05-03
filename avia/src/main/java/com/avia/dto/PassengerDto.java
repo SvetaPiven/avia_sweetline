@@ -1,9 +1,11 @@
 package com.avia.dto;
 
+import com.avia.model.entity.Ticket;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Set;
 
 /**
@@ -12,12 +14,13 @@ import java.util.Set;
 @Data
 public class PassengerDto implements Serializable {
     private Long idPass;
+    @Size(max = 50)
+    @NotNull
     private String fullName;
+    @Size(max = 50)
+    @NotNull
     private String personalId;
     private Double miles;
-    private Timestamp created;
-    private Timestamp changed;
-    private Boolean isDeleted;
-    private Set<TicketDto> tickets;
+    private Set<Ticket> tickets;
     private Set<DocumentPassDto> documentPasses;
 }

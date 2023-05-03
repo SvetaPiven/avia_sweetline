@@ -1,10 +1,10 @@
 package com.avia.dto;
 
-import com.avia.model.entity.Flight;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Set;
 
 /**
@@ -12,28 +12,22 @@ import java.util.Set;
  */
 @Data
 public class AirportDto implements Serializable {
-
-    private final Long idAirport;
-
-    private final String nameAirport;
-
-    private final String city;
-
-    private final Float longitude;
-
-    private final Float latitude;
-
-    private final String timezone;
-
-    private final Timestamp created;
-
-    private final Timestamp changed;
-
-    private final Boolean isDeleted;
-
-    private final String country;
-
-    private final Set<Flight> departureAirport;
-
-    private final Set<Flight> arrivalAirport;
+    private Long idAirport;
+    @Size(max = 50)
+    @NotNull
+    private String nameAirport;
+    @Size(max = 50)
+    @NotNull
+    private String city;
+    @NotNull
+    private Float longitude;
+    @NotNull
+    private Float latitude;
+    @NotNull
+    private String timezone;
+    @Size(max = 30)
+    @NotNull
+    private String country;
+//    private Set<FlightDto> flightsArrival;
+//    private Set<FlightDto> flightsDeparture;
 }
