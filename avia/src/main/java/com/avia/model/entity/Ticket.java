@@ -2,6 +2,7 @@ package com.avia.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,7 +65,6 @@ public class Ticket {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @NotNull
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_flight", nullable = false)
     @JsonBackReference
@@ -80,7 +80,7 @@ public class Ticket {
 
     @Size(max = 5)
     @Column(name = "number_place", length = 5)
-    private String idPlace;
+    private String numberPlace;
 
     @Column
     private BigDecimal price;
@@ -94,6 +94,7 @@ public class Ticket {
     @NotNull
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
+
 
 //    @NotNull
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)

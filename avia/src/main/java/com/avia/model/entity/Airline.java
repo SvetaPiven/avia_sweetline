@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Cacheable("c_airlines")
 @Table(name = "c_airlines")
 public class Airline {
     @Id

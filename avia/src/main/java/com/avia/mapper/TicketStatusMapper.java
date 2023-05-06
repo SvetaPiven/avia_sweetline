@@ -1,8 +1,7 @@
 package com.avia.mapper;
 
-import com.avia.dto.TicketStatusDto;
+import com.avia.dto.requests.TicketStatusDto;
 import com.avia.model.entity.TicketStatus;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

@@ -1,6 +1,5 @@
-package com.avia.dto;
+package com.avia.dto.requests;
 
-import com.avia.model.entity.TicketClass;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -9,17 +8,24 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class TicketUpdateDto implements Serializable {
-    private PassengerDto idPass;
+public class TicketDto implements Serializable {
+
+    private Long idPass;
+
     @NotNull
-    private TicketStatusDto idTicketStatus;
+    private Integer idTicketStatus;
+
     @NotNull
-    private TicketClass idTicketClass;
+    private Integer idTicketClass;
+
     @NotNull
-    private FlightDto idFlight;
+    private Long idFlight;
+
     @NotNull
-    private AirlineDto idAirline;
+    private Integer idAirline;
+
     @Size(max = 5)
     private String numberPlace;
+
     private BigDecimal price;
 }

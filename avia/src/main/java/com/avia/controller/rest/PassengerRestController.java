@@ -1,7 +1,6 @@
 package com.avia.controller.rest;
 
-import com.avia.dto.PassengerCreateDto;
-import com.avia.dto.PassengerUpdateDto;
+import com.avia.dto.requests.PassengerDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Passenger;
 import com.avia.repository.PassengerRepository;
@@ -42,9 +41,9 @@ PassengerRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Passenger> createPassenger(@RequestBody PassengerCreateDto passengerCreateDto) {
+    public ResponseEntity<Passenger> createPassenger(@RequestBody PassengerDto passengerDto) {
 
-        Passenger createdPassenger = passengerService.createPassenger(passengerCreateDto);
+        Passenger createdPassenger = passengerService.createPassenger(passengerDto);
 
         return new ResponseEntity<>(createdPassenger, HttpStatus.CREATED);
     }
@@ -60,9 +59,9 @@ PassengerRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Passenger> updatePassenger(@PathVariable Long id, @RequestBody PassengerUpdateDto passengerUpdateDto) {
+    public ResponseEntity<Passenger> updatePassenger(@PathVariable Long id, @RequestBody PassengerDto passengerDto) {
 
-        Passenger updatedPassenger = passengerService.updatePassenger(id, passengerUpdateDto);
+        Passenger updatedPassenger = passengerService.updatePassenger(id, passengerDto);
 
         return new ResponseEntity<>(updatedPassenger, HttpStatus.OK);
     }

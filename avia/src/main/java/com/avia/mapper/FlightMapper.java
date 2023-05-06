@@ -1,8 +1,7 @@
 package com.avia.mapper;
 
-import com.avia.dto.FlightDto;
+import com.avia.dto.requests.FlightDto;
 import com.avia.model.entity.Flight;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

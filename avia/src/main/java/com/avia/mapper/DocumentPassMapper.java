@@ -1,6 +1,6 @@
 package com.avia.mapper;
 
-import com.avia.dto.DocumentPassDto;
+import com.avia.dto.requests.DocumentPassDto;
 import com.avia.model.entity.DocumentPass;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

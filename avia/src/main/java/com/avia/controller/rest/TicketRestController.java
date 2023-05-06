@@ -1,7 +1,6 @@
 package com.avia.controller.rest;
 
-import com.avia.dto.TicketCreateDto;
-import com.avia.dto.TicketUpdateDto;
+import com.avia.dto.requests.TicketDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Ticket;
 import com.avia.repository.TicketRepository;
@@ -40,9 +39,9 @@ public class TicketRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Ticket> createTicket(@RequestBody TicketCreateDto ticketCreateDto) {
+    public ResponseEntity<Ticket> createTicket(@RequestBody TicketDto ticketDto) {
 
-        Ticket createdTicket = ticketService.createTicket(ticketCreateDto);
+        Ticket createdTicket = ticketService.createTicket(ticketDto);
 
         return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
     }
@@ -57,9 +56,9 @@ public class TicketRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody TicketUpdateDto ticketUpdateDto) {
+    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody TicketDto ticketDto) {
 
-        Ticket updatedTicket = ticketService.updateTicket(id, ticketUpdateDto);
+        Ticket updatedTicket = ticketService.updateTicket(id, ticketDto);
 
         return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
     }
@@ -71,69 +70,9 @@ public class TicketRestController {
 
         if (ticketOptional.isPresent()) {
             ticketRepository.deleteById(id);
-            log.info("Ticket with this id is deleted!");
             return ResponseEntity.noContent().build();
         } else {
             throw new EntityNotFoundException("Ticket with id " + id + " not found!");
         }
     }
 }
-//    @PostMapping
-//    public ResponseEntity<Ticket> createTicket(@RequestBody TicketCreateRequest request) {
-//
-//        Ticket build = Ticket.builder()
-//                .idTicket(request.getIdTicket())
-//                .idPass(request.getIdPass())
-//                .idTicketClass(request.getIdTicketClass())
-//                .price(request.getPrice())
-//                .idFlight(request.getIdFlight())
-//                .idPlace(request.getIdPlace())
-//                .idTicketClass(request.getIdTicketClass())
-//                .idAirline(request.getIdAirline())
-//                .build();
-//
-//        Ticket createdTicket = ticketService.create(build);
-//
-//        return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
-//    }
-
-//    @PatchMapping
-//    public ResponseEntity<Ticket> partialUpdateTicket(@RequestBody TicketCreateRequest request) {
-//
-//        Ticket ticket = ticketService.update(Ticket.builder()
-//                .idTicket(request.getIdTicket())
-//                .idPass(request.getIdPass())
-//                .idTicketClass(request.getIdTicketClass())
-//                .price(request.getPrice())
-//                .idFlight(request.getIdFlight())
-//                .idPlace(request.getIdPlace())
-//                .idTicketClass(request.getIdTicketClass())
-//                .idAirline(request.getIdAirline())
-//                .build());
-//
-//        return new ResponseEntity<>(ticket, HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping
-//    public ResponseEntity<Optional<Ticket>> deleteTicket(@RequestBody TicketCreateRequest request) {
-//
-//        Optional<Ticket> ticket = ticketService.deleteById(request.getIdTicket());
-//
-//        return new ResponseEntity<>(ticket, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/search/{id}")
-//    public ResponseEntity<BigDecimal> searchMostExpensiveTicket(@PathVariable Long id) {
-//
-//        BigDecimal price = ticketRepositoryJdbcTemplate.findMostExpensiveTicket(id);
-//
-//        return new ResponseEntity<>(price, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/calculate")
-//    public ResponseEntity<BigDecimal> calculateProfitAirline(@RequestParam(value = "query") Long query) {
-//
-//        BigDecimal price = ticketRepositoryJdbcTemplate.profitAirline(query);
-//
-//        return new ResponseEntity<>(price, HttpStatus.OK);
-//    }

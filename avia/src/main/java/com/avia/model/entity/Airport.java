@@ -1,5 +1,6 @@
 package com.avia.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,24 +49,30 @@ public class Airport {
     @Column(nullable = false)
     private String city;
 
+    @JsonIgnore
     @NotNull
     @Column(nullable = false)
     private Float longitude;
 
+    @JsonIgnore
     @NotNull
     @Column(nullable = false)
     private Float latitude;
 
+    @JsonIgnore
     @NotNull
     @Column(nullable = false)
     private String timezone;
 
+    @JsonIgnore
     @Column
     private Timestamp created;
 
+    @JsonIgnore
     @Column
     private Timestamp changed;
 
+    @JsonIgnore
     @NotNull
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;

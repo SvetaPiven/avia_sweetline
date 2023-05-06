@@ -1,6 +1,5 @@
 package com.avia.controller.rest;
 
-import com.avia.dto.FlightDto;
 import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
 import com.avia.repository.FlightRepository;
@@ -10,9 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
