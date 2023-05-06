@@ -1,5 +1,6 @@
 package com.avia.dto.requests;
 
+import com.avia.model.entity.Airport;
 import com.avia.model.entity.FlightStatus;
 import com.avia.model.entity.PlaneType;
 import com.avia.model.entity.Ticket;
@@ -19,16 +20,16 @@ public class FlightDto implements Serializable {
     private String flightNumber;
 
     @NotNull
-    private PlaneType idPlaneType;
+    private Integer idPlaneType;
 
     @NotNull
-    private AirportDto idDepartureAirport;
+    private Long idDepartureAirport;
 
     @NotNull
-    private AirportDto idArrivalAirport;
+    private Long idArrivalAirport;
 
     @NotNull
-    private FlightStatus idFlightStatus;
+    private Integer idFlightStatus;
 
     @NotNull
     private Timestamp departureTime;

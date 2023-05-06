@@ -21,16 +21,6 @@ public class PassengerServiceImpl implements PassengerService {
     private final PassengerMapper passengerMapper;
 
     @Override
-    public List<Passenger> findAll() {
-        return passengerRepository.findAll();
-    }
-
-    @Override
-    public Optional<Passenger> findById(Long id) {
-        return passengerRepository.findById(id);
-    }
-
-    @Override
     @Transactional
     public Passenger createPassenger(PassengerDto passengerDto) {
         Passenger passenger = passengerMapper.toEntity(passengerDto);

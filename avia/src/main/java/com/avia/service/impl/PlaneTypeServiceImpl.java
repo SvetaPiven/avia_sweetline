@@ -26,7 +26,7 @@ public class PlaneTypeServiceImpl implements PlaneTypeService {
     @Override
     public PlaneType updatePlaneType(Integer id, PlaneTypeDto planeTypeDto) {
         PlaneType planeType = planeTypeRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Airline with id " + id + " not found"));
+                new EntityNotFoundException("Plane type with id " + id + " not found"));
         planeTypeMapper.partialUpdate(planeTypeDto, planeType);
         return planeTypeRepository.save(planeType);
     }

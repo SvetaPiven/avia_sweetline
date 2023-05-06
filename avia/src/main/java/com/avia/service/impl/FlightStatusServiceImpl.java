@@ -29,7 +29,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
     public FlightStatus updateFlightStatus(Integer id, FlightStatusDto flightStatusDto) {
 
         FlightStatus flightStatus = flightStatusRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Document type with id " + id + " not found"));
+                new EntityNotFoundException("Flight status with id " + id + " not found"));
 
         flightStatusMapper.partialUpdate(flightStatusDto, flightStatus);
 

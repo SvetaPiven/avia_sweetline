@@ -17,6 +17,7 @@ public interface PassengerMapper {
             @Mapping(target = "idPass", ignore = true),
             @Mapping(target = "miles", constant = "0.0"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "isDeleted", constant = "false")
     })
     Passenger toEntity(PassengerDto passengerDto);

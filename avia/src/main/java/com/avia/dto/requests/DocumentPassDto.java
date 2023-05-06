@@ -12,11 +12,11 @@ import java.io.Serializable;
 public class DocumentPassDto implements Serializable {
 
     @NotNull
-    private DocumentType idDocumentType;
+    private Integer idDocumentType;
 
     @Size(max = 30)
     @NotNull
     private String documentNum;
 
-    private Passenger idPass;
+    private Long idPass;
 }

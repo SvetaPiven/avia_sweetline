@@ -96,6 +96,7 @@ public class Flight {
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore

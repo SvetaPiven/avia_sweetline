@@ -28,7 +28,7 @@ public class TicketStatusServiceImpl implements TicketStatusService {
     public TicketStatus updateTicketStatus(Integer id, TicketStatusDto ticketStatusDto) {
 
         TicketStatus ticketStatus = ticketStatusRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Document type with id " + id + " not found"));
+                new EntityNotFoundException("Ticket status type with id " + id + " not found"));
 
         ticketStatusMapper.partialUpdate(ticketStatusDto, ticketStatus);
 

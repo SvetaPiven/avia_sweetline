@@ -65,15 +65,4 @@ public class DocumentPass {
     @NotNull
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
-
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_document_type")
-//    @JsonBackReference
-//    private DocumentType documentType;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_pass")
-//    @JsonBackReference
-//    private Passenger passengers;
 }
