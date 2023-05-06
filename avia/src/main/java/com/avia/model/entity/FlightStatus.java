@@ -1,6 +1,7 @@
 package com.avia.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -53,6 +54,7 @@ public class FlightStatus {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "idFlightStatus", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
