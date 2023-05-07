@@ -21,7 +21,7 @@ public interface DocumentPassMapper {
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "isDeleted", constant = "false")
     })
-    DocumentPass toEntity(DocumentPassDto documentPassDt);
+    DocumentPass toEntity(DocumentPassDto documentPassDto);
 
     @Mappings({
             @Mapping(target = "idDocumentPass", ignore = true),

@@ -7,6 +7,7 @@ import com.avia.model.entity.Airport;
 import com.avia.model.entity.DocumentType;
 import com.avia.repository.DocumentTypeRepository;
 import com.avia.service.DocumentTypeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     private final DocumentTypeRepository documentTypeRepository;
 
     @Override
+    @Transactional
     public DocumentType createDocumentType(DocumentTypeDto documentTypeDto) {
 
         DocumentType documentType = documentTypeMapper.toEntity(documentTypeDto);
@@ -26,6 +28,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
+    @Transactional
     public DocumentType updateDocumentType(Integer id, DocumentTypeDto documentTypeDto) {
 
         DocumentType documentType = documentTypeRepository.findById(id).orElseThrow(() ->

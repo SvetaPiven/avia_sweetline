@@ -58,7 +58,8 @@ create table public.flights
     id_flight           bigserial       not null
         primary key
         unique,
-    flight_number        varchar(10)  not null,
+    flight_number        varchar(10)  not null
+        unique,
     id_plane_type        bigint       not null
         constraint plane_type_fk
             references public.c_plane_types,
