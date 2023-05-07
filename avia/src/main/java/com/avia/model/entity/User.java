@@ -1,8 +1,11 @@
 package com.avia.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,15 +40,22 @@ public class User {
     @Column(name = "id_user", nullable = false)
     private Long idUser;
 
-    @Size(max = 30)
-    @NotNull
-    @Column(nullable = false, length = 30)
-    private String email;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "email", column = @Column(name = "email", nullable = false, length = 30)),
+            @AttributeOverride(name = "userPassword", column = @Column(name = "user_password", nullable = false, length = 30))
+    })
+    private AuthenticationInfo authenticationInfo;
 
-    @Size(max = 30)
-    @NotNull
-    @Column(name = "user_password", nullable = false, length = 30)
-    private String userPassword;
+//    @Size(max = 30)
+//    @NotNull
+//    @Column(nullable = false, length = 30)
+//    private String email;
+//
+//    @Size(max = 30)
+//    @NotNull
+//    @Column(name = "user_password", nullable = false, length = 30)
+//    private String userPassword;
 
     @Column(name = "id_pass")
     private Long idPass;
@@ -63,7 +73,7 @@ public class User {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("users")
+    @JsonIgnoreProperties({"users", "idRole", "created", "changed", "isDeleted"})
     private Set<Role> roles = Collections.emptySet();
 
 //    @ManyToOne(fetch = FetchType.LAZY)

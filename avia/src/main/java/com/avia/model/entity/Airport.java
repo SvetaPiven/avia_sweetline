@@ -82,12 +82,14 @@ public class Airport {
     @Column(nullable = false, length = 30)
     private String country;
 
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "idArrivalAirport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Flight> flightsArrival = new LinkedHashSet<>();
 
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "idDepartureAirport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
