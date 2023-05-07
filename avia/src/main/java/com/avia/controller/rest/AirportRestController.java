@@ -80,6 +80,19 @@ import java.util.Optional;
             }
         }
 
+        @PutMapping("/{id}/delete")
+        public ResponseEntity<Void> softDeleteAirport(@PathVariable("id") Long id) {
+            Optional<Airport> airportOptional = airportRepository.findById(id);
+            if (airportOptional.isPresent()) {
+                Airport airport = airportOptional.get();
+                airport.setIsDeleted(true);
+                airportRepository.save(airport);
+                return ResponseEntity.noContent().build();
+            } else {
+                throw new EntityNotFoundException("Airport with id " + id + " not found!");
+            }
+        }
+
         @GetMapping("/popular")
         public List<Airport> getPopularAirports() {
             List<Object[]> result = airportRepository.findPopularAirports();

@@ -49,6 +49,9 @@ public class Role {
     @Column
     private Timestamp changed;
 
+    @Column
+    private Boolean isDeleted;
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY)

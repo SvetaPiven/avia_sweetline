@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.dto.requests.DocumentTypeDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.entity.DocumentPass;
 import com.avia.model.entity.DocumentType;
 import com.avia.repository.DocumentTypeRepository;
 import com.avia.service.DocumentTypeService;
@@ -67,6 +68,20 @@ public class DocumentTypeRestController {
             return ResponseEntity.noContent().build();
         } else {
             throw new EntityNotFoundException("Document type with id " + id + " not found!");
+        }
+    }
+
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeleteDocumentType(@PathVariable("id") Integer id) {
+        Optional<DocumentType> documentTypeOptional = documentTypeRepository.findById(id);
+
+        if (documentTypeOptional.isPresent()) {
+            DocumentType documentType = documentTypeOptional.get();
+            documentType.setIsDeleted(true);
+            documentTypeRepository.save(documentType);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("DocumentType with id " + id + " not found!");
         }
     }
 }

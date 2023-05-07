@@ -28,7 +28,6 @@ public class TicketServiceImpl implements TicketService {
     private final FlightRepository flightRepository;
     private final TicketClassRepository ticketClassRepository;
     private final AirlineRepository airlineRepository;
-    private final TicketStatusRepository ticketStatusRepository;
 
     @Override
     @Transactional

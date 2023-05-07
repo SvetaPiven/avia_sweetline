@@ -67,11 +67,24 @@ public class AirlineRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTicket(@PathVariable("id") Integer id) {
-
         Optional<Airline> airlineOptional = airlineRepository.findById(id);
 
         if (airlineOptional.isPresent()) {
             airlineRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Airline with id " + id + " not found!");
+        }
+    }
+
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeleteAirline(@PathVariable("id") Integer id) {
+        Optional<Airline> airlineOptional = airlineRepository.findById(id);
+
+        if (airlineOptional.isPresent()) {
+            Airline airline = airlineOptional.get();
+            airline.setIsDeleted(true);
+            airlineRepository.save(airline);
             return ResponseEntity.noContent().build();
         } else {
             throw new EntityNotFoundException("Airline with id " + id + " not found!");

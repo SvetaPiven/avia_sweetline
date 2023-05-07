@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.dto.requests.PlaneTypeDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.entity.Passenger;
 import com.avia.model.entity.PlaneType;
 import com.avia.repository.PlaneTypeRepository;
 import com.avia.service.PlaneTypeService;
@@ -64,6 +65,21 @@ public class PlaneTypeRestController {
 
         if (planeTypeOptional.isPresent()) {
             planeTypeRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Plane type with id " + id + " not found!");
+        }
+    }
+
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeletePlaneType(@PathVariable("id") Integer id) {
+
+        Optional<PlaneType> planeTypeOptional = planeTypeRepository.findById(id);
+
+        if (planeTypeOptional.isPresent()) {
+            PlaneType planeType = planeTypeOptional.get();
+            planeType.setIsDeleted(true);
+            planeTypeRepository.save(planeType);
             return ResponseEntity.noContent().build();
         } else {
             throw new EntityNotFoundException("Plane type with id " + id + " not found!");

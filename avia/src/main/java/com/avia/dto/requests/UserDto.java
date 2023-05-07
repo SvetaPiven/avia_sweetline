@@ -1,6 +1,5 @@
 package com.avia.dto.requests;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -18,4 +17,5 @@ public class UserDto implements Serializable {
     private String userPassword;
 
     private Long idPass;
+
 }

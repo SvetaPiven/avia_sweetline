@@ -3,6 +3,7 @@ package com.avia.controller.rest;
 import com.avia.dto.requests.TicketDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Ticket;
+import com.avia.model.entity.TicketClass;
 import com.avia.repository.TicketRepository;
 import com.avia.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +71,21 @@ public class TicketRestController {
 
         if (ticketOptional.isPresent()) {
             ticketRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Ticket with id " + id + " not found!");
+        }
+    }
+
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeleteTicket(@PathVariable("id") Long id) {
+
+        Optional<Ticket> ticketOptional = ticketRepository.findById(id);
+
+        if (ticketOptional.isPresent()) {
+            Ticket ticket = ticketOptional.get();
+            ticket.setIsDeleted(true);
+            ticketRepository.save(ticket);
             return ResponseEntity.noContent().build();
         } else {
             throw new EntityNotFoundException("Ticket with id " + id + " not found!");

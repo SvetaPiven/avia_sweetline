@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.dto.requests.TicketClassDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.entity.PlaneType;
 import com.avia.model.entity.TicketClass;
 import com.avia.repository.TicketClassRepository;
 import com.avia.service.TicketClassService;
@@ -71,6 +72,21 @@ public class TicketClassRestController {
 
         if (ticketClassOptional.isPresent()) {
             ticketClassRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Ticket class with id " + id + " not found!");
+        }
+    }
+
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeleteTicketClass(@PathVariable("id") Integer id) {
+
+        Optional<TicketClass> ticketClassOptional = ticketClassRepository.findById(id);
+
+        if (ticketClassOptional.isPresent()) {
+            TicketClass ticketClass = ticketClassOptional.get();
+            ticketClass.setIsDeleted(true);
+            ticketClassRepository.save(ticketClass);
             return ResponseEntity.noContent().build();
         } else {
             throw new EntityNotFoundException("Ticket class with id " + id + " not found!");

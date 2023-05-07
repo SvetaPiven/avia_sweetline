@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.dto.requests.PassengerDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.entity.FlightStatus;
 import com.avia.model.entity.Passenger;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
@@ -80,6 +81,21 @@ PassengerRestController {
         }
     }
 
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeletePassenger(@PathVariable("id") Long id) {
+
+        Optional<Passenger> passengerOptional = passengerRepository.findById(id);
+
+        if (passengerOptional.isPresent()) {
+            Passenger passenger = passengerOptional.get();
+            passenger.setIsDeleted(true);
+            passengerRepository.save(passenger);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Passenger with id " + id + " not found!");
+        }
+    }
+
     @GetMapping("/search")
     public ResponseEntity<Passenger> getPassengerByFullName(@RequestParam(value = "fullName") String fullName) {
 
@@ -95,39 +111,6 @@ PassengerRestController {
 
         return passenger.map(ResponseEntity::ok).orElseThrow(() -> new EntityNotFoundException("Passenger with personalId " + personalId + " not found"));
     }
-
-//    @PostMapping
-//    public ResponseEntity<Passenger> createPassenger(@RequestBody PassengerDto passengerDto) {
-//
-//        Passenger build = Passenger.builder()
-//                .fullName(passengerDto.getFullName())
-//                .personalId(passengerDto.getPersonalId())
-//                .created(Timestamp.valueOf(LocalDateTime.now()))
-//                //.isDeleted(false)
-//                .build();
-//
-//        Passenger createdPassenger = passengerRepository.save(build);
-//
-//        return new ResponseEntity<>(createdPassenger, HttpStatus.CREATED);
-//    }
-    //    @PutMapping("/{id}")
-//    public ResponseEntity<Passenger> updatePassenger(@PathVariable("id") Long id, @RequestBody PassengerDto updatedPassenger) {
-//        Optional<Passenger> optionalPassenger = passengerRepository.findById(id);
-//
-//        if (optionalPassenger.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        Passenger passenger = optionalPassenger.get();
-//
-//        passenger.setFullName(updatedPassenger.getFullName());
-//        passenger.setPersonalId(updatedPassenger.getPersonalId());
-//        passenger.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-//
-//        Passenger updated = passengerRepository.save(passenger);
-//
-//        return new ResponseEntity<>(updated, HttpStatus.OK);
-//    }
 }
 
 

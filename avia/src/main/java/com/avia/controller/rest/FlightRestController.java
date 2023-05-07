@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.dto.requests.FlightDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.entity.Airline;
 import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
 import com.avia.repository.FlightRepository;
@@ -55,6 +56,21 @@ public class FlightRestController {
         Optional<Flight> flightOptional = flightRepository.findById(id);
         if (flightOptional.isPresent()) {
             flightRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Flight with id " + id + " not found!");
+        }
+    }
+
+
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeleteFlight(@PathVariable("id") Long id) {
+        Optional<Flight> flightOptional = flightRepository.findById(id);
+
+        if (flightOptional.isPresent()) {
+            Flight flight = flightOptional.get();
+            flight.setIsDeleted(true);
+            flightRepository.save(flight);
             return ResponseEntity.noContent().build();
         } else {
             throw new EntityNotFoundException("Flight with id " + id + " not found!");

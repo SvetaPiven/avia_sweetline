@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.dto.requests.DocumentPassDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.entity.Airline;
 import com.avia.model.entity.DocumentPass;
 import com.avia.repository.DocumentPassRepository;
 import com.avia.service.DocumentPassService;
@@ -72,6 +73,21 @@ public class DocumentPassRestController {
             return ResponseEntity.noContent().build();
         } else {
             throw new EntityNotFoundException("Ticket status with id " + id + " not found");
+        }
+    }
+
+
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeleteDocumentPass(@PathVariable("id") Long id) {
+        Optional<DocumentPass> documentPassOptional = documentPassRepository.findById(id);
+
+        if (documentPassOptional.isPresent()) {
+            DocumentPass documentPass = documentPassOptional.get();
+            documentPass.setIsDeleted(true);
+            documentPassRepository.save(documentPass);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("DocumentPass with id " + id + " not found!");
         }
     }
 
