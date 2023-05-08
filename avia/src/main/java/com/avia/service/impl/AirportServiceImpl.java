@@ -6,32 +6,35 @@ import com.avia.mapper.AirportMapper;
 import com.avia.model.entity.Airport;
 import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AirportServiceImpl implements AirportService{
+public class AirportServiceImpl implements AirportService {
 
-        private final AirportMapper airportMapper;
-        private final AirportRepository airportRepository;
+    private final AirportMapper airportMapper;
+    private final AirportRepository airportRepository;
 
-        @Override
-        public Airport createAirport(AirportDto airportDto) {
+    @Override
+    @Transactional
+    public Airport createAirport(AirportDto airportDto) {
 
-            Airport airport = airportMapper.toEntity(airportDto);
+        Airport airport = airportMapper.toEntity(airportDto);
 
-            return airportRepository.save(airport);
-        }
+        return airportRepository.save(airport);
+    }
 
-        @Override
-        public Airport updateAirport(Long id, AirportDto airportDto) {
+    @Override
+    @Transactional
+    public Airport updateAirport(Long id, AirportDto airportDto) {
 
-            Airport airport = airportRepository.findById(id).orElseThrow(() ->
-                    new EntityNotFoundException("Airport with id " + id + " not found"));
+        Airport airport = airportRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Airport with id " + id + " not found"));
 
-            airportMapper.partialUpdate(airportDto, airport);
+        airportMapper.partialUpdate(airportDto, airport);
 
-            return airportRepository.save(airport);
-        }
+        return airportRepository.save(airport);
+    }
 }

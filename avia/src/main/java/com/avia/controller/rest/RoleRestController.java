@@ -3,11 +3,16 @@ package com.avia.controller.rest;
 import com.avia.dto.requests.RoleDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.FlightStatus;
+import com.avia.model.entity.PlaneType;
 import com.avia.model.entity.Role;
 import com.avia.repository.RoleRepository;
 import com.avia.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +34,20 @@ public class RoleRestController {
     @GetMapping()
     public ResponseEntity<List<Role>> getAllRoles() {
         return new ResponseEntity<>(roleRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllRolesWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 2, Sort.by("idRoles").ascending());
+
+        Page<Role> roles = roleRepository.findAll(pageable);
+
+        if (roles.hasContent()) {
+            return new ResponseEntity<>(roles, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

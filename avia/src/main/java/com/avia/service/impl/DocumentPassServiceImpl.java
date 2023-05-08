@@ -12,6 +12,7 @@ import com.avia.repository.DocumentPassRepository;
 import com.avia.repository.DocumentTypeRepository;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.DocumentPassService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class DocumentPassServiceImpl implements DocumentPassService {
     private final PassengerRepository passengerRepository;
 
     @Override
+    @Transactional
     public DocumentPass createDocumentPass(DocumentPassDto documentPassDto) {
 
         DocumentType documentType = documentTypeRepository.findById(documentPassDto.getIdDocumentType()).orElseThrow(() ->
@@ -43,6 +45,7 @@ public class DocumentPassServiceImpl implements DocumentPassService {
     }
 
     @Override
+    @Transactional
     public DocumentPass updateDocumentPass(Long id, DocumentPassDto documentPassDto) {
 
         DocumentPass documentPass = documentPassRepository.findById(id).orElseThrow(() ->

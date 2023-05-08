@@ -8,6 +8,11 @@ import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Parameter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +45,21 @@ PassengerRestController {
     public ResponseEntity<List<Passenger>> getAllPassengers() {
 
         return new ResponseEntity<>(passengerRepository.findAll(), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllPassengersWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("idPass").ascending());
+
+        Page<Passenger> passengers = passengerRepository.findAll(pageable);
+
+        if (passengers.hasContent()) {
+            return new ResponseEntity<>(passengers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

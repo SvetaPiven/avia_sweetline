@@ -9,7 +9,9 @@ import com.avia.model.entity.Ticket;
 import com.avia.repository.AirlineRepository;
 import com.avia.repository.AirportRepository;
 import com.avia.service.AirlineService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,12 +22,14 @@ public class AirlineServiceImpl implements AirlineService {
     private final AirlineRepository airlineRepository;
 
     @Override
+    @Transactional
     public Airline createAirline(AirlineDto airlineDto) {
         Airline airline = airlineMapper.toEntity(airlineDto);
         return airlineRepository.save(airline);
     }
 
     @Override
+    @Transactional
     public Airline updateAirline(Integer id, AirlineDto airlineDto) {
         Airline airline = airlineRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Airline with id " + id + " not found"));

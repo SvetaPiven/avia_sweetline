@@ -7,6 +7,7 @@ import com.avia.model.entity.DocumentType;
 import com.avia.model.entity.FlightStatus;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.service.FlightStatusService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
     private final FlightStatusRepository flightStatusRepository;
 
     @Override
+    @Transactional
     public FlightStatus createFlightStatus(FlightStatusDto flightStatusDto) {
 
         FlightStatus flightStatus = flightStatusMapper.toEntity(flightStatusDto);
@@ -26,6 +28,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
     }
 
     @Override
+    @Transactional
     public FlightStatus updateFlightStatus(Integer id, FlightStatusDto flightStatusDto) {
 
         FlightStatus flightStatus = flightStatusRepository.findById(id).orElseThrow(() ->

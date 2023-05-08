@@ -8,6 +8,10 @@ import com.avia.repository.FlightStatusRepository;
 import com.avia.service.FlightStatusService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +40,20 @@ public class FlightStatusRestController {
     public ResponseEntity<List<FlightStatus>> getAllFlightStatuses() {
 
         return new ResponseEntity<>(flightStatusRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllFlightsStatusWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("idFlightStatus").ascending());
+
+        Page<FlightStatus> flightStatuses = flightStatusRepository.findAll(pageable);
+
+        if (flightStatuses.hasContent()) {
+            return new ResponseEntity<>(flightStatuses, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

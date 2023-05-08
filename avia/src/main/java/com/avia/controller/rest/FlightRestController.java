@@ -4,11 +4,16 @@ import com.avia.dto.requests.FlightDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Airline;
 import com.avia.model.entity.Airport;
+import com.avia.model.entity.DocumentType;
 import com.avia.model.entity.Flight;
 import com.avia.repository.FlightRepository;
 import com.avia.service.FlightService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +35,20 @@ public class FlightRestController {
     @GetMapping
     public ResponseEntity<List<Flight>> getAllFlights() {
         return new ResponseEntity<>(flightRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllFlightsWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("idFlight").ascending());
+
+        Page<Flight> flights = flightRepository.findAll(pageable);
+
+        if (flights.hasContent()) {
+            return new ResponseEntity<>(flights, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

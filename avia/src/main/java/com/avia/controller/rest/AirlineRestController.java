@@ -3,10 +3,16 @@ package com.avia.controller.rest;
 import com.avia.dto.requests.AirlineDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Airline;
+import com.avia.model.entity.Passenger;
 import com.avia.repository.AirlineRepository;
 import com.avia.service.AirlineService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Parameter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +44,20 @@ public class AirlineRestController {
     public ResponseEntity<List<Airline>> getAllAirlines() {
 
         return new ResponseEntity<>(airlineRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllAirlinesWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 4, Sort.by("idAirline").ascending());
+
+        Page<Airline> airlines = airlineRepository.findAll(pageable);
+
+        if (airlines.hasContent()) {
+            return new ResponseEntity<>(airlines, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

@@ -13,6 +13,7 @@ import com.avia.repository.FlightRepository;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.repository.PlaneTypeRepository;
 import com.avia.service.FlightService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class FlightServiceImpl implements FlightService {
     private final FlightStatusRepository flightStatusRepository;
 
     @Override
+    @Transactional
     public Flight createFlight(FlightDto flightDto) {
         PlaneType planeType = planeTypeRepository.findById(flightDto.getIdPlaneType()).orElseThrow(() ->
                 new EntityNotFoundException("Plane type with id " + flightDto.getIdPlaneType() + " not found"));
@@ -53,6 +55,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
+    @Transactional
     public Flight updateFlight(Long id, FlightDto flightDto) {
 
         Flight flight = flightRepository.findById(id).orElseThrow(() ->

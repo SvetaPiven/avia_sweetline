@@ -5,7 +5,6 @@ import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.UserMapper;
 import com.avia.model.entity.Role;
 import com.avia.model.entity.User;
-import com.avia.repository.RoleRepository;
 import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
 import jakarta.transaction.Transactional;

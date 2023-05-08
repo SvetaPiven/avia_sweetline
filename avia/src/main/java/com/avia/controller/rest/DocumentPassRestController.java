@@ -3,10 +3,15 @@ package com.avia.controller.rest;
 import com.avia.dto.requests.DocumentPassDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Airline;
+import com.avia.model.entity.Airport;
 import com.avia.model.entity.DocumentPass;
 import com.avia.repository.DocumentPassRepository;
 import com.avia.service.DocumentPassService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,6 +42,20 @@ public class DocumentPassRestController {
         List<DocumentPass> documentPass = documentPassRepository.findAll();
 
         return new ResponseEntity<>(documentPass, HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllDocumentPassWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("idDocumentPass").ascending());
+
+        Page<DocumentPass> documentPasses = documentPassRepository.findAll(pageable);
+
+        if (documentPasses.hasContent()) {
+            return new ResponseEntity<>(documentPasses, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

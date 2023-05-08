@@ -1,5 +1,6 @@
 package com.avia.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -60,12 +61,14 @@ public class Passenger {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "idPass", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
 
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "idPass", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

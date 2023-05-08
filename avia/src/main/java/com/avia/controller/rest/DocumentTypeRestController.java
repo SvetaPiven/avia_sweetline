@@ -8,6 +8,10 @@ import com.avia.repository.DocumentTypeRepository;
 import com.avia.service.DocumentTypeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +34,20 @@ public class DocumentTypeRestController {
     public ResponseEntity<List<DocumentType>> getAllDocumentTypes() {
 
         return new ResponseEntity<>(documentTypeRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllDocumentTypesWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 3, Sort.by("idDocumentType").ascending());
+
+        Page<DocumentType> documentTypes = documentTypeRepository.findAll(pageable);
+
+        if (documentTypes.hasContent()) {
+            return new ResponseEntity<>(documentTypes, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

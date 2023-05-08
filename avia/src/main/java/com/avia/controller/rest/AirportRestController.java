@@ -9,6 +9,10 @@ import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +43,20 @@ import java.util.Optional;
         public ResponseEntity<List<Airport>> getAllAirlines() {
 
             return new ResponseEntity<>(airportRepository.findAll(), HttpStatus.OK);
+        }
+
+        @GetMapping("/page/{page}")
+        public ResponseEntity<Object> getAllAirportsWithPageAndSort(@PathVariable int page) {
+
+            Pageable pageable = PageRequest.of(page, 5, Sort.by("idAirport").ascending());
+
+            Page<Airport> airports = airportRepository.findAll(pageable);
+
+            if (airports.hasContent()) {
+                return new ResponseEntity<>(airports, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         }
 
         @PostMapping

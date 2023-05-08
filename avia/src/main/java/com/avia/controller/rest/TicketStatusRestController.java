@@ -2,12 +2,17 @@ package com.avia.controller.rest;
 
 import com.avia.dto.requests.TicketStatusDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.entity.Role;
 import com.avia.model.entity.Ticket;
 import com.avia.model.entity.TicketStatus;
 import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketStatusService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +44,20 @@ public class TicketStatusRestController {
         List<TicketStatus> ticketStatuses = ticketStatusRepository.findAll();
 
         return ResponseEntity.ok(ticketStatuses);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllTicketStatusesWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 3, Sort.by("idRoles").ascending());
+
+        Page<TicketStatus> ticketStatuses = ticketStatusRepository.findAll(pageable);
+
+        if (ticketStatuses.hasContent()) {
+            return new ResponseEntity<>(ticketStatuses, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

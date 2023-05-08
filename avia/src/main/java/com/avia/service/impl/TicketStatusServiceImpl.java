@@ -6,6 +6,7 @@ import com.avia.mapper.TicketStatusMapper;
 import com.avia.model.entity.TicketStatus;
 import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketStatusService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class TicketStatusServiceImpl implements TicketStatusService {
     private final TicketStatusRepository ticketStatusRepository;
 
     @Override
+    @Transactional
     public TicketStatus createTicketStatus(TicketStatusDto ticketStatusDto) {
 
         TicketStatus ticketStatus = ticketStatusMapper.toEntity(ticketStatusDto);
@@ -25,6 +27,7 @@ public class TicketStatusServiceImpl implements TicketStatusService {
     }
 
     @Override
+    @Transactional
     public TicketStatus updateTicketStatus(Integer id, TicketStatusDto ticketStatusDto) {
 
         TicketStatus ticketStatus = ticketStatusRepository.findById(id).orElseThrow(() ->

@@ -2,10 +2,15 @@ package com.avia.controller.rest;
 
 import com.avia.dto.requests.UserDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.entity.Role;
 import com.avia.model.entity.User;
 import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +40,20 @@ public class UserRestController {
         List<User> users = userRepository.findAll();
 
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllUsersWithPageAndSort(@PathVariable int page) {
+
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("idUser").ascending());
+
+        Page<User> users = userRepository.findAll(pageable);
+
+        if (users.hasContent()) {
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
