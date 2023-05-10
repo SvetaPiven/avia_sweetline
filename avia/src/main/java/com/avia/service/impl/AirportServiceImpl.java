@@ -1,6 +1,6 @@
 package com.avia.service.impl;
 
-import com.avia.dto.requests.AirportDto;
+import com.avia.model.entity.requests.AirportDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.AirportMapper;
 import com.avia.model.entity.Airport;

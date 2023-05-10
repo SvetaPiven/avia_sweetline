@@ -1,4 +1,4 @@
-package com.avia.dto.requests;
+package com.avia.model.entity.requests;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -6,10 +6,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-@Data
-public class PlaneTypeDto implements Serializable {
 
-    @Size(max = 20)
+@Data
+public class TicketStatusDto implements Serializable {
+
+    @Size(min = 3, max = 20)
     @NotNull
-    private String planeType;
+    private String nameTicketStatus;
 }

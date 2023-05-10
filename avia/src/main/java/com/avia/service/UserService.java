@@ -1,6 +1,6 @@
 package com.avia.service;
 
-import com.avia.dto.requests.UserDto;
+import com.avia.model.entity.requests.UserDto;
 import com.avia.model.entity.User;
 
 public interface UserService {

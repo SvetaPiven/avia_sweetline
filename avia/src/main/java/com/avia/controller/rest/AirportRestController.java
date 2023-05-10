@@ -1,9 +1,7 @@
 package com.avia.controller.rest;
 
-import com.avia.dto.requests.AirlineDto;
-import com.avia.dto.requests.AirportDto;
+import com.avia.model.entity.requests.AirportDto;
 import com.avia.exception.EntityNotFoundException;
-import com.avia.model.entity.Airline;
 import com.avia.model.entity.Airport;
 import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;

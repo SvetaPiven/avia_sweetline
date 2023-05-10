@@ -1,10 +1,8 @@
 package com.avia.controller.rest;
 
-import com.avia.dto.requests.TicketDto;
+import com.avia.model.entity.requests.TicketDto;
 import com.avia.exception.EntityNotFoundException;
-import com.avia.model.entity.Role;
 import com.avia.model.entity.Ticket;
-import com.avia.model.entity.TicketClass;
 import com.avia.repository.TicketRepository;
 import com.avia.service.TicketService;
 import lombok.RequiredArgsConstructor;

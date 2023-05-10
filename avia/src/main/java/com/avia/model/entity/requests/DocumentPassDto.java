@@ -1,4 +1,4 @@
-package com.avia.dto.requests;
+package com.avia.model.entity.requests;
 
 import com.avia.model.entity.DocumentType;
 import com.avia.model.entity.Passenger;
@@ -14,7 +14,7 @@ public class DocumentPassDto implements Serializable {
     @NotNull
     private Integer idDocumentType;
 
-    @Size(max = 30)
+    @Size(min = 8, max = 30)
     @NotNull
     private String documentNum;
 

@@ -1,6 +1,6 @@
 package com.avia.mapper;
 
-import com.avia.dto.requests.AirportDto;
+import com.avia.model.entity.requests.AirportDto;
 import com.avia.model.entity.Airport;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

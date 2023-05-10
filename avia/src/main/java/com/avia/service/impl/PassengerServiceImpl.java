@@ -1,7 +1,7 @@
 package com.avia.service.impl;
 
 
-import com.avia.dto.requests.PassengerDto;
+import com.avia.model.entity.requests.PassengerDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.PassengerMapper;
 import com.avia.model.entity.Passenger;
@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

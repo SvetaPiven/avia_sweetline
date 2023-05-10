@@ -1,9 +1,7 @@
 package com.avia.controller.rest;
 
-import com.avia.dto.requests.TicketStatusDto;
+import com.avia.model.entity.requests.TicketStatusDto;
 import com.avia.exception.EntityNotFoundException;
-import com.avia.model.entity.Role;
-import com.avia.model.entity.Ticket;
 import com.avia.model.entity.TicketStatus;
 import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketStatusService;
@@ -49,7 +47,7 @@ public class TicketStatusRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllTicketStatusesWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 3, Sort.by("idRoles").ascending());
+        Pageable pageable = PageRequest.of(page, 3, Sort.by("idTicketStatus").ascending());
 
         Page<TicketStatus> ticketStatuses = ticketStatusRepository.findAll(pageable);
 

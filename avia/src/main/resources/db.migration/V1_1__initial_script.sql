@@ -9,8 +9,8 @@ create table public.airports
     longitude    real                  not null,
     latitude     real                  not null,
     timezone     text                  not null,
-    created      timestamp(6),
-    changed      timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted   boolean default false not null,
     country      varchar(30)           not null
 );
@@ -31,8 +31,8 @@ create table public.c_plane_types
             primary key
         unique,
     plane_type    varchar(20)                                                       not null,
-    created       timestamp(6),
-    changed       timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted    boolean default false                                             not null
 );
 
@@ -45,8 +45,8 @@ create table public.c_flight_status
         primary key
         unique,
     name_flight_status varchar(30)                                                                not null,
-    created            timestamp(6),
-    changed            timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted         boolean default false                                                      not null
 );
 
@@ -74,8 +74,8 @@ create table public.flights
     id_flight_status     bigint       not null
         constraint flight_status_fk
             references public.c_flight_status,
-    created              timestamp(6),
-    changed              timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted           boolean default false
 );
 
@@ -92,8 +92,8 @@ create table public.c_airlines
         unique,
     name_airline varchar(50)           not null,
     code_airline varchar(3)            not null,
-    created      timestamp(6),
-    changed      timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted   boolean default false not null
 );
 
@@ -107,8 +107,8 @@ create table public.c_ticket_status
             primary key
         unique,
     name_ticket_status varchar(20)           not null,
-    created            timestamp(6),
-    changed            timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted         boolean default false not null
 );
 
@@ -123,8 +123,8 @@ create table public.c_ticket_class
             primary key
         unique,
     name_class      varchar(30)           not null,
-    created         timestamp(6),
-    changed         timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted      boolean default false not null
 );
 
@@ -140,8 +140,8 @@ create table public.passengers
     personal_id varchar(50)           not null
         unique,
     miles       float4,
-    created     timestamp(6),
-    changed     timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted  boolean default false not null
 );
 
@@ -160,8 +160,8 @@ create table public.c_document_type
     doc_type         varchar(30)                                                             not null
         constraint document_type_document_type_key
             unique,
-    created          timestamp(6),
-    changed          timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted       boolean default false not null
 
 );
@@ -185,8 +185,8 @@ create table public.tickets
         constraint id_flight_fk
             references public.flights,
     number_place       varchar(5),
-    created          timestamp(6),
-    changed          timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted       boolean default false not null,
     id_ticket_class  int                not null
         constraint id_ticket_class_fk
@@ -211,8 +211,8 @@ create table public.c_roles
         constraint roles_pkey
             primary key,
     role_name  varchar(100)                                           not null,
-    created    timestamp(6)                                           not null,
-    changed    timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted boolean default false                                  not null
 );
 
@@ -229,8 +229,8 @@ create table public.users
         constraint user_email_key
             unique,
     user_password varchar(30)                                           not null,
-    created       timestamp(6)                                          not null,
-    changed       timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted    boolean default false                                 not null,
     id_pass       bigint
         constraint user_id_pass_key
@@ -252,8 +252,8 @@ create table public.document_pass
     id_pass          bigint                not null
         constraint id_pass_fk
             references public.passengers,
-    created          timestamp(6),
-    changed          timestamp(6),
+    created      timestamp(6)          not null,
+    changed      timestamp(6)          not null,
     is_deleted       boolean default false not null
 );
 
@@ -267,12 +267,10 @@ create table public.l_user_role
 (
     id_user bigint                                                  not null
         constraint user_role_id_user_key
-            unique
         constraint user_user
             references public.users,
     id_role bigint                                                  not null
         constraint user_role_id_role_key
-            unique
         constraint user_role
             references public.c_roles,
         id    bigserial not null

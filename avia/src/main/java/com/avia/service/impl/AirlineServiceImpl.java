@@ -1,17 +1,13 @@
 package com.avia.service.impl;
 
-import com.avia.dto.requests.AirlineDto;
+import com.avia.model.entity.requests.AirlineDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.AirlineMapper;
 import com.avia.model.entity.Airline;
-import com.avia.model.entity.Passenger;
-import com.avia.model.entity.Ticket;
 import com.avia.repository.AirlineRepository;
-import com.avia.repository.AirportRepository;
 import com.avia.service.AirlineService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service

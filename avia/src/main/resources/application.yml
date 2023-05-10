@@ -22,3 +22,7 @@ spring:
     hibernate:
         ddl-auto: validate
     show-sql: true
+  google:
+    maps:
+      api:
+        key: "AIzaSyAneQ13MFU3SQj6nOmuYBidjziLwDqOvRI"

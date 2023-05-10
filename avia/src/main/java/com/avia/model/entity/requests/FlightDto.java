@@ -1,4 +1,4 @@
-package com.avia.dto.requests;
+package com.avia.model.entity.requests;
 
 import com.avia.model.entity.Airport;
 import com.avia.model.entity.FlightStatus;
@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 public class FlightDto implements Serializable {
 
-    @Size(max = 10)
+    @Size(min = 6, max = 10)
     @NotNull
     private String flightNumber;
 

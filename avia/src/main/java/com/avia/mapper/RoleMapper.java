@@ -1,6 +1,6 @@
 package com.avia.mapper;
 
-import com.avia.dto.requests.RoleDto;
+import com.avia.model.entity.requests.RoleDto;
 import com.avia.model.entity.Role;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

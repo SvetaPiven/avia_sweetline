@@ -1,14 +1,12 @@
 package com.avia.controller.rest;
 
-import com.avia.dto.requests.PassengerDto;
+import com.avia.model.entity.requests.PassengerDto;
 import com.avia.exception.EntityNotFoundException;
-import com.avia.model.entity.FlightStatus;
 import com.avia.model.entity.Passenger;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

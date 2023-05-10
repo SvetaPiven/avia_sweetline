@@ -1,6 +1,6 @@
 package com.avia.service.impl;
 
-import com.avia.dto.requests.TicketDto;
+import com.avia.model.entity.requests.TicketDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.TicketMapper;
 import com.avia.model.entity.Airline;
@@ -13,7 +13,6 @@ import com.avia.repository.FlightRepository;
 import com.avia.repository.PassengerRepository;
 import com.avia.repository.TicketClassRepository;
 import com.avia.repository.TicketRepository;
-import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

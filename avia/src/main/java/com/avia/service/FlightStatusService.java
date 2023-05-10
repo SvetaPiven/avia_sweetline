@@ -1,6 +1,6 @@
 package com.avia.service;
 
-import com.avia.dto.requests.FlightStatusDto;
+import com.avia.model.entity.requests.FlightStatusDto;
 import com.avia.model.entity.FlightStatus;
 
 public interface FlightStatusService {

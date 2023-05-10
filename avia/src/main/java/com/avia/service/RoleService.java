@@ -1,6 +1,6 @@
 package com.avia.service;
 
-import com.avia.dto.requests.RoleDto;
+import com.avia.model.entity.requests.RoleDto;
 import com.avia.model.entity.Role;
 
 public interface RoleService {

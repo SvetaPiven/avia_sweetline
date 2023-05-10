@@ -11,6 +11,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -47,16 +49,6 @@ public class User {
     })
     private AuthenticationInfo authenticationInfo;
 
-//    @Size(max = 30)
-//    @NotNull
-//    @Column(nullable = false, length = 30)
-//    private String email;
-//
-//    @Size(max = 30)
-//    @NotNull
-//    @Column(name = "user_password", nullable = false, length = 30)
-//    private String userPassword;
-
     @Column(name = "id_pass")
     private Long idPass;
 
@@ -72,12 +64,11 @@ public class User {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "l_user_role",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_role")
+    )
     @JsonIgnoreProperties({"users", "idRole", "created", "changed", "isDeleted"})
     private Set<Role> roles = Collections.emptySet();
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_pass")
-//    @JsonBackReference
-//    private Passenger passengers;
 }

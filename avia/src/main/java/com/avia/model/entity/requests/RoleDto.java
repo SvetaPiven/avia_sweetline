@@ -1,4 +1,4 @@
-package com.avia.dto.requests;
+package com.avia.model.entity.requests;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 public class RoleDto implements Serializable {
 
-    @Size(max = 100)
+    @Size(min = 2, max = 100)
     @NotNull
     private String roleName;
 }

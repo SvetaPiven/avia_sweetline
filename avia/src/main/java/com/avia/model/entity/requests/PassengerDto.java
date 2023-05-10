@@ -1,4 +1,4 @@
-package com.avia.dto.requests;
+package com.avia.model.entity.requests;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,11 +11,11 @@ public class PassengerDto implements Serializable {
 
     private Long idPass;
 
-    @Size(max = 50)
+    @Size(min = 4, max = 50)
     @NotNull
     private String fullName;
 
-    @Size(max = 50)
+    @Size(min = 14, max = 50)
     @NotNull
     private String personalId;
 

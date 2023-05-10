@@ -1,9 +1,7 @@
 package com.avia.controller.rest;
 
-import com.avia.dto.requests.DocumentPassDto;
+import com.avia.model.entity.requests.DocumentPassDto;
 import com.avia.exception.EntityNotFoundException;
-import com.avia.model.entity.Airline;
-import com.avia.model.entity.Airport;
 import com.avia.model.entity.DocumentPass;
 import com.avia.repository.DocumentPassRepository;
 import com.avia.service.DocumentPassService;

@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
-import com.avia.dto.requests.DocumentTypeDto;
-import com.avia.dto.requests.TicketClassDto;
+import com.avia.model.entity.requests.DocumentTypeDto;
+import com.avia.model.entity.requests.TicketClassDto;
 import com.avia.model.entity.DocumentType;
 import com.avia.model.entity.TicketClass;
 import org.mapstruct.BeanMapping;
