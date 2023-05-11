@@ -184,7 +184,7 @@ create table public.tickets
     id_flight        bigint                not null
         constraint id_flight_fk
             references public.flights,
-    number_place       varchar(5),
+    number_place       varchar(15),
     created      timestamp(6)          not null,
     changed      timestamp(6)          not null,
     is_deleted       boolean default false not null,

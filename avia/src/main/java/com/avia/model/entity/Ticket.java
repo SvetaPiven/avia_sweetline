@@ -1,9 +1,6 @@
 package com.avia.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -78,8 +75,8 @@ public class Ticket {
     @JsonBackReference
     private Airline idAirline;
 
-    @Size(max = 5)
-    @Column(name = "number_place", length = 5)
+    @Size(max = 15)
+    @Column(name = "number_place", length = 15)
     private String numberPlace;
 
     @Column

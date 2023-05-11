@@ -1,6 +1,6 @@
 package com.avia.service;
 
-import com.avia.model.entity.requests.TicketDto;
+import com.avia.model.dto.TicketDto;
 import com.avia.model.entity.Ticket;
 
 public interface TicketService {

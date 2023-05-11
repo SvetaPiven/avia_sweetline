@@ -1,6 +1,6 @@
 package com.avia.controller.rest;
 
-import com.avia.model.entity.requests.PassengerDto;
+import com.avia.model.dto.PassengerDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Passenger;
 import com.avia.repository.PassengerRepository;

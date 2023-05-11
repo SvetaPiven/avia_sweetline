@@ -1,4 +1,4 @@
-package com.avia.model.entity.requests;
+package com.avia.model.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -24,7 +24,7 @@ public class TicketDto implements Serializable {
     @NotNull
     private Integer idAirline;
 
-    @Size(min = 3, max = 5)
+    @Size(min = 3, max = 15)
     private String numberPlace;
 
     private BigDecimal price;

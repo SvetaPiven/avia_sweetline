@@ -1,6 +1,6 @@
 package com.avia.mapper;
 
-import com.avia.model.entity.requests.UserDto;
+import com.avia.model.dto.UserDto;
 import com.avia.model.entity.User;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

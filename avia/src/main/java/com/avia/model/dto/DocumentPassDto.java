@@ -1,7 +1,5 @@
-package com.avia.model.entity.requests;
+package com.avia.model.dto;
 
-import com.avia.model.entity.DocumentType;
-import com.avia.model.entity.Passenger;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

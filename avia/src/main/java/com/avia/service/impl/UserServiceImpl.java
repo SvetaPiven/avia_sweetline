@@ -1,6 +1,6 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.requests.UserDto;
+import com.avia.model.dto.UserDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.UserMapper;
 import com.avia.model.entity.Role;

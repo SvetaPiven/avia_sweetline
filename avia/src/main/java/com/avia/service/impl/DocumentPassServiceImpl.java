@@ -1,6 +1,6 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.requests.DocumentPassDto;
+import com.avia.model.dto.DocumentPassDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.DocumentPassMapper;
 import com.avia.model.entity.DocumentPass;

@@ -1,6 +1,6 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.requests.DocumentTypeDto;
+import com.avia.model.dto.DocumentTypeDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.DocumentTypeMapper;
 import com.avia.model.entity.DocumentType;

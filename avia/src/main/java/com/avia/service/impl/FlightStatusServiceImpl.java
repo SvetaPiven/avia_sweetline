@@ -1,6 +1,6 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.requests.FlightStatusDto;
+import com.avia.model.dto.FlightStatusDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.FlightStatusMapper;
 import com.avia.model.entity.FlightStatus;

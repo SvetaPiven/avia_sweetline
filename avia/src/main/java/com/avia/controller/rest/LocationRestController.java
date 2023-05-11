@@ -67,7 +67,7 @@ public class LocationRestController {
         return ResponseEntity.ok("Miles calculated for all passengers.");
     }
 
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double earthRadius = 6371;
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);

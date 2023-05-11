@@ -1,4 +1,4 @@
-package com.avia.model.entity.requests;
+package com.avia.model.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

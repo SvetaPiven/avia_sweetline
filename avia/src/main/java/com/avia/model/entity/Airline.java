@@ -1,6 +1,5 @@
 package com.avia.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
@@ -24,7 +23,6 @@ import lombok.ToString;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

@@ -1,6 +1,6 @@
 package com.avia.mapper;
 
-import com.avia.model.entity.requests.TicketDto;
+import com.avia.model.dto.TicketDto;
 import com.avia.model.entity.Ticket;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -20,10 +20,9 @@ public interface TicketMapper {
             @Mapping(target = "idTicketClass.idTicketClass", source = "idTicketClass"),
             @Mapping(target = "idFlight.idFlight", source = "idFlight"),
             @Mapping(target = "idAirline.idAirline", source = "idAirline"),
-            @Mapping(target = "numberPlace", ignore = true),
-            @Mapping(target = "price", constant = "0.0"),
+            @Mapping(target = "numberPlace", constant = "On registration"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "changed", ignore = true),
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "isDeleted", constant = "false")
     })
     Ticket toEntity(TicketDto ticketDto);

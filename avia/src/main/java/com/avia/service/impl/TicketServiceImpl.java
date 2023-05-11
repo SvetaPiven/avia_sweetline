@@ -1,22 +1,38 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.requests.TicketDto;
+import com.avia.aspect.MethodExecutionCountAspect;
+import com.avia.controller.rest.LocationRestController;
+import com.avia.model.dto.TicketClassDto;
+import com.avia.model.dto.TicketDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.TicketMapper;
 import com.avia.model.entity.Airline;
+import com.avia.model.entity.AuthenticationInfo;
 import com.avia.model.entity.Flight;
 import com.avia.model.entity.Passenger;
 import com.avia.model.entity.Ticket;
 import com.avia.model.entity.TicketClass;
 import com.avia.repository.AirlineRepository;
+import com.avia.repository.AirportRepository;
 import com.avia.repository.FlightRepository;
 import com.avia.repository.PassengerRepository;
 import com.avia.repository.TicketClassRepository;
 import com.avia.repository.TicketRepository;
+import com.avia.repository.UserRepository;
+import com.avia.service.AirportService;
+import com.avia.service.EmailService;
+import com.avia.service.TicketClassService;
 import com.avia.service.TicketService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +43,11 @@ public class TicketServiceImpl implements TicketService {
     private final FlightRepository flightRepository;
     private final TicketClassRepository ticketClassRepository;
     private final AirlineRepository airlineRepository;
+    private final AirportService airportService;
+    private final EmailService emailService;
+    private final UserRepository userRepository;
+    private final LocationRestController locationRestController;
+    private static final Logger log = Logger.getLogger(TicketServiceImpl.class);
 
     @Override
     @Transactional
@@ -51,6 +72,37 @@ public class TicketServiceImpl implements TicketService {
                 new EntityNotFoundException("Airline with id " + ticketDto.getIdAirline() + " not found"));
         ticket.getIdAirline().setIdAirline(airline.getIdAirline());
         ticket.setIdAirline(airline);
+
+        ticket.setPrice(BigDecimal.valueOf(locationRestController.calculateDistance(flight.getIdDepartureAirport().getLatitude(),
+                flight.getIdDepartureAirport().getLongitude(), flight.getIdArrivalAirport().getLatitude(),
+                flight.getIdArrivalAirport().getLongitude()) * 0.3).setScale(2, RoundingMode.HALF_UP));
+
+        try {
+            emailService.sendSimpleEmail(userRepository.findByIdPass(ticketDto.getIdPass()).getAuthenticationInfo().getEmail(),
+                    "Congrats from SweetLine Avia! Your created the ticket!",
+                    "Dear customer, here an info from your ticket:\n" +
+                            "Ticket class: " + ticketClass.getNameClass() + "\n" +
+                            "Departure: " + airportService.getAddressFromLatLng(flight.getIdDepartureAirport().getLatitude(),
+                            flight.getIdDepartureAirport().getLongitude()) + "\n" +
+                            "Arrival: " + airportService.getAddressFromLatLng(flight.getIdArrivalAirport().getLatitude(),
+                            flight.getIdArrivalAirport().getLongitude()) + "\n" +
+                            "Flight: " + flight.getFlightNumber() + "\n" +
+                            "Airline company: " + airline.getNameAirline() + "\n" +
+                            "Departure time: " + flight.getDepartureTime() + "\n" +
+                            "Price is: " + ticket.getPrice() + "$\n" +
+                            "You are welcome!\n" +
+                            "              _\n" +
+                            "           -=\\`\\\n" +
+                            "      |\\ ____\\_\\__\n" +
+                            "   -=\\c`\"\"\"\"\"\"\" \"`)\n" +
+                            "      `~~~~~/ /~~`\n" +
+                            "           -==/ /\n" +
+                            "               '-'" );
+        } catch (MailException mailException) {
+            log.error("Error while sending out email..{}");
+        } catch (Exception e) {
+            throw new RuntimeException("No results found");
+        }
 
         return ticketRepository.save(ticket);
     }

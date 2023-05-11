@@ -1,6 +1,6 @@
 package com.avia.controller.rest;
 
-import com.avia.model.entity.requests.RoleDto;
+import com.avia.model.dto.RoleDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Role;
 import com.avia.repository.RoleRepository;

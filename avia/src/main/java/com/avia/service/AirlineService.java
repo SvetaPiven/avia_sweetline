@@ -1,6 +1,6 @@
 package com.avia.service;
 
-import com.avia.model.entity.requests.AirlineDto;
+import com.avia.model.dto.AirlineDto;
 import com.avia.model.entity.Airline;
 
 public interface AirlineService {

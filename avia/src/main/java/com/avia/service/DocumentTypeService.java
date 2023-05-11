@@ -1,6 +1,6 @@
 package com.avia.service;
 
-import com.avia.model.entity.requests.DocumentTypeDto;
+import com.avia.model.dto.DocumentTypeDto;
 import com.avia.model.entity.DocumentType;
 
 public interface DocumentTypeService {
