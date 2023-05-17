@@ -1,7 +1,7 @@
 package com.avia.controller.rest;
 
-import com.avia.model.dto.AirlineDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.dto.AirlineDto;
 import com.avia.model.entity.Airline;
 import com.avia.repository.AirlineRepository;
 import com.avia.service.AirlineService;
@@ -34,8 +34,6 @@ public class AirlineRestController {
     private final AirlineRepository airlineRepository;
 
     private final AirlineService airlineService;
-
-    private static final Logger log = Logger.getLogger(AirlineRestController.class);
 
     @GetMapping()
     public ResponseEntity<List<Airline>> getAllAirlines() {

@@ -22,8 +22,6 @@ public interface PassengerMapper {
     })
     Passenger toEntity(PassengerDto passengerDto);
 
-    PassengerDto toDto(Passenger passenger);
-
     @Mappings({
             @Mapping(target = "idPass", ignore = true),
             @Mapping(target = "created", ignore = true),

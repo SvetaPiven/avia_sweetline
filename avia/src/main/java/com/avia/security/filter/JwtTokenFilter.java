@@ -1,4 +1,4 @@
-package com.avia.security.util;
+package com.avia.security.filter;
 
 import com.avia.security.jwt.TokenProvider;
 import jakarta.servlet.FilterChain;

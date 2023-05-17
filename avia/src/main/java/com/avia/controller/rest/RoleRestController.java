@@ -1,7 +1,7 @@
 package com.avia.controller.rest;
 
-import com.avia.model.dto.RoleDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.dto.RoleDto;
 import com.avia.model.entity.Role;
 import com.avia.repository.RoleRepository;
 import com.avia.service.RoleService;
@@ -13,7 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +33,6 @@ public class RoleRestController {
     private final RoleRepository roleRepository;
 
     private final RoleService roleService;
-
-    private static final Logger log = Logger.getLogger(RoleRestController.class);
 
     @GetMapping()
     public ResponseEntity<List<Role>> getAllRoles() {

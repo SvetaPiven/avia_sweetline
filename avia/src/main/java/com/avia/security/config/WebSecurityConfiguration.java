@@ -2,7 +2,7 @@ package com.avia.security.config;
 
 //import com.avia.security.jwt.TokenProvider;
 
-import com.avia.security.util.JwtTokenFilter;
+import com.avia.security.filter.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,9 +25,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
+
     private final JwtTokenFilter jwtTokenFilter;
 
-//    private final TokenProviderGPT tokenProvider;
 //    private final PasswordEncoder passwordEncoder;
 
     @Bean
@@ -64,8 +63,6 @@ public class WebSecurityConfiguration {
                 .requestMatchers("/api/v1/**").hasRole("USER")
                 .requestMatchers("/rest/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
                 .anyRequest().authenticated();
-//                .and()
-//                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

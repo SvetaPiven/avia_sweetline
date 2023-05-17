@@ -1,6 +1,7 @@
 package com.avia.response;
 
 public enum ApplicationErrorCodes {
+
     SQL_ERROR(10),
     USER_NOT_FOUND(40),
     FATAL_ERROR(1);

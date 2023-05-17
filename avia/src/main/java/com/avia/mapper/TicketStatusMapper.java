@@ -20,8 +20,6 @@ public interface TicketStatusMapper {
     })
     TicketStatus toEntity(TicketStatusDto ticketStatusDto);
 
-    TicketStatusDto toDto(TicketStatus ticketStatus);
-
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),

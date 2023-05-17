@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LocationGoogleMapsApi {
 
     private final AirportService airportService;
+
     private final AirportRepository airportRepository;
 
     @GetMapping("/location/{id}")

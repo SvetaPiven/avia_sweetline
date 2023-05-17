@@ -11,7 +11,7 @@ import org.mapstruct.Mappings;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {RoleMapper.class})
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
     @Mappings({
@@ -23,7 +23,6 @@ public interface UserMapper {
             @Mapping(target = "isDeleted", constant = "false"),
     })
     User toEntity(UserDto userDto);
-
 
     @Mappings({
             @Mapping(target = "authenticationInfo.email", source = "email"),

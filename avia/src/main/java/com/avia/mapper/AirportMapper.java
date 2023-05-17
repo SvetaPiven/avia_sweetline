@@ -20,8 +20,6 @@ public interface AirportMapper {
     })
     Airport toEntity(AirportDto airportDto);
 
-    AirportDto toDto(Airport airport);
-
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),

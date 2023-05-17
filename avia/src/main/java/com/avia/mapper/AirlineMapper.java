@@ -21,6 +21,7 @@ public interface AirlineMapper {
     Airline toEntity(AirlineDto airlineDto);
 
     AirlineDto toDto(Airline airline);
+
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),

@@ -1,7 +1,7 @@
 package com.avia.controller.rest;
 
-import com.avia.model.dto.FlightStatusDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.dto.FlightStatusDto;
 import com.avia.model.entity.FlightStatus;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.service.FlightStatusService;
@@ -31,9 +31,8 @@ import java.util.Optional;
 public class FlightStatusRestController {
 
     private final FlightStatusRepository flightStatusRepository;
-    private final FlightStatusService flightStatusService;
 
-    private static final Logger log = Logger.getLogger(FlightStatusRestController.class);
+    private final FlightStatusService flightStatusService;
 
     @GetMapping()
     public ResponseEntity<List<FlightStatus>> getAllFlightStatuses() {

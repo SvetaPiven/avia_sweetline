@@ -1,7 +1,7 @@
 package com.avia.controller.rest;
 
-import com.avia.model.dto.AirportDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.dto.AirportDto;
 import com.avia.model.entity.Airport;
 import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;
@@ -26,103 +26,103 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-    @RestController
-    @RequiredArgsConstructor
-    @RequestMapping("/rest/airports")
-    public class AirportRestController {
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/rest/airports")
+public class AirportRestController {
 
-        private final AirportRepository airportRepository;
+    private final AirportRepository airportRepository;
 
-        private final AirportService airportService;
+    private final AirportService airportService;
 
-        private static final Logger log = Logger.getLogger(com.avia.controller.rest.AirportRestController.class);
+    private static final Logger log = Logger.getLogger(com.avia.controller.rest.AirportRestController.class);
 
-        @GetMapping()
-        public ResponseEntity<List<Airport>> getAllAirlines() {
+    @GetMapping()
+    public ResponseEntity<List<Airport>> getAllAirlines() {
 
-            return new ResponseEntity<>(airportRepository.findAll(), HttpStatus.OK);
-        }
+        return new ResponseEntity<>(airportRepository.findAll(), HttpStatus.OK);
+    }
 
-        @GetMapping("/page/{page}")
-        public ResponseEntity<Object> getAllAirportsWithPageAndSort(@PathVariable int page) {
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllAirportsWithPageAndSort(@PathVariable int page) {
 
-            Pageable pageable = PageRequest.of(page, 5, Sort.by("idAirport").ascending());
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("idAirport").ascending());
 
-            Page<Airport> airports = airportRepository.findAll(pageable);
+        Page<Airport> airports = airportRepository.findAll(pageable);
 
-            if (airports.hasContent()) {
-                return new ResponseEntity<>(airports, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        }
-
-        @PostMapping
-        public ResponseEntity<Airport> createAirline(@RequestBody AirportDto airportDto) {
-
-            Airport createdAirline = airportService.createAirport(airportDto);
-
-            return new ResponseEntity<>(createdAirline, HttpStatus.CREATED);
-        }
-
-
-        @GetMapping("/{id}")
-        public ResponseEntity<Airport> getAirlineById(@PathVariable("id") Long id) {
-
-            Optional<Airport> airline = airportRepository.findById(id);
-
-            return airline.map(ResponseEntity::ok).orElseThrow(() ->
-                    new EntityNotFoundException("Airport with id " + id + " not found"));
-        }
-
-        @PutMapping("/{id}")
-        public ResponseEntity<Airport> updateAirline(@PathVariable Long id, @RequestBody AirportDto airportDto) {
-
-            Airport updatedAirport = airportService.updateAirport(id, airportDto);
-
-            return new ResponseEntity<>(updatedAirport, HttpStatus.OK);
-        }
-
-        @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteTicket(@PathVariable("id") Long id) {
-
-            Optional<Airport> airportOptional = airportRepository.findById(id);
-
-            if (airportOptional.isPresent()) {
-                airportRepository.deleteById(id);
-                return ResponseEntity.noContent().build();
-            } else {
-                throw new EntityNotFoundException("Airport with id " + id + " not found!");
-            }
-        }
-
-        @PutMapping("/{id}/delete")
-        public ResponseEntity<Void> softDeleteAirport(@PathVariable("id") Long id) {
-            Optional<Airport> airportOptional = airportRepository.findById(id);
-            if (airportOptional.isPresent()) {
-                Airport airport = airportOptional.get();
-                airport.setIsDeleted(true);
-                airportRepository.save(airport);
-                return ResponseEntity.noContent().build();
-            } else {
-                throw new EntityNotFoundException("Airport with id " + id + " not found!");
-            }
-        }
-
-        @GetMapping("/popular")
-        public List<Airport> getPopularAirports() {
-            List<Object[]> result = airportRepository.findPopularAirports();
-            List<Airport> airports = new ArrayList<>();
-            for (Object[] row : result) {
-                Airport airport = new Airport();
-                airport.setIdAirport((Long) row[0]);
-                airport.setNameAirport((String) row[1]);
-                airport.setCity((String) row[2]);
-                airport.setCountry((String) row[3]);
-                airports.add(airport);
-            }
-            return airports;
+        if (airports.hasContent()) {
+            return new ResponseEntity<>(airports, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping
+    public ResponseEntity<Airport> createAirline(@RequestBody AirportDto airportDto) {
+
+        Airport createdAirline = airportService.createAirport(airportDto);
+
+        return new ResponseEntity<>(createdAirline, HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Airport> getAirlineById(@PathVariable("id") Long id) {
+
+        Optional<Airport> airline = airportRepository.findById(id);
+
+        return airline.map(ResponseEntity::ok).orElseThrow(() ->
+                new EntityNotFoundException("Airport with id " + id + " not found"));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Airport> updateAirline(@PathVariable Long id, @RequestBody AirportDto airportDto) {
+
+        Airport updatedAirport = airportService.updateAirport(id, airportDto);
+
+        return new ResponseEntity<>(updatedAirport, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTicket(@PathVariable("id") Long id) {
+
+        Optional<Airport> airportOptional = airportRepository.findById(id);
+
+        if (airportOptional.isPresent()) {
+            airportRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Airport with id " + id + " not found!");
+        }
+    }
+
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> softDeleteAirport(@PathVariable("id") Long id) {
+        Optional<Airport> airportOptional = airportRepository.findById(id);
+        if (airportOptional.isPresent()) {
+            Airport airport = airportOptional.get();
+            airport.setIsDeleted(true);
+            airportRepository.save(airport);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Airport with id " + id + " not found!");
+        }
+    }
+
+    @GetMapping("/popular")
+    public List<Airport> getPopularAirports() {
+        List<Object[]> result = airportRepository.findPopularAirports();
+        List<Airport> airports = new ArrayList<>();
+        for (Object[] row : result) {
+            Airport airport = new Airport();
+            airport.setIdAirport((Long) row[0]);
+            airport.setNameAirport((String) row[1]);
+            airport.setCity((String) row[2]);
+            airport.setCountry((String) row[3]);
+            airports.add(airport);
+        }
+        return airports;
+    }
+}
 
 

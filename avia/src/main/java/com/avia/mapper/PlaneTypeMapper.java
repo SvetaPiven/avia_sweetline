@@ -20,8 +20,6 @@ public interface PlaneTypeMapper {
     })
     PlaneType toEntity(PlaneTypeDto planeTypeDto);
 
-    PlaneTypeDto toDto(PlaneType planeType);
-
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),

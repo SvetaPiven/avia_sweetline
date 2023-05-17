@@ -1,20 +1,27 @@
 package com.avia.controller.rest;
 
-import com.avia.model.dto.FlightDto;
 import com.avia.exception.EntityNotFoundException;
+import com.avia.model.dto.FlightDto;
 import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
 import com.avia.repository.FlightRepository;
 import com.avia.service.FlightService;
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -27,8 +34,8 @@ import java.util.Optional;
 public class FlightRestController {
 
     private final FlightRepository flightRepository;
+
     private final FlightService flightService;
-    private static final Logger log = Logger.getLogger(FlightRestController.class);
 
     @GetMapping
     public ResponseEntity<List<Flight>> getAllFlights() {

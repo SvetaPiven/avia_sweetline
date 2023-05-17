@@ -20,8 +20,6 @@ public interface DocumentTypeMapper {
     })
     DocumentType toEntity(DocumentTypeDto documentTypeDto);
 
-    DocumentTypeDto toDto(DocumentType documentType);
-
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),

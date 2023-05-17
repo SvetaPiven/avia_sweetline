@@ -1,7 +1,6 @@
 package com.avia.security.jwt;
 
 import com.avia.security.config.JwtConfiguration;
-
 import com.avia.security.provider.UserDetailsProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +19,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static io.jsonwebtoken.Claims.SUBJECT;
 import static java.util.Calendar.MILLISECOND;
@@ -30,24 +28,17 @@ import static java.util.Calendar.MILLISECOND;
 public class TokenProvider {
 
     private final JwtConfiguration jwtConfiguration;
+
     private final UserDetailsProvider userDetailsProvider;
 
     public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
 
     public static final String CREATE_VALUE = "created";
 
-    //    public String generateToken(UserDetails userDetails) {
-//        Date now = new Date();
-//        Date expiryDate = new Date(now.getTime() + jwtConfiguration.getExpiration() * 1000);
-//
-//
-//        return Jwts.builder()
-//                .setSubject(userDetails.getUsername())
-//                .setIssuedAt(now)
-//                .setExpiration(expiryDate)
-//                .signWith(SignatureAlgorithm.HS256, jwtConfiguration.getSecret())
-//                .compact();
-//    }
+    public static final String ROLES = "roles";
+
+    public static final String JWT = "JWT";
+
     private String generateToken(Map<String, Object> claims) {
 
         return Jwts
@@ -55,7 +46,7 @@ public class TokenProvider {
                 .setHeader(generateJWTHeaders())
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(ALGORITHM, "secret")
+                .signWith(ALGORITHM, jwtConfiguration.getSecret())
                 .compact();
     }
 
@@ -63,7 +54,7 @@ public class TokenProvider {
         Map<String, Object> claims = new HashMap<>();
         claims.put(SUBJECT, userDetails.getUsername());
         claims.put(CREATE_VALUE, generateCurrentDate());
-        claims.put("ROLES", getEncryptedRoles(userDetails));
+        claims.put(ROLES, getEncryptedRoles(userDetails));
         return generateToken(claims);
     }
 
@@ -71,13 +62,12 @@ public class TokenProvider {
         return userDetails.getAuthorities().
                 stream()
                 .map(GrantedAuthority::getAuthority)
-              //  .map(s -> s.replace("ROLE_", ""))
                 .map(String::toLowerCase).toList();
     }
 
     private Map<String, Object> generateJWTHeaders() {
         Map<String, Object> jwtHeaders = new LinkedHashMap<>();
-        jwtHeaders.put("typ", "JWT");
+        jwtHeaders.put("typ", JWT);
         jwtHeaders.put("alg", ALGORITHM.getValue());
 
         return jwtHeaders;
@@ -85,32 +75,14 @@ public class TokenProvider {
 
     private Date generateExpirationDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(MILLISECOND,60000000);
+        calendar.add(MILLISECOND, jwtConfiguration.getExpiration());
         return calendar.getTime();
     }
 
 
     public String extractToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-//        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-//            return bearerToken.substring(7);
-//        }
-        return bearerToken;
+        return request.getHeader("Authorization");
     }
-
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(jwtConfiguration.getSecret()).parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-//    public boolean validateToken(String token, UserDetails userDetails) {
-//        final String username = getUsernameFromToken(token);
-//        return username.equals(userDetails.getUsername());
-//    }
 
     public Date getExpirationDateFromToken(String token) {
         return getClaimsFromToken(token).getExpiration();
@@ -133,20 +105,6 @@ public class TokenProvider {
         return new Date();
     }
 
-    public String getUsernameFromToken(String token) {
-        Claims claims = getClaimsFromToken(token);
-        return claims.getSubject();
-    }
-
-//    public Date getExpirationDateFromToken(String token) {
-//        Claims claims = getClaimsFromToken(token);
-//        return claims.getExpiration();
-//    }
-
-//    private boolean isTokenExpired(String token) {
-//        Date expiration = getExpirationDateFromToken(token);
-//        return expiration.before(new Date());
-//    }
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().setSigningKey(jwtConfiguration.getSecret()).parseClaimsJws(token).getBody();

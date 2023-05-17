@@ -20,8 +20,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
     private final UserMapper userMapper;
-    private final RoleRepository roleRepository;
 
     @Override
     @Transactional
@@ -42,11 +42,5 @@ public class UserServiceImpl implements UserService {
         userMapper.partialUpdate(userDto, user);
 
         return userRepository.save(user);
-    }
-
-    @Override
-    @Transactional
-    public List<Role> getUserAuthorities(Long idUser) {
-        return userRepository.getAuthorities(idUser);
     }
 }

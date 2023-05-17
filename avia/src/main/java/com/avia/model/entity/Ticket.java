@@ -92,32 +92,4 @@ public class Ticket {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
-
-//    @NotNull
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "id_airline", nullable = false)
-//    @JsonBackReference
-//    private Airline idAirline;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_ticket_status")
-//    @JsonBackReference
-//    private TicketStatus ticketStatus;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_ticket_class")
-//    @JsonBackReference
-//    private TicketClass ticketClass;
-
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_flight")
-//    @JsonBackReference
-//    private Flight flight;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_pass")
-//    @JsonBackReference
-//    private Passenger passenger;
-
 }

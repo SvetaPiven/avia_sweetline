@@ -31,7 +31,6 @@ public class DefaultExceptionHandler {
                         exceptionUniqueId,
                         FATAL_ERROR.getCodeId(),
                         e.getMessage()
-
                 ),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }

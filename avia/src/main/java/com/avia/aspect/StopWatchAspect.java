@@ -11,6 +11,7 @@ import org.springframework.util.StopWatch;
 @Component
 @Aspect
 public class StopWatchAspect {
+
     private static final Logger log = Logger.getLogger(StopWatchAspect.class);
 
     @Pointcut("execution(* com.avia.repository.*.*(..))")

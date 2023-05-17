@@ -20,7 +20,6 @@ public interface FlightStatusMapper {
     })
     FlightStatus toEntity(FlightStatusDto flightStatusDto);
 
-    FlightStatusDto toDto(FlightStatus flightStatus);
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),

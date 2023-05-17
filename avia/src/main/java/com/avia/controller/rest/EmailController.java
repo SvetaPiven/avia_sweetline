@@ -9,7 +9,6 @@ import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EmailController {
 
-    private static final org.apache.log4j.Logger log = Logger.getLogger(EmailController.class);
+    private static final Logger log = Logger.getLogger(EmailController.class);
+
     private final EmailService emailService;
 
     @GetMapping(value = "/simple-email/{user-email}")
