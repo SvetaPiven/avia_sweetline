@@ -13,8 +13,6 @@ import org.mapstruct.ReportingPolicy;
 public interface RoleMapper {
     Role toEntity(RoleDto roleDto);
 
-    RoleDto toDto(Role role);
-
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Role partialUpdate(RoleDto roleDto, @MappingTarget Role role);
 }

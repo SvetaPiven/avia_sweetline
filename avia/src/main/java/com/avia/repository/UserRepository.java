@@ -16,11 +16,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
         @Query(value = " select * " +
             " from c_roles r " +
-            " join l_user_role ur on r.id_role = ur.id_role " +
-            " join users u on u.id_user = ur.id_user " +
-            " where ur.id_user = :idUser " +
-            " order by ur.id_user desc", nativeQuery = true)
+            " join users u on u.id_role = r.id_role " +
+            " where u.id_user = :idUser " +
+            " order by u.id_user desc", nativeQuery = true)
     List<Role> getAuthorities(Long idUser);
 
- //   Optional<User> findByAuthenticationInfoEmail(String username);
+        List<Role> findRolesByIdUser(Long userId);
+
+    Optional<User> findByAuthenticationInfoEmail(String username);
 }

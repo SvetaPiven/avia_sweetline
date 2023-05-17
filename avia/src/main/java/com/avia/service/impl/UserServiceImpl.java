@@ -26,11 +26,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User createUser(UserDto userDto) {
-        User user = userMapper.toEntity(userDto);
 
-        Role defaultRole = roleRepository.findById(1).orElseThrow(() ->
-                new EntityNotFoundException("Default Role with id " + 1 + " not found"));
-        user.getRoles().add(defaultRole);
+        User user = userMapper.toEntity(userDto);
 
         return userRepository.save(user);
     }

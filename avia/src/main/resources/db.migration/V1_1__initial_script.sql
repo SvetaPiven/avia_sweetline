@@ -207,13 +207,13 @@ create index created_index
 
 create table public.c_roles
 (
-    id_role    serial not null
+    id_role    serial
         constraint roles_pkey
             primary key,
-    role_name  varchar(100)                                           not null,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
-    is_deleted boolean default false                                  not null
+    role_name  varchar(100)          not null,
+    created    timestamp(6)          not null,
+    changed    timestamp(6)          not null,
+    is_deleted boolean default false not null
 );
 
 alter table public.c_roles
@@ -221,20 +221,22 @@ alter table public.c_roles
 
 create table public.users
 (
-    id_user       bigserial not null
-        primary key
+    id_user       bigserial
         constraint user_id_user_key
-            unique,
-    email         varchar(30)                                           not null
+            primary key,
+    email         varchar(30)           not null
         constraint user_email_key
             unique,
-    user_password varchar(30)                                           not null,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
-    is_deleted    boolean default false                                 not null,
+    user_password varchar(200)          not null,
+    created       timestamp(6)          not null,
+    changed       timestamp(6)          not null,
+    is_deleted    boolean default false not null,
     id_pass       bigint
         constraint user_id_pass_key
-            unique
+            unique,
+    id_role       integer               not null
+        constraint users_roles
+            references public.c_roles
 );
 
 alter table public.users
@@ -262,23 +264,4 @@ alter table public.document_pass
 
 create index changed_doc_index
     on public.document_pass (changed desc);
-
-create table public.l_user_role
-(
-    id_user bigint                                                  not null
-        constraint user_role_id_user_key
-        constraint user_user
-            references public.users,
-    id_role bigint                                                  not null
-        constraint user_role_id_role_key
-        constraint user_role
-            references public.c_roles,
-        id    bigserial not null
-        primary key
-        unique
-
-);
-
-alter table public.l_user_role
-    owner to development;
 

@@ -17,12 +17,12 @@ public class UserDto implements Serializable {
     @NotNull
     private String email;
 
-    @Size(min = 8, max = 30)
+    @Size(min = 8, max = 200)
     @Pattern(regexp = "^.*(?=.{6,})(?=.*d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$")
     @NotNull
     private String userPassword;
 
     private Long idPass;
 
-    private Set<RoleDto> roles = new HashSet<>();
+    private Integer idRole;
 }

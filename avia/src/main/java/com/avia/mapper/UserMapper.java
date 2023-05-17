@@ -17,6 +17,7 @@ public interface UserMapper {
     @Mappings({
             @Mapping(target = "authenticationInfo.email", source = "email"),
             @Mapping(target = "authenticationInfo.userPassword", source = "userPassword"),
+            @Mapping(target = "idRole.idRole", source = "idRole"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "isDeleted", constant = "false"),
@@ -27,6 +28,7 @@ public interface UserMapper {
     @Mappings({
             @Mapping(target = "authenticationInfo.email", source = "email"),
             @Mapping(target = "authenticationInfo.userPassword", source = "userPassword"),
+            @Mapping(target = "idRole.idRole", source = "idRole"),
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "isDeleted", ignore = true),

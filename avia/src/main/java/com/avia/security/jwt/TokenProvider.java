@@ -1,6 +1,7 @@
 package com.avia.security.jwt;
 
 import com.avia.security.config.JwtConfiguration;
+
 import com.avia.security.provider.UserDetailsProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
