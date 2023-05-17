@@ -21,15 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
-
-    private final TokenProvider provider;
-
-    private final UserDetailsService userProvider;
+    private final TokenProvider tokenProvider;
+    private final UserDetailsService userDetailsService;
 
     @PostMapping("/auth")
     public ResponseEntity<AuthResponse> loginUser(@RequestBody AuthRequest request) {
 
-        /*Check login and password*/
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getLogin(),
@@ -38,18 +35,13 @@ public class AuthenticationController {
         );
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-        /*Generate token with answer to user*/
+        String token = tokenProvider.generateToken(userDetailsService.loadUserByUsername(request.getLogin()));
+
         return ResponseEntity.ok(
-                AuthResponse
-                        .builder()
+                AuthResponse.builder()
                         .login(request.getLogin())
-                        .token(
-                                provider.generateToken(
-                                        userProvider.loadUserByUsername(request.getLogin())
-                                )
-                        )
+                        .token(token)
                         .build()
         );
     }
-
 }

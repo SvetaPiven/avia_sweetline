@@ -53,7 +53,7 @@ public class Role {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("roles")
     private Set<User> users = Collections.emptySet();
 }

@@ -7,16 +7,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,48 +28,88 @@ import static java.util.Calendar.MILLISECOND;
 @RequiredArgsConstructor
 public class TokenProvider {
 
-    /*Generate JWT Token and fields in token. Also add signature into 3-d part of token*/
-    public static final String CREATE_VALUE = "created";
-
-    public static final String ROLES = "roles";
-
-    public static final String JWT = "JWT";
+    private final JwtConfiguration jwtConfiguration;
+    private final UserDetailsProvider userDetailsProvider;
 
     public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
 
-    private final JwtConfiguration jwtTokenConfig;
+    public static final String CREATE_VALUE = "created";
 
-    private final UserDetailsProvider userDetailsProvider;
-
+    //    public String generateToken(UserDetails userDetails) {
+//        Date now = new Date();
+//        Date expiryDate = new Date(now.getTime() + jwtConfiguration.getExpiration() * 1000);
+//
+//
+//        return Jwts.builder()
+//                .setSubject(userDetails.getUsername())
+//                .setIssuedAt(now)
+//                .setExpiration(expiryDate)
+//                .signWith(SignatureAlgorithm.HS256, jwtConfiguration.getSecret())
+//                .compact();
+//    }
     private String generateToken(Map<String, Object> claims) {
 
         return Jwts
                 .builder()
-                /*Set headers with algo and token type info*/
                 .setHeader(generateJWTHeaders())
-                /*We create payload with user info, roles, expiration date of token*/
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                /*Signature*/
-                .signWith(ALGORITHM, jwtTokenConfig.getSecret())
+                .signWith(ALGORITHM, "secret")
                 .compact();
+    }
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(SUBJECT, userDetails.getUsername());
+        claims.put(CREATE_VALUE, generateCurrentDate());
+        claims.put("ROLES", getEncryptedRoles(userDetails));
+        return generateToken(claims);
+    }
+
+    private List<String> getEncryptedRoles(UserDetails userDetails) {
+        return userDetails.getAuthorities().
+                stream()
+                .map(GrantedAuthority::getAuthority)
+              //  .map(s -> s.replace("ROLE_", ""))
+                .map(String::toLowerCase).toList();
     }
 
     private Map<String, Object> generateJWTHeaders() {
         Map<String, Object> jwtHeaders = new LinkedHashMap<>();
-        jwtHeaders.put("typ", JWT);
+        jwtHeaders.put("typ", "JWT");
         jwtHeaders.put("alg", ALGORITHM.getValue());
 
         return jwtHeaders;
     }
 
-    public String getUsernameFromToken(String token) {
-        return getClaimsFromToken(token).getSubject();
+    private Date generateExpirationDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(MILLISECOND,60000000);
+        return calendar.getTime();
     }
 
-    public Date getCreatedDateFromToken(String token) {
-        return (Date) getClaimsFromToken(token).get(CREATE_VALUE);
+
+    public String extractToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+//        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+//            return bearerToken.substring(7);
+//        }
+        return bearerToken;
     }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(jwtConfiguration.getSecret()).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+//    public boolean validateToken(String token, UserDetails userDetails) {
+//        final String username = getUsernameFromToken(token);
+//        return username.equals(userDetails.getUsername());
+//    }
 
     public Date getExpirationDateFromToken(String token) {
         return getClaimsFromToken(token).getExpiration();
@@ -81,19 +118,9 @@ public class TokenProvider {
     private Claims getClaimsFromToken(String token) {
         return Jwts
                 .parser()
-                .setSigningKey(jwtTokenConfig.getSecret())
+                .setSigningKey(jwtConfiguration.getSecret())
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    private Date generateCurrentDate() {
-        return new Date();
-    }
-
-    private Date generateExpirationDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(MILLISECOND, jwtTokenConfig.getExpiration());
-        return calendar.getTime();
     }
 
     public Boolean isTokenExpired(String token) {
@@ -101,67 +128,29 @@ public class TokenProvider {
         return expiration.before(this.generateCurrentDate());
     }
 
-    private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-        return (lastPasswordReset != null && created.before(lastPasswordReset));
+    private Date generateCurrentDate() {
+        return new Date();
     }
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(SUBJECT, userDetails.getUsername());
-        claims.put(CREATE_VALUE, generateCurrentDate());
-        claims.put(ROLES, getEncryptedRoles(userDetails));
-        return generateToken(claims);
+    public String getUsernameFromToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return claims.getSubject();
     }
 
-    private List<String> getEncryptedRoles(UserDetails userDetails) {
-        return userDetails.getAuthorities().
-                stream()
-                .map(GrantedAuthority::getAuthority)
-                .map(s -> s.replace("ROLE_", ""))
-                .map(String::toLowerCase)
-                .collect(Collectors.toList());
-    }
+//    public Date getExpirationDateFromToken(String token) {
+//        Claims claims = getClaimsFromToken(token);
+//        return claims.getExpiration();
+//    }
 
-    public Boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
-        final Date created = this.getCreatedDateFromToken(token);
-        return !(this.isCreatedBeforeLastPasswordReset(created, lastPasswordReset))
-                && !(this.isTokenExpired(token));
-    }
-
-    public String refreshToken(String token) {
-        String refreshedToken;
-        try {
-            final Claims claims = this.getClaimsFromToken(token);
-            claims.put("created", this.generateCurrentDate());
-            refreshedToken = this.generateToken(claims);
-        } catch (Exception e) {
-            refreshedToken = null;
-        }
-        return refreshedToken;
-    }
-
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return username.equals(userDetails.getUsername());
-    }
-
-    public String extractToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
+//    private boolean isTokenExpired(String token) {
+//        Date expiration = getExpirationDateFromToken(token);
+//        return expiration.before(new Date());
+//    }
 
     public Authentication getAuthentication(String token) {
-
-        Claims claims = Jwts.parser().setSigningKey(jwtTokenConfig.getSecret()).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(jwtConfiguration.getSecret()).parseClaimsJws(token).getBody();
         String username = claims.getSubject();
-
         UserDetails userDetails = userDetailsProvider.loadUserByUsername(username);
-
-        return new UsernamePasswordAuthenticationToken(userDetails, "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
-
 }
-

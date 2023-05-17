@@ -21,4 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             " where ur.id_user = :idUser " +
             " order by ur.id_user desc", nativeQuery = true)
     List<Role> getAuthorities(Long idUser);
+
+ //   Optional<User> findByAuthenticationInfoEmail(String username);
 }
