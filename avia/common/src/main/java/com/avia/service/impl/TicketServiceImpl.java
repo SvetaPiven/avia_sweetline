@@ -13,7 +13,7 @@ import com.avia.repository.TicketRepository;
 import com.avia.repository.UserRepository;
 import com.avia.service.AirportService;
 import com.avia.service.EmailService;
-import com.avia.controller.rest.LocationRestController;
+import com.avia.location.LocationRestController;
 import com.avia.model.dto.TicketDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.TicketMapper;

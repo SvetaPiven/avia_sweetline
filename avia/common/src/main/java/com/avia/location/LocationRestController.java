@@ -1,4 +1,4 @@
-package com.avia.controller.rest;
+package com.avia.location;
 
 import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
