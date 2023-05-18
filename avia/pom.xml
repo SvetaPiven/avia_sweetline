@@ -22,7 +22,6 @@
     </modules>
 
     <properties>
-<!--        <caffeine.version>3.1.5</caffeine.version>-->
         <google-maps-services.version>2.1.2</google-maps-services.version>
         <java.version>17</java.version>
         <jjwt.version>0.9.1</jjwt.version>
@@ -43,11 +42,6 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-cache</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -67,12 +61,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -145,13 +133,6 @@
             <version>${jaxb-api.version}</version>
         </dependency>
 
-        <!-- Caffeine Cache -->
-<!--        <dependency>-->
-<!--            <groupId>com.github.ben-manes.caffeine</groupId>-->
-<!--            <artifactId>caffeine</artifactId>-->
-<!--            <version>${caffeine.version}</version>-->
-<!--        </dependency>-->
-
         <!-- Google Maps Services -->
         <dependency>
             <groupId>com.google.maps</groupId>
@@ -178,21 +159,6 @@
     <!-- Build Configuration -->
     <build>
         <plugins>
-<!--            &lt;!&ndash; Spring Boot Maven Plugin &ndash;&gt;-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-
-            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

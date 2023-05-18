@@ -48,9 +48,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
-            <!-- Maven Compiler Plugin -->
-
         </plugins>
     </build>
 </project>
