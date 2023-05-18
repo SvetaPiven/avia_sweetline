@@ -12,17 +12,20 @@
     <groupId>com</groupId>
     <artifactId>sweetline</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>avia</name>
     <description>avia</description>
 
+    <modules>
+        <module>common</module>
+        <module>api</module>
+    </modules>
+
     <properties>
-        <caffeine.version>3.1.5</caffeine.version>
+<!--        <caffeine.version>3.1.5</caffeine.version>-->
         <google-maps-services.version>2.1.2</google-maps-services.version>
         <java.version>17</java.version>
         <jjwt.version>0.9.1</jjwt.version>
-        <jjwt-api.version>0.11.2</jjwt-api.version>
-        <jjwt-impl.version>0.11.2</jjwt-impl.version>
-        <jjwt-jackson.version>0.11.2</jjwt-jackson.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <lombok.version>1.18.24</lombok.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
@@ -40,10 +43,10 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-cache</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -114,6 +117,7 @@
             <optional>true</optional>
             <version>${lombok.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok-mapstruct-binding</artifactId>
@@ -142,11 +146,11 @@
         </dependency>
 
         <!-- Caffeine Cache -->
-        <dependency>
-            <groupId>com.github.ben-manes.caffeine</groupId>
-            <artifactId>caffeine</artifactId>
-            <version>${caffeine.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.ben-manes.caffeine</groupId>-->
+<!--            <artifactId>caffeine</artifactId>-->
+<!--            <version>${caffeine.version}</version>-->
+<!--        </dependency>-->
 
         <!-- Google Maps Services -->
         <dependency>
@@ -174,19 +178,19 @@
     <!-- Build Configuration -->
     <build>
         <plugins>
-            <!-- Spring Boot Maven Plugin -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+<!--            &lt;!&ndash; Spring Boot Maven Plugin &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <excludes>-->
+<!--                        <exclude>-->
+<!--                            <groupId>org.projectlombok</groupId>-->
+<!--                            <artifactId>lombok</artifactId>-->
+<!--                        </exclude>-->
+<!--                    </excludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
             <!-- Maven Compiler Plugin -->
             <plugin>
