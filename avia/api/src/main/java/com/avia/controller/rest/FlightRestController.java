@@ -1,11 +1,13 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.ValidationException;
 import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
 import com.avia.model.request.FlightRequest;
 import com.avia.repository.FlightRepository;
 import com.avia.service.FlightService;
 import com.avia.exception.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -62,7 +66,12 @@ public class FlightRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Flight> createFlight(@RequestBody FlightRequest flightRequest) {
+    public ResponseEntity<Flight> createFlight(@Valid @RequestBody FlightRequest flightRequest,
+                                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         Flight createdFlight = flightService.createFlight(flightRequest);
 
@@ -79,7 +88,13 @@ public class FlightRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Flight> updateFlight(@PathVariable Long id, @RequestBody FlightRequest flightRequest) {
+    public ResponseEntity<Flight> updateFlight(@PathVariable Long id,
+                                               @Valid @RequestBody FlightRequest flightRequest,
+                                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         Flight updatedFlight = flightService.updateFlight(id, flightRequest);
 
@@ -98,7 +113,6 @@ public class FlightRestController {
             throw new EntityNotFoundException("Flight with id " + id + " not found!");
         }
     }
-
 
     @PutMapping("/{id}/status")
     public String changeStatus(@PathVariable("id") Long id, @RequestParam("isDeleted") boolean isDeleted) {

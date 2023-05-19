@@ -4,10 +4,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
 
 @Data
+@Validated
 public class UserRequest implements Serializable {
 
     @Size(min = 10, max = 30)

@@ -1,10 +1,12 @@
 package com.avia.controller.rest;
 
 import com.avia.exception.EntityNotFoundException;
+import com.avia.exception.ValidationException;
 import com.avia.model.entity.Airline;
 import com.avia.model.request.AirlineRequest;
 import com.avia.repository.AirlineRepository;
 import com.avia.service.AirlineService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -59,7 +63,12 @@ public class AirlineRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Airline> createAirline(@RequestBody AirlineRequest airlineRequest) {
+    public ResponseEntity<Airline> createAirline(@Valid @RequestBody AirlineRequest airlineRequest,
+                                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         Airline createdAirline = airlineService.createAirline(airlineRequest);
 
@@ -77,7 +86,13 @@ public class AirlineRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Airline> updateAirline(@PathVariable Integer id, @RequestBody AirlineRequest airlineRequest) {
+    public ResponseEntity<Airline> updateAirline(@PathVariable Integer id,
+                                                 @Valid @RequestBody AirlineRequest airlineRequest,
+                                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         Airline updatedAirline = airlineService.updateAirline(id, airlineRequest);
 

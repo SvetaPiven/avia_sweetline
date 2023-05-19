@@ -1,10 +1,12 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.ValidationException;
 import com.avia.model.entity.PlaneType;
 import com.avia.model.request.PlaneTypeRequest;
 import com.avia.repository.PlaneTypeRepository;
 import com.avia.service.PlaneTypeService;
 import com.avia.exception.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -60,7 +64,12 @@ public class PlaneTypeRestController {
     }
 
     @PostMapping
-    public ResponseEntity<PlaneType> createPlaneType(@RequestBody PlaneTypeRequest planeTypeRequest) {
+    public ResponseEntity<PlaneType> createPlaneType(@Valid @RequestBody PlaneTypeRequest planeTypeRequest,
+                                                     BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         PlaneType createdPlaneType = planeTypeService.createPlaneType(planeTypeRequest);
 
@@ -78,7 +87,13 @@ public class PlaneTypeRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PlaneType> updatePlaneType(@PathVariable Integer id, @RequestBody PlaneTypeRequest planeTypeRequest) {
+    public ResponseEntity<PlaneType> updatePlaneType(@PathVariable Integer id,
+                                                     @Valid @RequestBody PlaneTypeRequest planeTypeRequest,
+                                                     BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         PlaneType updatedPlaneType = planeTypeService.updatePlaneType(id, planeTypeRequest);
 

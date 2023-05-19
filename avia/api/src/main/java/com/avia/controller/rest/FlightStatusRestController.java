@@ -1,10 +1,12 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.ValidationException;
 import com.avia.model.entity.FlightStatus;
 import com.avia.model.request.FlightStatusRequest;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.service.FlightStatusService;
 import com.avia.exception.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -59,7 +63,12 @@ public class FlightStatusRestController {
     }
 
     @PostMapping
-    public ResponseEntity<FlightStatus> createFlightStatus(@RequestBody FlightStatusRequest flightStatusRequest) {
+    public ResponseEntity<FlightStatus> createFlightStatus(@Valid @RequestBody FlightStatusRequest flightStatusRequest,
+                                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         FlightStatus createdFlightStatus = flightStatusService.createFlightStatus(flightStatusRequest);
 
@@ -76,7 +85,13 @@ public class FlightStatusRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FlightStatus> updateFlightStatus(@PathVariable Integer id, @RequestBody FlightStatusRequest flightStatusRequest) {
+    public ResponseEntity<FlightStatus> updateFlightStatus(@PathVariable Integer id,
+                                                           @Valid @RequestBody FlightStatusRequest flightStatusRequest,
+                                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         FlightStatus updatedFlightStatus = flightStatusService.updateFlightStatus(id, flightStatusRequest);
 

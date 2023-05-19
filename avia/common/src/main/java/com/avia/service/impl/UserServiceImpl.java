@@ -7,6 +7,7 @@ import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.UserMapper;
 import com.avia.service.UserService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

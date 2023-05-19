@@ -1,10 +1,12 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.ValidationException;
 import com.avia.model.entity.Role;
 import com.avia.model.request.RoleRequest;
 import com.avia.repository.RoleRepository;
 import com.avia.service.RoleService;
 import com.avia.exception.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -58,7 +62,12 @@ public class RoleRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Role> createRole(@RequestBody RoleRequest roleRequest) {
+    public ResponseEntity<Role> createRole(@Valid @RequestBody RoleRequest roleRequest,
+                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
         Role createdRole = roleService.createRole(roleRequest);
         return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
@@ -71,7 +80,13 @@ public class RoleRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable Integer id, @RequestBody RoleRequest roleRequest) {
+    public ResponseEntity<Role> updateRole(@PathVariable Integer id,
+                                           @Valid @RequestBody RoleRequest roleRequest,
+                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
         Role updatedRole = roleService.updateRole(id, roleRequest);
         return new ResponseEntity<>(updatedRole, HttpStatus.OK);
     }

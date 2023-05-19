@@ -1,10 +1,12 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.ValidationException;
 import com.avia.model.entity.TicketStatus;
 import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketStatusService;
 import com.avia.model.request.TicketStatusRequest;
 import com.avia.exception.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -61,7 +66,12 @@ public class TicketStatusRestController {
     }
 
     @PostMapping
-    public ResponseEntity<TicketStatus> createTicketStatus(@RequestBody TicketStatusRequest ticketStatusRequest) {
+    public ResponseEntity<TicketStatus> createTicketStatus(@Validated @RequestBody TicketStatusRequest ticketStatusRequest,
+                                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
 
         TicketStatus ticketStatus = ticketStatusService.createTicketStatus(ticketStatusRequest);
 
@@ -79,7 +89,12 @@ public class TicketStatusRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketStatus> updateTicketStatus(@PathVariable Integer id,
-                                                           @RequestBody TicketStatusRequest ticketStatusRequest) {
+                                                           @Valid @RequestBody TicketStatusRequest ticketStatusRequest,
+                                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+            throw new ValidationException(errorMessage);
+        }
         TicketStatus updatedTicketStatus = ticketStatusService.updateTicketStatus(id, ticketStatusRequest);
         return new ResponseEntity<>(updatedTicketStatus, HttpStatus.OK);
     }
