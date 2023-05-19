@@ -98,15 +98,15 @@ public class DocumentPassRestController {
     }
 
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivateDocumentPass(@PathVariable("id") Long id) {
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Long id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<DocumentPass> documentPassOptional = documentPassRepository.findById(id);
 
         if (documentPassOptional.isPresent()) {
             DocumentPass documentPass = documentPassOptional.get();
-            documentPass.setDeleted(true);
+            documentPass.setDeleted(isDeleted);
             documentPassRepository.save(documentPass);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
             throw new EntityNotFoundException("DocumentPass with id " + id + " not found!");
         }

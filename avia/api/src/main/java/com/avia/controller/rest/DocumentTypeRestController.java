@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class DocumentTypeRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllDocumentTypesWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 3, Sort.by("idDocumentType").ascending());
+        Pageable pageable = PageRequest.of(page, documentTypePageCapacity, Sort.by("idDocumentType").ascending());
 
         Page<DocumentType> documentTypes = documentTypeRepository.findAll(pageable);
 
@@ -96,15 +97,15 @@ public class DocumentTypeRestController {
         }
     }
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivateDocumentType(@PathVariable("id") Integer id) {
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Integer id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<DocumentType> documentTypeOptional = documentTypeRepository.findById(id);
 
         if (documentTypeOptional.isPresent()) {
             DocumentType documentType = documentTypeOptional.get();
-            documentType.setDeleted(true);
+            documentType.setDeleted(isDeleted);
             documentTypeRepository.save(documentType);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
             throw new EntityNotFoundException("DocumentType with id " + id + " not found!");
         }

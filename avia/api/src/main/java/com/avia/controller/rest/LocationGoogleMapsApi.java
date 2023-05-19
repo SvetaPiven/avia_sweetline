@@ -18,12 +18,10 @@ public class LocationGoogleMapsApi {
 
     private final AirportService airportService;
 
-    private final AirportRepository airportRepository;
 
     @GetMapping("/location/{id}")
     public ResponseEntity<String> getAirportAddress(@PathVariable Long id) throws Exception {
-        Airport airport = airportRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Location with " + id + "not found"));
+        Airport airport = airportService.findById(id);
 
         String address = airportService.getAddressFromLatLng(airport.getLatitude(), airport.getLongitude());
 

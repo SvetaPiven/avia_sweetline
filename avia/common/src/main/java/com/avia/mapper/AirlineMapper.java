@@ -13,16 +13,13 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AirlineMapper {
-    @Mappings({
-            @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
+
+            @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
-    })
     Airline toEntity(AirlineRequest airlineRequest);
 
-    @Mappings({
-            @Mapping(target = "created", ignore = true),
+    //   @Mapping(target = "created", ignore = true)
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
-    })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Airline partialUpdate(AirlineRequest airlineRequest, @MappingTarget Airline airline);
 }

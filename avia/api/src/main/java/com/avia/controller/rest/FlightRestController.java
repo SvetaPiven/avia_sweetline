@@ -100,15 +100,15 @@ public class FlightRestController {
     }
 
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivateFlight(@PathVariable("id") Long id) {
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Long id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
 
         if (flightOptional.isPresent()) {
             Flight flight = flightOptional.get();
-            flight.setDeleted(true);
+            flight.setDeleted(isDeleted);
             flightRepository.save(flight);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
             throw new EntityNotFoundException("Flight with id " + id + " not found!");
         }

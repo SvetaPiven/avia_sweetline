@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -86,15 +87,15 @@ public class RoleRestController {
         }
     }
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivateRole(@PathVariable("id") Integer id) {
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Integer id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<Role> roleOptional = roleRepository.findById(id);
 
         if (roleOptional.isPresent()) {
             Role role = roleOptional.get();
-            role.setDeleted(true);
+            role.setDeleted(isDeleted);
             roleRepository.save(role);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
             throw new EntityNotFoundException("Role with id " + id + " not found!");
         }

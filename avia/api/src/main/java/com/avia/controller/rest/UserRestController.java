@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -91,18 +92,17 @@ public class UserRestController {
         }
     }
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivateUser(@PathVariable("id") Long id) {
-
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Long id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<User> userOptional = userRepository.findById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setDeleted(true);
+            user.setDeleted(isDeleted);
             userRepository.save(user);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
-            throw new EntityNotFoundException("User status with id " + id + " not found!");
+            throw new EntityNotFoundException("User with id " + id + " not found!");
         }
     }
 

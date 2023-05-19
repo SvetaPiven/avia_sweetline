@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -96,16 +97,15 @@ public class TicketRestController {
         }
     }
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivateTicket(@PathVariable("id") Long id) {
-
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Long id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(id);
 
         if (ticketOptional.isPresent()) {
             Ticket ticket = ticketOptional.get();
-            ticket.setDeleted(true);
+            ticket.setDeleted(isDeleted);
             ticketRepository.save(ticket);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
             throw new EntityNotFoundException("Ticket with id " + id + " not found!");
         }

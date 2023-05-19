@@ -1,11 +1,10 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.model.entity.Airline;
 import com.avia.model.request.AirlineRequest;
 import com.avia.repository.AirlineRepository;
 import com.avia.service.AirlineService;
-import com.avia.exception.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,15 +96,15 @@ public class AirlineRestController {
         }
     }
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivateAirline(@PathVariable("id") Integer id) {
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Integer id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<Airline> airlineOptional = airlineRepository.findById(id);
 
         if (airlineOptional.isPresent()) {
             Airline airline = airlineOptional.get();
-            airline.setDeleted(true);
+            airline.setDeleted(isDeleted);
             airlineRepository.save(airline);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
             throw new EntityNotFoundException("Airline with id " + id + " not found!");
         }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -95,15 +96,15 @@ public class FlightStatusRestController {
         }
     }
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivateFlightStatus(@PathVariable("id") Integer id) {
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Integer id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<FlightStatus> flightStatusOptional = flightStatusRepository.findById(id);
 
         if (flightStatusOptional.isPresent()) {
             FlightStatus flightStatus = flightStatusOptional.get();
-            flightStatus.setDeleted(true);
+            flightStatus.setDeleted(isDeleted);
             flightStatusRepository.save(flightStatus);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
             throw new EntityNotFoundException("Flight status with id " + id + " not found!");
         }

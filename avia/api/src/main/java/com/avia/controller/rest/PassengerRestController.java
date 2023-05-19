@@ -103,16 +103,15 @@ PassengerRestController {
         }
     }
 
-    @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> deactivatePassenger(@PathVariable("id") Long id) {
-
+    @PutMapping("/{id}/status")
+    public String changeStatus(@PathVariable("id") Long id, @RequestParam("isDeleted") boolean isDeleted) {
         Optional<Passenger> passengerOptional = passengerRepository.findById(id);
 
         if (passengerOptional.isPresent()) {
             Passenger passenger = passengerOptional.get();
-            passenger.setDeleted(true);
+            passenger.setDeleted(isDeleted);
             passengerRepository.save(passenger);
-            return ResponseEntity.noContent().build();
+            return "Status changed successfully";
         } else {
             throw new EntityNotFoundException("Passenger with id " + id + " not found!");
         }
