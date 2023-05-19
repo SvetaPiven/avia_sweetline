@@ -1,5 +1,6 @@
 package com.avia.controller.rest;
 
+import com.avia.model.entity.Airline;
 import com.avia.model.entity.Airport;
 import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;
@@ -113,17 +114,7 @@ public class AirportRestController {
 
     @GetMapping("/popular")
     public List<Airport> getPopularAirports() {
-        List<Object[]> result = airportRepository.findPopularAirports();
-        List<Airport> airports = new ArrayList<>();
-        for (Object[] row : result) {
-            Airport airport = new Airport();
-            airport.setIdAirport((Long) row[0]);
-            airport.setNameAirport((String) row[1]);
-            airport.setCity((String) row[2]);
-            airport.setCountry((String) row[3]);
-            airports.add(airport);
-        }
-        return airports;
+        return airportRepository.findPopularAirports();
     }
 }
 

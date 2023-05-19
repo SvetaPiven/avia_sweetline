@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 @Service
 @RequiredArgsConstructor
@@ -82,26 +84,16 @@ public class TicketServiceImpl implements TicketService {
                 flight.getIdArrivalAirport().getLongitude()) * 0.3).setScale(2, RoundingMode.HALF_UP));
 
         try {
+            String emailTemplate = ResourceBundle.getBundle("email").getString("application.email.buy.ticket");
+
+            String formattedMessage = MessageFormat.format(emailTemplate, ticketClass.getNameClass(),
+                    airportService.getAddressFromLatLng(flight.getIdDepartureAirport().getLatitude(), flight.getIdDepartureAirport().getLongitude()),
+                    airportService.getAddressFromLatLng(flight.getIdArrivalAirport().getLatitude(), flight.getIdArrivalAirport().getLongitude()),
+                    flight.getFlightNumber(), airline.getNameAirline(), flight.getDepartureTime(), ticket.getPrice());
+
+
             emailService.sendSimpleEmail(userRepository.findByIdPass(ticketRequest.getIdPass()).getAuthenticationInfo().getEmail(),
-                    "Congrats from SweetLine Avia! Your created the ticket!",
-                    "Dear customer, here an info from your ticket:\n" +
-                            "Ticket class: " + ticketClass.getNameClass() + "\n" +
-                            "Departure: " + airportService.getAddressFromLatLng(flight.getIdDepartureAirport().getLatitude(),
-                            flight.getIdDepartureAirport().getLongitude()) + "\n" +
-                            "Arrival: " + airportService.getAddressFromLatLng(flight.getIdArrivalAirport().getLatitude(),
-                            flight.getIdArrivalAirport().getLongitude()) + "\n" +
-                            "Flight: " + flight.getFlightNumber() + "\n" +
-                            "Airline company: " + airline.getNameAirline() + "\n" +
-                            "Departure time: " + flight.getDepartureTime() + "\n" +
-                            "Price is: " + ticket.getPrice() + "$\n" +
-                            "You are welcome!\n" +
-                            "              _\n" +
-                            "           -=\\`\\\n" +
-                            "      |\\ ____\\_\\__\n" +
-                            "   -=\\c`\"\"\"\"\"\"\" \"`)\n" +
-                            "      `~~~~~/ /~~`\n" +
-                            "           -==/ /\n" +
-                            "               '-'");
+                    "Congrats from SweetLine Avia! Your created the ticket!", formattedMessage);
         } catch (MailException mailException) {
             log.error("Error while sending out email.." + mailException);
         } catch (Exception e) {

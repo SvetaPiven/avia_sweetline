@@ -15,15 +15,13 @@ import org.mapstruct.ReportingPolicy;
 public interface DocumentTypeMapper {
     @Mappings({
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", constant = "false")
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     DocumentType toEntity(DocumentTypeRequest documentTypeRequest);
 
     @Mappings({
             @Mapping(target = "created", ignore = true),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", ignore = true)
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     DocumentType partialUpdate(DocumentTypeRequest documentTypeRequest, @MappingTarget DocumentType documentType);

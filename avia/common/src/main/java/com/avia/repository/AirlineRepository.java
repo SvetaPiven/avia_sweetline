@@ -14,12 +14,6 @@ public interface AirlineRepository extends JpaRepository<Airline, Integer> {
     @NotNull
     List<Airline> findAll();
 
-//    @Query("SELECT a.idAirline, a.nameAirline, a.codeAirline, COUNT(t.idTicket) AS soldTickets " +
-//            "FROM Ticket t JOIN t.idAirline a " +
-//            "GROUP BY a.idAirline, a.nameAirline, a.codeAirline " +
-//            "ORDER BY soldTickets DESC")
-//    List<Object []> findPopularAirlines();
-
     @Query("SELECT a FROM Airline a JOIN a.tickets t " +
             "GROUP BY a.idAirline, a.nameAirline, a.codeAirline " +
             "ORDER BY COUNT(t) DESC")

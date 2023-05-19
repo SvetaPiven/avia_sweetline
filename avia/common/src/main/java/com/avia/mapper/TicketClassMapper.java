@@ -18,14 +18,12 @@ public interface TicketClassMapper {
     @Mappings({
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
-//            @Mapping(target = "isDeleted", constant = "false")
     })
     TicketClass toEntity(TicketClassRequest ticketClassRequest);
 
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
-//            @Mapping(target = "isDeleted", ignore = true)
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     TicketClass partialUpdate(TicketClassRequest ticketClassRequest, @MappingTarget TicketClass ticketClass);

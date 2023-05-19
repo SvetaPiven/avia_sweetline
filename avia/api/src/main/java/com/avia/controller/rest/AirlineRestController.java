@@ -112,20 +112,6 @@ public class AirlineRestController {
         }
     }
 
-//    @GetMapping("/popular")
-//    public List<Airline> getPopularAirlines() {
-//        List<Object[]> result = airlineRepository.findPopularAirlines();
-//        List<Airline> airlines = new ArrayList<>();
-//        for (Object[] row : result) {
-//            Airline airline = new Airline();
-//            airline.setIdAirline((Integer) row[0]);
-//            airline.setNameAirline((String) row[1]);
-//            airline.setCodeAirline((String) row[2]);
-//            airlines.add(airline);
-//        }
-//        return airlines;
-//    }
-
     @GetMapping("/popular")
     public List<Airline> getPopularAirlines() {
         return airlineRepository.findPopularAirlines();

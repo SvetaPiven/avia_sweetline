@@ -20,8 +20,7 @@ public interface FlightMapper {
             @Mapping(target = "idArrivalAirport.idAirport", source = "idArrivalAirport"),
             @Mapping(target = "idFlightStatus.idFlightStatus", source = "idFlightStatus"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", constant = "false")
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     Flight toEntity(FlightRequest flightRequest);
 
@@ -31,8 +30,7 @@ public interface FlightMapper {
             @Mapping(target = "idDepartureAirport.idAirport", source = "idDepartureAirport"),
             @Mapping(target = "idArrivalAirport.idAirport", source = "idArrivalAirport"),
             @Mapping(target = "idFlightStatus.idFlightStatus", source = "idFlightStatus"),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", constant = "false")
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Flight partialUpdate(FlightRequest flightRequest, @MappingTarget Flight flight);

@@ -22,8 +22,7 @@ public interface TicketMapper {
             @Mapping(target = "idAirline.idAirline", source = "idAirline"),
             @Mapping(target = "numberPlace", constant = "On registration"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", constant = "false")
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     Ticket toEntity(TicketRequest ticketRequest);
 
@@ -35,8 +34,7 @@ public interface TicketMapper {
             @Mapping(target = "idFlight.idFlight", source = "idFlight"),
             @Mapping(target = "idAirline.idAirline", source = "idAirline"),
             @Mapping(target = "created", ignore = true),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", constant = "false")
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Ticket partialUpdate(TicketRequest ticketRequest, @MappingTarget Ticket ticket);

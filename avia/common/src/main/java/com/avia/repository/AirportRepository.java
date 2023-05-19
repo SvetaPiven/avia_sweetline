@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AirportRepository extends JpaRepository<Airport, Long> {
-    @Query("SELECT a.idAirport, a.nameAirport, a.city, a.country, COUNT(f.idFlight) AS countFlights " +
-            "FROM Flight f JOIN f.idDepartureAirport a " +
-            "GROUP BY a.idAirport, a.nameAirport, a.city, a.country  " +
-            "ORDER BY countFlights DESC")
-    List<Object []> findPopularAirports();
+
+    @Query("SELECT a FROM Airport a JOIN a.flightsDeparture f " +
+            "GROUP BY a.idAirport, a.nameAirport, a.city, a.country " +
+            "ORDER BY COUNT(f) DESC")
+    List<Airport> findPopularAirports();
 }

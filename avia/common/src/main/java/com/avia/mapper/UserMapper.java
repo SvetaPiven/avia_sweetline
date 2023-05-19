@@ -19,8 +19,7 @@ public interface UserMapper {
             @Mapping(target = "authenticationInfo.userPassword", source = "userPassword"),
             @Mapping(target = "idRole.idRole", source = "idRole"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", constant = "false"),
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     User toEntity(UserRequest userRequest);
 
@@ -29,8 +28,7 @@ public interface UserMapper {
             @Mapping(target = "authenticationInfo.userPassword", source = "userPassword"),
             @Mapping(target = "idRole.idRole", source = "idRole"),
             @Mapping(target = "created", ignore = true),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", ignore = true),
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User partialUpdate(UserRequest userRequest, @MappingTarget User user);

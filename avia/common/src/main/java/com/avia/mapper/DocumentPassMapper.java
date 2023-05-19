@@ -18,8 +18,7 @@ public interface DocumentPassMapper {
             @Mapping(target = "idDocumentType.idDocumentType", source = "idDocumentType"),
             @Mapping(target = "idPass.idPass", source = "idPass"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", constant = "false")
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     DocumentPass toEntity(DocumentPassRequest documentPassRequest);
 
@@ -28,8 +27,7 @@ public interface DocumentPassMapper {
             @Mapping(target = "idDocumentType.idDocumentType", source = "idDocumentType"),
             @Mapping(target = "idPass.idPass", source = "idPass"),
             @Mapping(target = "created", ignore = true),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-//            @Mapping(target = "isDeleted", ignore = true)
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     DocumentPass partialUpdate(DocumentPassRequest documentPassDt, @MappingTarget DocumentPass documentPass);
