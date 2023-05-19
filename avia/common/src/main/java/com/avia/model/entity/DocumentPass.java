@@ -41,7 +41,7 @@ public class DocumentPass {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
     @JoinColumn(name = "id_document_type", nullable = false)
-    private DocumentType idDocumentType;
+    private DocumentType documentType;
 
     @Size(max = 30)
     @NotNull
@@ -53,7 +53,7 @@ public class DocumentPass {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_pass", nullable = false)
     @JsonBackReference
-    private Passenger idPass;
+    private Passenger passenger;
 
     @NotNull
     @Column

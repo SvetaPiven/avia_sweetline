@@ -31,13 +31,13 @@ public class DocumentPassServiceImpl implements DocumentPassService {
                 new EntityNotFoundException("Document pass class with id " + documentPassRequest.getIdDocumentType() + " not found"));
 
         DocumentPass documentPass = documentPassMapper.toEntity(documentPassRequest);
-        documentPass.getIdDocumentType().setIdDocumentType(documentPass.getIdDocumentType().getIdDocumentType());
-        documentPass.setIdDocumentType(documentType);
+        documentPass.getDocumentType().setIdDocumentType(documentPass.getDocumentType().getIdDocumentType());
+        documentPass.setDocumentType(documentType);
 
         Passenger passenger = passengerRepository.findById(documentPassRequest.getIdPass()).orElseThrow(() ->
                 new EntityNotFoundException("Passenger with id " + documentPassRequest.getIdPass() + " not found"));
-        documentPass.getIdPass().setIdPass(passenger.getIdPass());
-        documentPass.setIdPass(passenger);
+        documentPass.getPassenger().setIdPass(passenger.getIdPass());
+        documentPass.setPassenger(passenger);
 
         return documentPassRepository.save(documentPass);
     }
