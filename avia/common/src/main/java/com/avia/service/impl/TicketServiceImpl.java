@@ -2,6 +2,7 @@ package com.avia.service.impl;
 
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.TicketMapper;
+import com.avia.model.entity.Airport;
 import com.avia.model.request.TicketRequest;
 import com.avia.model.entity.Airline;
 import com.avia.model.entity.Flight;
@@ -22,6 +23,7 @@ import com.avia.service.PassengerService;
 import com.avia.service.TicketClassService;
 import com.avia.service.TicketService;
 import com.avia.util.CalculateDistance;
+import com.avia.util.TicketPriceCalculator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
@@ -57,12 +59,13 @@ public class TicketServiceImpl implements TicketService {
 
     private final CalculateDistance calculateDistance;
 
+    private final TicketPriceCalculator ticketPriceCalculator;
+
     private static final Logger log = Logger.getLogger(TicketServiceImpl.class);
 
     @Override
     @Transactional
     public Ticket createTicket(TicketRequest ticketRequest) {
-
         Passenger passenger = passengerService.findById(ticketRequest.getIdPass());
         Ticket ticket = ticketMapper.toEntity(ticketRequest);
         ticket.getIdPass().setIdPass(passenger.getIdPass());
@@ -80,21 +83,34 @@ public class TicketServiceImpl implements TicketService {
         ticket.getIdAirline().setIdAirline(airline.getIdAirline());
         ticket.setIdAirline(airline);
 
-        ticket.setPrice(BigDecimal.valueOf(calculateDistance.calculate(flight.getIdDepartureAirport().getLatitude(),
-                flight.getIdDepartureAirport().getLongitude(), flight.getIdArrivalAirport().getLatitude(),
-                flight.getIdArrivalAirport().getLongitude()) * 0.3).setScale(2, RoundingMode.HALF_UP));
+        Airport departureAirport = airportService.findById(flight.getIdDepartureAirport().getIdAirport());
+        Airport arrivalAirport = airportService.findById(flight.getIdArrivalAirport().getIdAirport());
 
+        double latitudeDeparture = departureAirport.getLatitude();
+        double latitudeArrival = arrivalAirport.getLatitude();
+        double longitudeDeparture = departureAirport.getLongitude();
+        double longitudeArrival = arrivalAirport.getLongitude();
+
+        BigDecimal ticketPrice = ticketPriceCalculator.calculateTicketPrice(latitudeDeparture, longitudeDeparture, latitudeArrival, longitudeArrival);
+        ticket.setPrice(ticketPrice);
+
+        sendEmail(ticket, ticketRequest);
+
+        return ticketRepository.save(ticket);
+    }
+
+    private void sendEmail(Ticket ticket, TicketRequest ticketRequest) {
         try {
             String emailTemplate = ResourceBundle.getBundle("email").getString("application.email.buy.ticket");
 
             String formattedMessage =
-                    MessageFormat.format(emailTemplate, ticketClass.getNameClass(),
-                    airportService.getAddressFromLatLng(flight.getIdDepartureAirport().getLatitude(),
-                    flight.getIdDepartureAirport().getLongitude()),
-                    airportService.getAddressFromLatLng(flight.getIdArrivalAirport().getLatitude(),
-                    flight.getIdArrivalAirport().getLongitude()),
-                    flight.getFlightNumber(), airline.getNameAirline(),
-                    flight.getDepartureTime(), ticket.getPrice());
+                    MessageFormat.format(emailTemplate, ticket.getIdTicketClass().getNameClass(),
+                            airportService.getAddressFromLatLng(ticket.getIdFlight().getIdDepartureAirport().getLatitude(),
+                                    ticket.getIdFlight().getIdDepartureAirport().getLongitude()),
+                            airportService.getAddressFromLatLng(ticket.getIdFlight().getIdArrivalAirport().getLatitude(),
+                                    ticket.getIdFlight().getIdArrivalAirport().getLongitude()),
+                            ticket.getIdFlight().getFlightNumber(), ticket.getIdAirline().getNameAirline(),
+                            ticket.getIdFlight().getDepartureTime(), ticket.getPrice());
 
             emailService.sendSimpleEmail(userRepository.findByIdPass(ticketRequest.getIdPass()).getAuthenticationInfo().getEmail(),
                     "Congrats from SweetLine Avia! Your created the ticket!", formattedMessage);
@@ -104,8 +120,6 @@ public class TicketServiceImpl implements TicketService {
             log.error("Error occurred: " + e.getMessage(), e);
             throw new EntityNotFoundException("No results found");
         }
-
-        return ticketRepository.save(ticket);
     }
 
     @Override
