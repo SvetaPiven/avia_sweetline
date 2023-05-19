@@ -1,8 +1,8 @@
 package com.avia.service.impl;
 
 import com.avia.model.entity.TicketClass;
+import com.avia.model.request.TicketClassRequest;
 import com.avia.repository.TicketClassRepository;
-import com.avia.model.dto.TicketClassDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.TicketClassMapper;
 import com.avia.service.TicketClassService;
@@ -19,17 +19,17 @@ public class TicketClassServiceImpl implements TicketClassService {
 
     @Override
     @Transactional
-    public TicketClass createTicketClass(TicketClassDto ticketClassDto) {
-        TicketClass ticketClass = ticketClassMapper.toEntity(ticketClassDto);
+    public TicketClass createTicketClass(TicketClassRequest ticketClassRequest) {
+        TicketClass ticketClass = ticketClassMapper.toEntity(ticketClassRequest);
         return ticketClassRepository.save(ticketClass);
     }
 
     @Override
     @Transactional
-    public TicketClass updateTicketClass(Integer id, TicketClassDto ticketClassDto) {
+    public TicketClass updateTicketClass(Integer id, TicketClassRequest ticketClassRequest) {
         TicketClass ticketClass = ticketClassRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Ticket class with id " + id + " not found"));
-        ticketClassMapper.partialUpdate(ticketClassDto, ticketClass);
+        ticketClassMapper.partialUpdate(ticketClassRequest, ticketClass);
         return ticketClassRepository.save(ticketClass);
     }
 }

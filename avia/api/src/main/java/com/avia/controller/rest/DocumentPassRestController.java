@@ -1,11 +1,12 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.DocumentPass;
+import com.avia.model.request.DocumentPassRequest;
 import com.avia.repository.DocumentPassRepository;
 import com.avia.service.DocumentPassService;
-import com.avia.model.dto.DocumentPassDto;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,9 @@ public class DocumentPassRestController {
 
     private final DocumentPassService documentPassService;
 
+    @Value("${documentPass.page-capacity}")
+    private Integer documentPassPageCapacity;
+
     @GetMapping()
     public ResponseEntity<List<DocumentPass>> getAllDocumentPass() {
 
@@ -45,7 +49,7 @@ public class DocumentPassRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllDocumentPassWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("idDocumentPass").ascending());
+        Pageable pageable = PageRequest.of(page, documentPassPageCapacity, Sort.by("idDocumentPass").ascending());
 
         Page<DocumentPass> documentPasses = documentPassRepository.findAll(pageable);
 
@@ -57,9 +61,9 @@ public class DocumentPassRestController {
     }
 
     @PostMapping
-    public ResponseEntity<DocumentPass> createTicketStatus(@RequestBody DocumentPassDto documentPassDto) {
+    public ResponseEntity<DocumentPass> createTicketStatus(@RequestBody DocumentPassRequest documentPassRequest) {
 
-        DocumentPass documentPass = documentPassService.createDocumentPass(documentPassDto);
+        DocumentPass documentPass = documentPassService.createDocumentPass(documentPassRequest);
 
         return new ResponseEntity<>(documentPass, HttpStatus.CREATED);
     }
@@ -75,8 +79,8 @@ public class DocumentPassRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<DocumentPass> updateTicketStatus(@PathVariable Long id,
-                                                           @RequestBody DocumentPassDto documentPassDto) {
-        DocumentPass updatedDocumentPass = documentPassService.updateDocumentPass(id, documentPassDto);
+                                                           @RequestBody DocumentPassRequest documentPassRequest) {
+        DocumentPass updatedDocumentPass = documentPassService.updateDocumentPass(id, documentPassRequest);
         return new ResponseEntity<>(updatedDocumentPass, HttpStatus.OK);
     }
 
@@ -95,12 +99,12 @@ public class DocumentPassRestController {
 
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteDocumentPass(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deactivateDocumentPass(@PathVariable("id") Long id) {
         Optional<DocumentPass> documentPassOptional = documentPassRepository.findById(id);
 
         if (documentPassOptional.isPresent()) {
             DocumentPass documentPass = documentPassOptional.get();
-            documentPass.setIsDeleted(true);
+            documentPass.setDeleted(true);
             documentPassRepository.save(documentPass);
             return ResponseEntity.noContent().build();
         } else {

@@ -2,8 +2,8 @@ package com.avia.mapper;
 
 import com.avia.model.entity.DocumentType;
 import com.avia.model.entity.TicketClass;
-import com.avia.model.dto.DocumentTypeDto;
-import com.avia.model.dto.TicketClassDto;
+import com.avia.model.request.DocumentTypeRequest;
+import com.avia.model.request.TicketClassRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,18 +17,16 @@ import org.mapstruct.ReportingPolicy;
 public interface TicketClassMapper {
     @Mappings({
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    TicketClass toEntity(TicketClassDto ticketClassDto);
-
-    DocumentTypeDto toDto(DocumentType documentType);
+    TicketClass toEntity(TicketClassRequest ticketClassRequest);
 
     @Mappings({
             @Mapping(target = "created", ignore = true),
-            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", ignore = true)
+            @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))")
+//            @Mapping(target = "isDeleted", ignore = true)
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    TicketClass partialUpdate(TicketClassDto ticketClassDto, @MappingTarget TicketClass ticketClass);
+    TicketClass partialUpdate(TicketClassRequest ticketClassRequest, @MappingTarget TicketClass ticketClass);
 }

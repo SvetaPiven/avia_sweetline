@@ -1,4 +1,4 @@
-package com.avia.model.dto;
+package com.avia.model.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class PassengerDto implements Serializable {
+public class PassengerRequest implements Serializable {
 
     private Long idPass;
 

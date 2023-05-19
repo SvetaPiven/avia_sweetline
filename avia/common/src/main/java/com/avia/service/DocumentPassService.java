@@ -1,11 +1,11 @@
 package com.avia.service;
 
-import com.avia.model.dto.DocumentPassDto;
+import com.avia.model.request.DocumentPassRequest;
 import com.avia.model.entity.DocumentPass;
 
 public interface DocumentPassService {
 
-    DocumentPass createDocumentPass(DocumentPassDto documentPassDto);
+    DocumentPass createDocumentPass(DocumentPassRequest documentPassRequest);
 
-    DocumentPass updateDocumentPass(Long id, DocumentPassDto documentPassDto);
+    DocumentPass updateDocumentPass(Long id, DocumentPassRequest documentPassRequest);
 }

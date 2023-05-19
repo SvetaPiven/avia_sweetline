@@ -2,7 +2,7 @@ package com.avia.service.impl;
 
 import com.avia.model.entity.TicketStatus;
 import com.avia.repository.TicketStatusRepository;
-import com.avia.model.dto.TicketStatusDto;
+import com.avia.model.request.TicketStatusRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.TicketStatusMapper;
 import com.avia.service.TicketStatusService;
@@ -19,21 +19,21 @@ public class TicketStatusServiceImpl implements TicketStatusService {
 
     @Override
     @Transactional
-    public TicketStatus createTicketStatus(TicketStatusDto ticketStatusDto) {
+    public TicketStatus createTicketStatus(TicketStatusRequest ticketStatusRequest) {
 
-        TicketStatus ticketStatus = ticketStatusMapper.toEntity(ticketStatusDto);
+        TicketStatus ticketStatus = ticketStatusMapper.toEntity(ticketStatusRequest);
 
         return ticketStatusRepository.save(ticketStatus);
     }
 
     @Override
     @Transactional
-    public TicketStatus updateTicketStatus(Integer id, TicketStatusDto ticketStatusDto) {
+    public TicketStatus updateTicketStatus(Integer id, TicketStatusRequest ticketStatusRequest) {
 
         TicketStatus ticketStatus = ticketStatusRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Ticket status type with id " + id + " not found"));
 
-        ticketStatusMapper.partialUpdate(ticketStatusDto, ticketStatus);
+        ticketStatusMapper.partialUpdate(ticketStatusRequest, ticketStatus);
 
         return ticketStatusRepository.save(ticketStatus);
     }

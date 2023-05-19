@@ -51,15 +51,17 @@ public class Passenger {
     @Column
     private Double miles;
 
+    @NotNull
     @Column(nullable = false)
     private Timestamp created;
 
+    @NotNull
     @Column
     private Timestamp changed;
 
     @NotNull
     @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = false;
+    private boolean isDeleted = false;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude

@@ -4,7 +4,7 @@ package com.avia.service.impl;
 import com.avia.model.entity.Passenger;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
-import com.avia.model.dto.PassengerDto;
+import com.avia.model.request.PassengerRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.PassengerMapper;
 import jakarta.transaction.Transactional;
@@ -21,18 +21,18 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public Passenger createPassenger(PassengerDto passengerDto) {
-        Passenger passenger = passengerMapper.toEntity(passengerDto);
+    public Passenger createPassenger(PassengerRequest passengerRequest) {
+        Passenger passenger = passengerMapper.toEntity(passengerRequest);
         return passengerRepository.save(passenger);
     }
 
 
     @Override
     @Transactional
-    public Passenger updatePassenger(Long id, PassengerDto passengerDto) {
+    public Passenger updatePassenger(Long id, PassengerRequest passengerRequest) {
         Optional<Passenger> passengerOptional = passengerRepository.findById(id);
         if (passengerOptional.isPresent()) {
-            Passenger passenger = passengerMapper.partialUpdate(passengerDto, passengerOptional.get());
+            Passenger passenger = passengerMapper.partialUpdate(passengerRequest, passengerOptional.get());
             return passengerRepository.save(passenger);
         } else {
             throw new EntityNotFoundException("Passenger not found with id " + id);

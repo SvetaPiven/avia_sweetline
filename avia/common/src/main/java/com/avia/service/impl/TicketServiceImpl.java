@@ -1,5 +1,8 @@
 package com.avia.service.impl;
 
+import com.avia.exception.EntityNotFoundException;
+import com.avia.mapper.TicketMapper;
+import com.avia.model.request.TicketRequest;
 import com.avia.model.entity.Airline;
 import com.avia.model.entity.Flight;
 import com.avia.model.entity.Passenger;
@@ -13,11 +16,8 @@ import com.avia.repository.TicketRepository;
 import com.avia.repository.UserRepository;
 import com.avia.service.AirportService;
 import com.avia.service.EmailService;
-import com.avia.location.LocationRestController;
-import com.avia.model.dto.TicketDto;
-import com.avia.exception.EntityNotFoundException;
-import com.avia.mapper.TicketMapper;
 import com.avia.service.TicketService;
+import com.avia.util.CalculateDistance;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
@@ -32,47 +32,57 @@ import java.math.RoundingMode;
 public class TicketServiceImpl implements TicketService {
 
     private final PassengerRepository passengerRepository;
+
     private final TicketRepository ticketRepository;
+
     private final TicketMapper ticketMapper;
+
     private final FlightRepository flightRepository;
+
     private final TicketClassRepository ticketClassRepository;
+
     private final AirlineRepository airlineRepository;
+
     private final AirportService airportService;
+
     private final EmailService emailService;
+
     private final UserRepository userRepository;
-    private final LocationRestController locationRestController;
+
+    private final CalculateDistance calculateDistance;
+
     private static final Logger log = Logger.getLogger(TicketServiceImpl.class);
 
     @Override
     @Transactional
-    public Ticket createTicket(TicketDto ticketDto) {
-        Passenger passenger = passengerRepository.findById(ticketDto.getIdPass()).orElseThrow(() ->
-                new EntityNotFoundException("Passenger with id " + ticketDto.getIdPass() + " not found"));
-        Ticket ticket = ticketMapper.toEntity(ticketDto);
+    public Ticket createTicket(TicketRequest ticketRequest) {
+        Passenger passenger = passengerRepository.findById(ticketRequest.getIdPass()).orElseThrow(() ->
+                new EntityNotFoundException("Passenger with id " + ticketRequest.getIdPass() + " not found"));
+        Ticket ticket = ticketMapper.toEntity(ticketRequest);
         ticket.getIdPass().setIdPass(passenger.getIdPass());
         ticket.setIdPass(passenger);
 
-        TicketClass ticketClass = ticketClassRepository.findById(ticketDto.getIdTicketClass()).orElseThrow(() ->
-                new EntityNotFoundException("Ticket class with id " + ticketDto.getIdTicketClass() + " not found"));
+        TicketClass ticketClass = ticketClassRepository.findById(ticketRequest.getIdTicketClass()).orElseThrow(() ->
+                new EntityNotFoundException("Ticket class with id " + ticketRequest.getIdTicketClass() + " not found"));
         ticket.getIdTicketClass().setIdTicketClass(ticketClass.getIdTicketClass());
         ticket.setIdTicketClass(ticketClass);
 
-        Flight flight = flightRepository.findById(ticketDto.getIdFlight()).orElseThrow(() ->
-                new EntityNotFoundException("Flight with id " + ticketDto.getIdFlight() + " not found"));
+        Flight flight = flightRepository.findById(ticketRequest.getIdFlight()).orElseThrow(() ->
+                new EntityNotFoundException("Flight with id " + ticketRequest.getIdFlight() + " not found"));
         ticket.getIdFlight().setIdFlight(flight.getIdFlight());
         ticket.setIdFlight(flight);
 
-        Airline airline = airlineRepository.findById(ticketDto.getIdAirline()).orElseThrow(() ->
-                new EntityNotFoundException("Airline with id " + ticketDto.getIdAirline() + " not found"));
+        Airline airline = airlineRepository.findById(ticketRequest.getIdAirline()).orElseThrow(() ->
+                new EntityNotFoundException("Airline with id " + ticketRequest.getIdAirline() + " not found"));
         ticket.getIdAirline().setIdAirline(airline.getIdAirline());
         ticket.setIdAirline(airline);
 
-        ticket.setPrice(BigDecimal.valueOf(locationRestController.calculateDistance(flight.getIdDepartureAirport().getLatitude(),
+        ticket.setPrice(BigDecimal.valueOf(calculateDistance.calculate(flight.getIdDepartureAirport().getLatitude(),
                 flight.getIdDepartureAirport().getLongitude(), flight.getIdArrivalAirport().getLatitude(),
                 flight.getIdArrivalAirport().getLongitude()) * 0.3).setScale(2, RoundingMode.HALF_UP));
 
         try {
-            emailService.sendSimpleEmail(userRepository.findByIdPass(ticketDto.getIdPass()).getAuthenticationInfo().getEmail(),
+            emailService.sendSimpleEmail(userRepository.findByIdPass(ticketRequest.getIdPass()).getAuthenticationInfo().getEmail(),
                     "Congrats from SweetLine Avia! Your created the ticket!",
                     "Dear customer, here an info from your ticket:\n" +
                             "Ticket class: " + ticketClass.getNameClass() + "\n" +
@@ -93,7 +103,7 @@ public class TicketServiceImpl implements TicketService {
                             "           -==/ /\n" +
                             "               '-'");
         } catch (MailException mailException) {
-            log.error("Error while sending out email..{}");
+            log.error("Error while sending out email.." + mailException);
         } catch (Exception e) {
             throw new EntityNotFoundException("No results found");
         }
@@ -103,10 +113,10 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public Ticket updateTicket(Long id, TicketDto ticketDto) {
+    public Ticket updateTicket(Long id, TicketRequest ticketRequest) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Ticket with id " + id + " not found"));
-        ticketMapper.partialUpdate(ticketDto, ticket);
+        ticketMapper.partialUpdate(ticketRequest, ticket);
         return ticketRepository.save(ticket);
     }
 }

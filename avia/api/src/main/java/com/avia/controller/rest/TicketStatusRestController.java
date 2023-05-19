@@ -3,9 +3,10 @@ package com.avia.controller.rest;
 import com.avia.model.entity.TicketStatus;
 import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketStatusService;
-import com.avia.model.dto.TicketStatusDto;
+import com.avia.model.request.TicketStatusRequest;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class TicketStatusRestController {
 
     private final TicketStatusService ticketStatusService;
 
+    @Value("${ticketStatus.page-capacity}")
+    private Integer ticketStatusPageCapacity;
+
     @GetMapping()
     public ResponseEntity<List<TicketStatus>> getAllTicketStatuses() {
 
@@ -44,7 +48,7 @@ public class TicketStatusRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllTicketStatusesWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 3, Sort.by("idTicketStatus").ascending());
+        Pageable pageable = PageRequest.of(page, ticketStatusPageCapacity, Sort.by("idTicketStatus").ascending());
 
         Page<TicketStatus> ticketStatuses = ticketStatusRepository.findAll(pageable);
 
@@ -56,9 +60,9 @@ public class TicketStatusRestController {
     }
 
     @PostMapping
-    public ResponseEntity<TicketStatus> createTicketStatus(@RequestBody TicketStatusDto ticketStatusDto) {
+    public ResponseEntity<TicketStatus> createTicketStatus(@RequestBody TicketStatusRequest ticketStatusRequest) {
 
-        TicketStatus ticketStatus = ticketStatusService.createTicketStatus(ticketStatusDto);
+        TicketStatus ticketStatus = ticketStatusService.createTicketStatus(ticketStatusRequest);
 
         return new ResponseEntity<>(ticketStatus, HttpStatus.CREATED);
     }
@@ -74,8 +78,8 @@ public class TicketStatusRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketStatus> updateTicketStatus(@PathVariable Integer id,
-                                                           @RequestBody TicketStatusDto ticketStatusDto) {
-        TicketStatus updatedTicketStatus = ticketStatusService.updateTicketStatus(id, ticketStatusDto);
+                                                           @RequestBody TicketStatusRequest ticketStatusRequest) {
+        TicketStatus updatedTicketStatus = ticketStatusService.updateTicketStatus(id, ticketStatusRequest);
         return new ResponseEntity<>(updatedTicketStatus, HttpStatus.OK);
     }
 
@@ -93,13 +97,13 @@ public class TicketStatusRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteTicketStatus(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deactivateTicketStatus(@PathVariable("id") Integer id) {
 
         Optional<TicketStatus> ticketStatusOptional = ticketStatusRepository.findById(id);
 
         if (ticketStatusOptional.isPresent()) {
             TicketStatus ticketStatus = ticketStatusOptional.get();
-            ticketStatus.setIsDeleted(true);
+            ticketStatus.setDeleted(true);
             ticketStatusRepository.save(ticketStatus);
             return ResponseEntity.noContent().build();
         } else {

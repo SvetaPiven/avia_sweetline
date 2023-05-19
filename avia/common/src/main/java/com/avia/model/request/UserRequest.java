@@ -1,4 +1,4 @@
-package com.avia.model.dto;
+package com.avia.model.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -8,7 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class UserDto implements Serializable {
+public class UserRequest implements Serializable {
 
     @Size(min = 10, max = 30)
     @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")

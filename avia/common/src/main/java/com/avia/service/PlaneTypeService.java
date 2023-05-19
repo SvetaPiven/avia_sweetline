@@ -1,11 +1,11 @@
 package com.avia.service;
 
-import com.avia.model.dto.PlaneTypeDto;
+import com.avia.model.request.PlaneTypeRequest;
 import com.avia.model.entity.PlaneType;
 
 public interface PlaneTypeService {
 
-    PlaneType createPlaneType(PlaneTypeDto planeTypeDto);
+    PlaneType createPlaneType(PlaneTypeRequest planeTypeRequest);
 
-    PlaneType updatePlaneType(Integer id, PlaneTypeDto planeTypeDto);
+    PlaneType updatePlaneType(Integer id, PlaneTypeRequest planeTypeRequest);
 }

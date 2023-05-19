@@ -9,12 +9,14 @@ import com.avia.repository.FlightRepository;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.repository.PlaneTypeRepository;
 import com.avia.service.FlightService;
-import com.avia.model.dto.FlightDto;
+import com.avia.model.request.FlightRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.FlightMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,25 +30,25 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     @Transactional
-    public Flight createFlight(FlightDto flightDto) {
-        PlaneType planeType = planeTypeRepository.findById(flightDto.getIdPlaneType()).orElseThrow(() ->
-                new EntityNotFoundException("Plane type with id " + flightDto.getIdPlaneType() + " not found"));
-        Flight flight = flightMapper.toEntity(flightDto);
+    public Flight createFlight(FlightRequest flightRequest) {
+        PlaneType planeType = planeTypeRepository.findById(flightRequest.getIdPlaneType()).orElseThrow(() ->
+                new EntityNotFoundException("Plane type with id " + flightRequest.getIdPlaneType() + " not found"));
+        Flight flight = flightMapper.toEntity(flightRequest);
         flight.getIdPlaneType().setIdPlaneType(flight.getIdPlaneType().getIdPlaneType());
         flight.setIdPlaneType(planeType);
 
-        Airport airportArrival = airportRepository.findById(flightDto.getIdArrivalAirport()).orElseThrow(() ->
-                new EntityNotFoundException("ArrivalAirport with id " + flightDto.getIdArrivalAirport() + " not found"));
+        Airport airportArrival = airportRepository.findById(flightRequest.getIdArrivalAirport()).orElseThrow(() ->
+                new EntityNotFoundException("ArrivalAirport with id " + flightRequest.getIdArrivalAirport() + " not found"));
         flight.getIdArrivalAirport().setIdAirport(airportArrival.getIdAirport());
         flight.setIdArrivalAirport(airportArrival);
 
-        Airport airportDeparture = airportRepository.findById(flightDto.getIdDepartureAirport()).orElseThrow(() ->
-                new EntityNotFoundException("DepartureAirport with id " + flightDto.getIdDepartureAirport() + " not found"));
+        Airport airportDeparture = airportRepository.findById(flightRequest.getIdDepartureAirport()).orElseThrow(() ->
+                new EntityNotFoundException("DepartureAirport with id " + flightRequest.getIdDepartureAirport() + " not found"));
         flight.getIdDepartureAirport().setIdAirport(airportDeparture.getIdAirport());
         flight.setIdDepartureAirport(airportDeparture);
 
-        FlightStatus flightStatus = flightStatusRepository.findById(flightDto.getIdFlightStatus()).orElseThrow(() ->
-                new EntityNotFoundException("Flight status with id " + flightDto.getIdFlightStatus() + " not found"));
+        FlightStatus flightStatus = flightStatusRepository.findById(flightRequest.getIdFlightStatus()).orElseThrow(() ->
+                new EntityNotFoundException("Flight status with id " + flightRequest.getIdFlightStatus() + " not found"));
         flight.getIdFlightStatus().setIdFlightStatus(flight.getIdFlightStatus().getIdFlightStatus());
         flight.setIdFlightStatus(flightStatus);
 
@@ -55,13 +57,19 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     @Transactional
-    public Flight updateFlight(Long id, FlightDto flightDto) {
+    public Flight updateFlight(Long id, FlightRequest flightRequest) {
 
         Flight flight = flightRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Flight with id " + id + " not found"));
 
-        flightMapper.partialUpdate(flightDto, flight);
+        flightMapper.partialUpdate(flightRequest, flight);
 
         return flightRepository.save(flight);
+    }
+
+    @Override
+    public Flight findById(Long idFlight) {
+        return flightRepository.findById(idFlight)
+                .orElseThrow(() -> new IllegalArgumentException("Flight not found"));
     }
 }

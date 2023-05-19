@@ -3,9 +3,10 @@ package com.avia.controller.rest;
 import com.avia.model.entity.DocumentType;
 import com.avia.repository.DocumentTypeRepository;
 import com.avia.service.DocumentTypeService;
-import com.avia.model.dto.DocumentTypeDto;
+import com.avia.model.request.DocumentTypeRequest;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class DocumentTypeRestController {
 
     private final DocumentTypeService documentTypeService;
 
+    @Value("${documentType.page-capacity}")
+    private Integer documentTypePageCapacity;
+
     @GetMapping()
     public ResponseEntity<List<DocumentType>> getAllDocumentTypes() {
 
@@ -54,9 +58,9 @@ public class DocumentTypeRestController {
     }
 
     @PostMapping
-    public ResponseEntity<DocumentType> createDocumentType(@RequestBody DocumentTypeDto documentTypeDto) {
+    public ResponseEntity<DocumentType> createDocumentType(@RequestBody DocumentTypeRequest documentTypeRequest) {
 
-        DocumentType createdDocumentType = documentTypeService.createDocumentType(documentTypeDto);
+        DocumentType createdDocumentType = documentTypeService.createDocumentType(documentTypeRequest);
 
         return new ResponseEntity<>(createdDocumentType, HttpStatus.CREATED);
     }
@@ -72,9 +76,9 @@ public class DocumentTypeRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DocumentType> updateDocumentType(@PathVariable Integer id, @RequestBody DocumentTypeDto documentTypeDto) {
+    public ResponseEntity<DocumentType> updateDocumentType(@PathVariable Integer id, @RequestBody DocumentTypeRequest documentTypeRequest) {
 
-        DocumentType updatedDocumentType = documentTypeService.updateDocumentType(id, documentTypeDto);
+        DocumentType updatedDocumentType = documentTypeService.updateDocumentType(id, documentTypeRequest);
 
         return new ResponseEntity<>(updatedDocumentType, HttpStatus.OK);
     }
@@ -93,12 +97,12 @@ public class DocumentTypeRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteDocumentType(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deactivateDocumentType(@PathVariable("id") Integer id) {
         Optional<DocumentType> documentTypeOptional = documentTypeRepository.findById(id);
 
         if (documentTypeOptional.isPresent()) {
             DocumentType documentType = documentTypeOptional.get();
-            documentType.setIsDeleted(true);
+            documentType.setDeleted(true);
             documentTypeRepository.save(documentType);
             return ResponseEntity.noContent().build();
         } else {

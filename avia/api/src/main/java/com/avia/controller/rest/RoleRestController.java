@@ -1,11 +1,12 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.Role;
+import com.avia.model.request.RoleRequest;
 import com.avia.repository.RoleRepository;
 import com.avia.service.RoleService;
-import com.avia.model.dto.RoleDto;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class RoleRestController {
 
     private final RoleService roleService;
 
+    @Value("${role.page-capacity}")
+    private Integer rolePageCapacity;
+
     @GetMapping()
     public ResponseEntity<List<Role>> getAllRoles() {
         return new ResponseEntity<>(roleRepository.findAll(), HttpStatus.OK);
@@ -41,7 +45,7 @@ public class RoleRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllRolesWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 2, Sort.by("idRoles").ascending());
+        Pageable pageable = PageRequest.of(page, rolePageCapacity, Sort.by("idRoles").ascending());
 
         Page<Role> roles = roleRepository.findAll(pageable);
 
@@ -53,8 +57,8 @@ public class RoleRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Role> createRole(@RequestBody RoleDto roleDto) {
-        Role createdRole = roleService.createRole(roleDto);
+    public ResponseEntity<Role> createRole(@RequestBody RoleRequest roleRequest) {
+        Role createdRole = roleService.createRole(roleRequest);
         return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
 
@@ -66,8 +70,8 @@ public class RoleRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable Integer id, @RequestBody RoleDto roleDto) {
-        Role updatedRole = roleService.updateRole(id, roleDto);
+    public ResponseEntity<Role> updateRole(@PathVariable Integer id, @RequestBody RoleRequest roleRequest) {
+        Role updatedRole = roleService.updateRole(id, roleRequest);
         return new ResponseEntity<>(updatedRole, HttpStatus.OK);
     }
 
@@ -83,12 +87,12 @@ public class RoleRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteRole(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deactivateRole(@PathVariable("id") Integer id) {
         Optional<Role> roleOptional = roleRepository.findById(id);
 
         if (roleOptional.isPresent()) {
             Role role = roleOptional.get();
-            role.setIsDeleted(true);
+            role.setDeleted(true);
             roleRepository.save(role);
             return ResponseEntity.noContent().build();
         } else {

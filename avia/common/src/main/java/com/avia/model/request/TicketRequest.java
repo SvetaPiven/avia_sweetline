@@ -1,4 +1,4 @@
-package com.avia.model.dto;
+package com.avia.model.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class TicketDto implements Serializable {
+public class TicketRequest implements Serializable {
 
     private Long idPass;
 

@@ -1,11 +1,11 @@
 package com.avia.service;
 
-import com.avia.model.dto.PassengerDto;
+import com.avia.model.request.PassengerRequest;
 import com.avia.model.entity.Passenger;
 
 public interface PassengerService {
 
-    Passenger createPassenger(PassengerDto passengerDto);
+    Passenger createPassenger(PassengerRequest passengerRequest);
 
-    Passenger updatePassenger(Long id, PassengerDto passengerDto);
+    Passenger updatePassenger(Long id, PassengerRequest passengerRequest);
 }

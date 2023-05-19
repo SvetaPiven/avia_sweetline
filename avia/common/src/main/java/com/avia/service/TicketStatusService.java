@@ -1,11 +1,11 @@
 package com.avia.service;
 
 import com.avia.model.entity.TicketStatus;
-import com.avia.model.dto.TicketStatusDto;
+import com.avia.model.request.TicketStatusRequest;
 
 public interface TicketStatusService {
 
-    TicketStatus createTicketStatus(TicketStatusDto ticketStatusDto);
+    TicketStatus createTicketStatus(TicketStatusRequest ticketStatusRequest);
 
-    TicketStatus updateTicketStatus(Integer id, TicketStatusDto ticketStatusDto);
+    TicketStatus updateTicketStatus(Integer id, TicketStatusRequest ticketStatusRequest);
 }

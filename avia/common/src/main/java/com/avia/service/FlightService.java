@@ -1,11 +1,15 @@
 package com.avia.service;
 
-import com.avia.model.dto.FlightDto;
+import com.avia.model.request.FlightRequest;
 import com.avia.model.entity.Flight;
+
+import java.util.Optional;
 
 public interface FlightService {
 
-    Flight createFlight(FlightDto flightDto);
+    Flight createFlight(FlightRequest flightRequest);
 
-    Flight updateFlight(Long id, FlightDto flightDto);
+    Flight updateFlight(Long id, FlightRequest flightRequest);
+
+    Flight findById(Long idFlight);
 }

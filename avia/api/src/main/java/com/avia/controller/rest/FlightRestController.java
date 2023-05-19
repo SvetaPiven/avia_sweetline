@@ -2,11 +2,12 @@ package com.avia.controller.rest;
 
 import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
+import com.avia.model.request.FlightRequest;
 import com.avia.repository.FlightRepository;
 import com.avia.service.FlightService;
-import com.avia.model.dto.FlightDto;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,15 +38,19 @@ public class FlightRestController {
 
     private final FlightService flightService;
 
+    @Value("${flight.page-capacity}")
+    private Integer flightPageCapacity;
+
     @GetMapping
     public ResponseEntity<List<Flight>> getAllFlights() {
+
         return new ResponseEntity<>(flightRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllFlightsWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("idFlight").ascending());
+        Pageable pageable = PageRequest.of(page, flightPageCapacity, Sort.by("idFlight").ascending());
 
         Page<Flight> flights = flightRepository.findAll(pageable);
 
@@ -57,27 +62,35 @@ public class FlightRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Flight> createFlight(@RequestBody FlightDto flightDto) {
-        Flight createdFlight = flightService.createFlight(flightDto);
+    public ResponseEntity<Flight> createFlight(@RequestBody FlightRequest flightRequest) {
+
+        Flight createdFlight = flightService.createFlight(flightRequest);
+
         return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Flight> getFlightById(@PathVariable("id") Long id) {
+
         Optional<Flight> flight = flightRepository.findById(id);
+
         return flight.map(ResponseEntity::ok).orElseThrow(() ->
                 new EntityNotFoundException("Flight with id " + id + " not found"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Flight> updateFlight(@PathVariable Long id, @RequestBody FlightDto flightDto) {
-        Flight updatedFlight = flightService.updateFlight(id, flightDto);
+    public ResponseEntity<Flight> updateFlight(@PathVariable Long id, @RequestBody FlightRequest flightRequest) {
+
+        Flight updatedFlight = flightService.updateFlight(id, flightRequest);
+
         return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFlight(@PathVariable("id") Long id) {
+
         Optional<Flight> flightOptional = flightRepository.findById(id);
+
         if (flightOptional.isPresent()) {
             flightRepository.deleteById(id);
             return ResponseEntity.noContent().build();
@@ -88,12 +101,12 @@ public class FlightRestController {
 
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteFlight(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deactivateFlight(@PathVariable("id") Long id) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
 
         if (flightOptional.isPresent()) {
             Flight flight = flightOptional.get();
-            flight.setIsDeleted(true);
+            flight.setDeleted(true);
             flightRepository.save(flight);
             return ResponseEntity.noContent().build();
         } else {
@@ -103,19 +116,25 @@ public class FlightRestController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Flight>> getFlightByIdArrivalAirport(@RequestParam(value = "id") Airport id) {
+
         List<Flight> flights = flightRepository.findFlightByIdArrivalAirport(id);
+
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
     @GetMapping("/search-by-number")
     public ResponseEntity<Flight> getFlightByNumber(@RequestParam(value = "number") String number) {
+
         Flight flight = flightRepository.findFlightByFlightNumber(number);
+
         return new ResponseEntity<>(flight, HttpStatus.OK);
     }
 
     @GetMapping("/search-by-departure")
     public ResponseEntity<List<Flight>> getFlightsByDepartureTime() {
+
         List<Flight> flights = flightRepository.findFlightsByDepartureTimeAfter(Timestamp.valueOf(LocalDateTime.now()));
+
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 }

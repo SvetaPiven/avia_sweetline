@@ -1,11 +1,11 @@
 package com.avia.service;
 
 import com.avia.model.entity.DocumentType;
-import com.avia.model.dto.DocumentTypeDto;
+import com.avia.model.request.DocumentTypeRequest;
 
 public interface DocumentTypeService {
 
-    DocumentType createDocumentType(DocumentTypeDto documentTypeDto);
+    DocumentType createDocumentType(DocumentTypeRequest documentTypeRequest);
 
-    DocumentType updateDocumentType(Integer id, DocumentTypeDto documentTypeDto);
+    DocumentType updateDocumentType(Integer id, DocumentTypeRequest documentTypeRequest);
 }

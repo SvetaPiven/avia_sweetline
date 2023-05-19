@@ -1,4 +1,4 @@
-package com.avia.exception.util;
+package com.avia.util;
 
 import org.springframework.stereotype.Component;
 

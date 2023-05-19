@@ -64,17 +64,19 @@ public class Airport {
     private String timezone;
 
     @JsonIgnore
+    @NotNull
     @Column
     private Timestamp created;
 
     @JsonIgnore
+    @NotNull
     @Column
     private Timestamp changed;
 
     @JsonIgnore
     @NotNull
     @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    private boolean isDeleted = false;
 
     @Size(max = 30)
     @NotNull

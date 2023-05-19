@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.Airline;
-import com.avia.model.dto.AirlineDto;
+import com.avia.model.request.AirlineRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,17 +16,15 @@ public interface AirlineMapper {
     @Mappings({
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    Airline toEntity(AirlineDto airlineDto);
-
-    AirlineDto toDto(Airline airline);
+    Airline toEntity(AirlineRequest airlineRequest);
 
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", ignore = true)
+//            @Mapping(target = "isDeleted", ignore = true)
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Airline partialUpdate(AirlineDto airlineDto, @MappingTarget Airline airline);
+    Airline partialUpdate(AirlineRequest airlineRequest, @MappingTarget Airline airline);
 }

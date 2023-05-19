@@ -1,0 +1,13 @@
+ALTER SEQUENCE public.airports_id_airport_seq start 15 increment 1 restart 15;
+ALTER SEQUENCE public.c_airlines_id_airline_seq start 10 increment 1 restart 10;
+ALTER SEQUENCE public.c_document_type_id_document_type_seq start 6 increment 1 restart 6;
+ALTER SEQUENCE public.c_flight_status_id_flight_status_seq start 6 increment 1 restart 6;
+ALTER SEQUENCE public.c_plane_types_id_plane_type_seq  start 6 increment 1 restart 6;
+ALTER SEQUENCE public.c_roles_id_role_seq  start 4 increment 1 restart 4;
+ALTER SEQUENCE public.c_ticket_class_id_ticket_class_seq  start 3 increment 1 restart 3;
+ALTER SEQUENCE public.c_ticket_status_id_ticket_status_seq  start 6 increment 1 restart 6;
+ALTER SEQUENCE public.document_pass_id_document_pass_seq  start 118 increment 1 restart 118;
+ALTER SEQUENCE public.flights_id_flight_seq  start 26 increment 1 restart 26;
+ALTER SEQUENCE public.passengers_id_pass_seq  start 128 increment 1 restart 128;
+ALTER SEQUENCE public.tickets_id_ticket_seq  start 218 increment 1 restart 218;
+ALTER SEQUENCE public.users_id_user_seq  start 39 increment 1 restart 39;

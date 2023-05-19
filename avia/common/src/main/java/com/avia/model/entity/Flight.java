@@ -86,15 +86,17 @@ public class Flight {
     @Column(name = "arrival_time", nullable = false)
     private Timestamp arrivalTime;
 
+    @NotNull
     @Column
     private Timestamp created;
 
+    @NotNull
     @Column
     private Timestamp changed;
 
     @NotNull
     @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    private boolean isDeleted = false;
 
 
     @EqualsAndHashCode.Exclude

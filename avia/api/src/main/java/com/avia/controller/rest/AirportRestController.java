@@ -3,10 +3,11 @@ package com.avia.controller.rest;
 import com.avia.model.entity.Airport;
 import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;
-import com.avia.model.dto.AirportDto;
+import com.avia.model.request.AirportRequest;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,8 @@ public class AirportRestController {
 
     private final AirportService airportService;
 
-    private static final Logger log = Logger.getLogger(AirportRestController.class);
+    @Value("${airports.page-capacity}")
+    private Integer airportsPageCapacity;
 
     @GetMapping()
     public ResponseEntity<List<Airport>> getAllAirlines() {
@@ -46,7 +48,7 @@ public class AirportRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllAirportsWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("idAirport").ascending());
+        Pageable pageable = PageRequest.of(page, airportsPageCapacity, Sort.by("idAirport").ascending());
 
         Page<Airport> airports = airportRepository.findAll(pageable);
 
@@ -58,9 +60,9 @@ public class AirportRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Airport> createAirline(@RequestBody AirportDto airportDto) {
+    public ResponseEntity<Airport> createAirline(@RequestBody AirportRequest airportRequest) {
 
-        Airport createdAirline = airportService.createAirport(airportDto);
+        Airport createdAirline = airportService.createAirport(airportRequest);
 
         return new ResponseEntity<>(createdAirline, HttpStatus.CREATED);
     }
@@ -76,9 +78,9 @@ public class AirportRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Airport> updateAirline(@PathVariable Long id, @RequestBody AirportDto airportDto) {
+    public ResponseEntity<Airport> updateAirline(@PathVariable Long id, @RequestBody AirportRequest airportRequest) {
 
-        Airport updatedAirport = airportService.updateAirport(id, airportDto);
+        Airport updatedAirport = airportService.updateAirport(id, airportRequest);
 
         return new ResponseEntity<>(updatedAirport, HttpStatus.OK);
     }
@@ -97,11 +99,11 @@ public class AirportRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteAirport(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deactivateAirport(@PathVariable("id") Long id) {
         Optional<Airport> airportOptional = airportRepository.findById(id);
         if (airportOptional.isPresent()) {
             Airport airport = airportOptional.get();
-            airport.setIsDeleted(true);
+            airport.setDeleted(true);
             airportRepository.save(airport);
             return ResponseEntity.noContent().build();
         } else {

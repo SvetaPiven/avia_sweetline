@@ -1,11 +1,12 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.FlightStatus;
+import com.avia.model.request.FlightStatusRequest;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.service.FlightStatusService;
-import com.avia.model.dto.FlightStatusDto;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class FlightStatusRestController {
 
     private final FlightStatusService flightStatusService;
 
+    @Value("${flightStatus.page-capacity}")
+    private Integer flightStatusPageCapacity;
+
     @GetMapping()
     public ResponseEntity<List<FlightStatus>> getAllFlightStatuses() {
 
@@ -42,7 +46,7 @@ public class FlightStatusRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllFlightsStatusWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("idFlightStatus").ascending());
+        Pageable pageable = PageRequest.of(page, flightStatusPageCapacity, Sort.by("idFlightStatus").ascending());
 
         Page<FlightStatus> flightStatuses = flightStatusRepository.findAll(pageable);
 
@@ -54,9 +58,9 @@ public class FlightStatusRestController {
     }
 
     @PostMapping
-    public ResponseEntity<FlightStatus> createFlightStatus(@RequestBody FlightStatusDto flightStatusDto) {
+    public ResponseEntity<FlightStatus> createFlightStatus(@RequestBody FlightStatusRequest flightStatusRequest) {
 
-        FlightStatus createdFlightStatus = flightStatusService.createFlightStatus(flightStatusDto);
+        FlightStatus createdFlightStatus = flightStatusService.createFlightStatus(flightStatusRequest);
 
         return new ResponseEntity<>(createdFlightStatus, HttpStatus.CREATED);
     }
@@ -71,9 +75,9 @@ public class FlightStatusRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FlightStatus> updateFlightStatus(@PathVariable Integer id, @RequestBody FlightStatusDto flightStatusDto) {
+    public ResponseEntity<FlightStatus> updateFlightStatus(@PathVariable Integer id, @RequestBody FlightStatusRequest flightStatusRequest) {
 
-        FlightStatus updatedFlightStatus = flightStatusService.updateFlightStatus(id, flightStatusDto);
+        FlightStatus updatedFlightStatus = flightStatusService.updateFlightStatus(id, flightStatusRequest);
 
         return new ResponseEntity<>(updatedFlightStatus, HttpStatus.OK);
     }
@@ -92,12 +96,12 @@ public class FlightStatusRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteFlightStatus(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deactivateFlightStatus(@PathVariable("id") Integer id) {
         Optional<FlightStatus> flightStatusOptional = flightStatusRepository.findById(id);
 
         if (flightStatusOptional.isPresent()) {
             FlightStatus flightStatus = flightStatusOptional.get();
-            flightStatus.setIsDeleted(true);
+            flightStatus.setDeleted(true);
             flightStatusRepository.save(flightStatus);
             return ResponseEntity.noContent().build();
         } else {

@@ -1,12 +1,18 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.TicketClass;
+import com.avia.model.entity.TicketStatus;
 import com.avia.repository.TicketClassRepository;
 import com.avia.service.TicketClassService;
-import com.avia.model.dto.TicketClassDto;
+import com.avia.model.request.TicketClassRequest;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +36,8 @@ public class TicketClassRestController {
 
     private final TicketClassService ticketClassService;
 
-    private static final Logger log = Logger.getLogger(TicketClassRestController.class);
+    @Value("${ticketClass.page-capacity}")
+    private Integer ticketClassPageCapacity;
 
     @GetMapping()
     public ResponseEntity<List<TicketClass>> getAllTicketClasses() {
@@ -38,10 +45,24 @@ public class TicketClassRestController {
         return new ResponseEntity<>(ticketClassRepository.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<TicketClass> createTicketClass(@RequestBody TicketClassDto ticketClassDto) {
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getAllTicketStatusesWithPageAndSort(@PathVariable int page) {
 
-        TicketClass createdTicketClass = ticketClassService.createTicketClass(ticketClassDto);
+        Pageable pageable = PageRequest.of(page, ticketClassPageCapacity, Sort.by("idTicketClass").ascending());
+
+        Page<TicketClass> ticketClasses = ticketClassRepository.findAll(pageable);
+
+        if (ticketClasses.hasContent()) {
+            return new ResponseEntity<>(ticketClasses, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<TicketClass> createTicketClass(@RequestBody TicketClassRequest ticketClassRequest) {
+
+        TicketClass createdTicketClass = ticketClassService.createTicketClass(ticketClassRequest);
 
         return new ResponseEntity<>(createdTicketClass, HttpStatus.CREATED);
     }
@@ -57,9 +78,9 @@ public class TicketClassRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TicketClass> updateTicketClass(@PathVariable Integer id, @RequestBody TicketClassDto ticketClassDto) {
+    public ResponseEntity<TicketClass> updateTicketClass(@PathVariable Integer id, @RequestBody TicketClassRequest ticketClassRequest) {
 
-        TicketClass updatedTicketClass = ticketClassService.updateTicketClass(id, ticketClassDto);
+        TicketClass updatedTicketClass = ticketClassService.updateTicketClass(id, ticketClassRequest);
 
         return new ResponseEntity<>(updatedTicketClass, HttpStatus.OK);
     }
@@ -78,13 +99,13 @@ public class TicketClassRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteTicketClass(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deactivateTicketClass(@PathVariable("id") Integer id) {
 
         Optional<TicketClass> ticketClassOptional = ticketClassRepository.findById(id);
 
         if (ticketClassOptional.isPresent()) {
             TicketClass ticketClass = ticketClassOptional.get();
-            ticketClass.setIsDeleted(true);
+            ticketClass.setDeleted(true);
             ticketClassRepository.save(ticketClass);
             return ResponseEntity.noContent().build();
         } else {

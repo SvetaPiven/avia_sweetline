@@ -1,4 +1,4 @@
-package com.avia.model.dto;
+package com.avia.model.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
-public class FlightDto implements Serializable {
+public class FlightRequest implements Serializable {
 
     @Size(min = 6, max = 10)
     @NotNull

@@ -45,14 +45,17 @@ public class Role {
     @Column(name = "role_name", nullable = false, length = 100)
     private String roleName;
 
+    @NotNull
     @Column
     private Timestamp created;
 
+    @NotNull
     @Column
     private Timestamp changed;
 
+    @NotNull
     @Column
-    private Boolean isDeleted;
+    private boolean isDeleted;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude

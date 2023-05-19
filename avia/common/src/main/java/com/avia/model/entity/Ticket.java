@@ -82,14 +82,16 @@ public class Ticket {
     @Column
     private BigDecimal price;
 
+    @NotNull
     @Column
     private Timestamp created;
 
+    @NotNull
     @Column
     private Timestamp changed;
 
     @NotNull
     @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = false;
+    private boolean isDeleted = false;
 
 }

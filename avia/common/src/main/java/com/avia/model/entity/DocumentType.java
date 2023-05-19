@@ -45,20 +45,22 @@ public class DocumentType {
     @Column(name = "doc_type", nullable = false, length = 30)
     private String docType;
 
+    @NotNull
     @Column
     private Timestamp created;
 
+    @NotNull
     @Column
     private Timestamp changed;
 
     @NotNull
     @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = false;
+    private boolean isDeleted = false;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "idDocumentType", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "idDocumentType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<DocumentPass> documentPasses = Collections.emptySet();
 }

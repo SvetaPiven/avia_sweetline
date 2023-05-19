@@ -1,4 +1,4 @@
-package com.avia.model.dto;
+package com.avia.model.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -8,7 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class AirportDto implements Serializable {
+public class AirportRequest implements Serializable {
 
     @Size(min = 3, max = 50)
     @NotNull

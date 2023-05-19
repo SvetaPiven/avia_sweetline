@@ -63,7 +63,7 @@ public class TokenProvider {
 
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put(SUBJECT, userDetails.getUsername());
+        claims.put(Claims.SUBJECT, userDetails.getUsername());
         log.info("Generated user: " + userDetails.getUsername());
 
         claims.put(CREATE_VALUE, generateCurrentDate());
@@ -92,7 +92,7 @@ public class TokenProvider {
 
     private Date generateExpirationDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(MILLISECOND, jwtConfiguration.getExpiration() * LIFETIME);
+        calendar.add(Calendar.MILLISECOND, jwtConfiguration.getExpiration() * LIFETIME);
 
         log.info("Token expiration: " + jwtConfiguration.getExpiration() * LIFETIME);
 

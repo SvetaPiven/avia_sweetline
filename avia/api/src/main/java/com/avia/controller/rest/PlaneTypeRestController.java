@@ -1,12 +1,13 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.PlaneType;
+import com.avia.model.request.PlaneTypeRequest;
 import com.avia.repository.PlaneTypeRepository;
 import com.avia.service.PlaneTypeService;
-import com.avia.model.dto.PlaneTypeDto;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,8 @@ public class PlaneTypeRestController {
 
     private final PlaneTypeService planeTypeService;
 
-    private static final Logger log = Logger.getLogger(PlaneTypeRestController.class);
+    @Value("${planeType.page-capacity}")
+    private Integer planeTypePageCapacity;
 
     @GetMapping()
     public ResponseEntity<List<PlaneType>> getAllPlaneTypes() {
@@ -45,7 +47,7 @@ public class PlaneTypeRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllPlaneTypesWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 3, Sort.by("idPlaneTypes").ascending());
+        Pageable pageable = PageRequest.of(page, planeTypePageCapacity, Sort.by("idPlaneTypes").ascending());
 
         Page<PlaneType> planeTypes = planeTypeRepository.findAll(pageable);
 
@@ -57,9 +59,9 @@ public class PlaneTypeRestController {
     }
 
     @PostMapping
-    public ResponseEntity<PlaneType> createPlaneType(@RequestBody PlaneTypeDto planeTypeDto) {
+    public ResponseEntity<PlaneType> createPlaneType(@RequestBody PlaneTypeRequest planeTypeRequest) {
 
-        PlaneType createdPlaneType = planeTypeService.createPlaneType(planeTypeDto);
+        PlaneType createdPlaneType = planeTypeService.createPlaneType(planeTypeRequest);
 
         return new ResponseEntity<>(createdPlaneType, HttpStatus.CREATED);
     }
@@ -75,9 +77,9 @@ public class PlaneTypeRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PlaneType> updatePlaneType(@PathVariable Integer id, @RequestBody PlaneTypeDto planeTypeDto) {
+    public ResponseEntity<PlaneType> updatePlaneType(@PathVariable Integer id, @RequestBody PlaneTypeRequest planeTypeRequest) {
 
-        PlaneType updatedPlaneType = planeTypeService.updatePlaneType(id, planeTypeDto);
+        PlaneType updatedPlaneType = planeTypeService.updatePlaneType(id, planeTypeRequest);
 
         return new ResponseEntity<>(updatedPlaneType, HttpStatus.OK);
     }
@@ -96,13 +98,13 @@ public class PlaneTypeRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeletePlaneType(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deactivatePlaneType(@PathVariable("id") Integer id) {
 
         Optional<PlaneType> planeTypeOptional = planeTypeRepository.findById(id);
 
         if (planeTypeOptional.isPresent()) {
             PlaneType planeType = planeTypeOptional.get();
-            planeType.setIsDeleted(true);
+            planeType.setDeleted(true);
             planeTypeRepository.save(planeType);
             return ResponseEntity.noContent().build();
         } else {

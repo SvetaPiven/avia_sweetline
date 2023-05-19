@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.Airport;
-import com.avia.model.dto.AirportDto;
+import com.avia.model.request.AirportRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,15 +16,15 @@ public interface AirportMapper {
     @Mappings({
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    Airport toEntity(AirportDto airportDto);
+    Airport toEntity(AirportRequest airportRequest);
 
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", ignore = true)
+//            @Mapping(target = "isDeleted", ignore = true)
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Airport partialUpdate(AirportDto airportDto, @MappingTarget Airport airport);
+    Airport partialUpdate(AirportRequest airportRequest, @MappingTarget Airport airport);
 }

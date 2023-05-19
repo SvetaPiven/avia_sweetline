@@ -3,7 +3,7 @@ package com.avia.service.impl;
 import com.avia.model.entity.FlightStatus;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.service.FlightStatusService;
-import com.avia.model.dto.FlightStatusDto;
+import com.avia.model.request.FlightStatusRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.FlightStatusMapper;
 import jakarta.transaction.Transactional;
@@ -19,21 +19,21 @@ public class FlightStatusServiceImpl implements FlightStatusService {
 
     @Override
     @Transactional
-    public FlightStatus createFlightStatus(FlightStatusDto flightStatusDto) {
+    public FlightStatus createFlightStatus(FlightStatusRequest flightStatusRequest) {
 
-        FlightStatus flightStatus = flightStatusMapper.toEntity(flightStatusDto);
+        FlightStatus flightStatus = flightStatusMapper.toEntity(flightStatusRequest);
 
         return flightStatusRepository.save(flightStatus);
     }
 
     @Override
     @Transactional
-    public FlightStatus updateFlightStatus(Integer id, FlightStatusDto flightStatusDto) {
+    public FlightStatus updateFlightStatus(Integer id, FlightStatusRequest flightStatusRequest) {
 
         FlightStatus flightStatus = flightStatusRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Flight status with id " + id + " not found"));
 
-        flightStatusMapper.partialUpdate(flightStatusDto, flightStatus);
+        flightStatusMapper.partialUpdate(flightStatusRequest, flightStatus);
 
         return flightStatusRepository.save(flightStatus);
     }

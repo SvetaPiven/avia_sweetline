@@ -1,12 +1,13 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.Passenger;
+import com.avia.model.request.PassengerRequest;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
-import com.avia.model.dto.PassengerDto;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +39,9 @@ PassengerRestController {
 
     private static final Logger log = Logger.getLogger(PassengerRestController.class);
 
+    @Value("${passenger.page-capacity}")
+    private Integer passengerPageCapacity;
+
     @GetMapping()
     public ResponseEntity<List<Passenger>> getAllPassengers() {
 
@@ -48,7 +52,7 @@ PassengerRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllPassengersWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("idPass").ascending());
+        Pageable pageable = PageRequest.of(page, passengerPageCapacity, Sort.by("idPass").ascending());
 
         Page<Passenger> passengers = passengerRepository.findAll(pageable);
 
@@ -60,9 +64,9 @@ PassengerRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Passenger> createPassenger(@RequestBody PassengerDto passengerDto) {
+    public ResponseEntity<Passenger> createPassenger(@RequestBody PassengerRequest passengerRequest) {
 
-        Passenger createdPassenger = passengerService.createPassenger(passengerDto);
+        Passenger createdPassenger = passengerService.createPassenger(passengerRequest);
 
         return new ResponseEntity<>(createdPassenger, HttpStatus.CREATED);
     }
@@ -78,9 +82,9 @@ PassengerRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Passenger> updatePassenger(@PathVariable Long id, @RequestBody PassengerDto passengerDto) {
+    public ResponseEntity<Passenger> updatePassenger(@PathVariable Long id, @RequestBody PassengerRequest passengerRequest) {
 
-        Passenger updatedPassenger = passengerService.updatePassenger(id, passengerDto);
+        Passenger updatedPassenger = passengerService.updatePassenger(id, passengerRequest);
 
         return new ResponseEntity<>(updatedPassenger, HttpStatus.OK);
     }
@@ -100,13 +104,13 @@ PassengerRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeletePassenger(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deactivatePassenger(@PathVariable("id") Long id) {
 
         Optional<Passenger> passengerOptional = passengerRepository.findById(id);
 
         if (passengerOptional.isPresent()) {
             Passenger passenger = passengerOptional.get();
-            passenger.setIsDeleted(true);
+            passenger.setDeleted(true);
             passengerRepository.save(passenger);
             return ResponseEntity.noContent().build();
         } else {

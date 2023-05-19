@@ -1,6 +1,9 @@
 package com.avia.configuration;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -8,8 +11,17 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
+@Setter
+@Getter
 @Configuration
+@ConfigurationProperties(prefix = "caffeine")
 public class CacheConfiguration {
+
+    private Integer initialCapacity;
+
+    private Long maximumSize;
+
+    private Long expireAfterAccessDays;
 
     @Bean
     public CacheManager cacheManager() {
@@ -21,9 +33,9 @@ public class CacheConfiguration {
 
     public Caffeine<Object, Object> cacheProperties() {
         return Caffeine.newBuilder()
-                .initialCapacity(30)
-                .maximumSize(200)
-                .expireAfterAccess(20, TimeUnit.SECONDS)
+                .initialCapacity(initialCapacity)
+                .maximumSize(maximumSize)
+                .expireAfterAccess(expireAfterAccessDays, TimeUnit.DAYS)
                 .weakKeys()
                 .recordStats();
     }

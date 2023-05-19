@@ -1,11 +1,11 @@
 package com.avia.service;
 
 import com.avia.model.entity.TicketClass;
-import com.avia.model.dto.TicketClassDto;
+import com.avia.model.request.TicketClassRequest;
 
 public interface TicketClassService {
 
-    TicketClass createTicketClass(TicketClassDto ticketClassDto);
+    TicketClass createTicketClass(TicketClassRequest ticketClassRequest);
 
-    TicketClass updateTicketClass(Integer id, TicketClassDto ticketClassDto);
+    TicketClass updateTicketClass(Integer id, TicketClassRequest ticketClassRequest);
 }

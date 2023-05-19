@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.DocumentPass;
-import com.avia.model.dto.DocumentPassDto;
+import com.avia.model.request.DocumentPassRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,9 +19,9 @@ public interface DocumentPassMapper {
             @Mapping(target = "idPass.idPass", source = "idPass"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    DocumentPass toEntity(DocumentPassDto documentPassDto);
+    DocumentPass toEntity(DocumentPassRequest documentPassRequest);
 
     @Mappings({
             @Mapping(target = "idDocumentPass", ignore = true),
@@ -29,8 +29,8 @@ public interface DocumentPassMapper {
             @Mapping(target = "idPass.idPass", source = "idPass"),
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", ignore = true)
+//            @Mapping(target = "isDeleted", ignore = true)
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    DocumentPass partialUpdate(DocumentPassDto documentPassDt, @MappingTarget DocumentPass documentPass);
+    DocumentPass partialUpdate(DocumentPassRequest documentPassDt, @MappingTarget DocumentPass documentPass);
 }

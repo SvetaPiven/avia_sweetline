@@ -3,7 +3,7 @@ package com.avia.service.impl;
 import com.avia.model.entity.DocumentType;
 import com.avia.repository.DocumentTypeRepository;
 import com.avia.service.DocumentTypeService;
-import com.avia.model.dto.DocumentTypeDto;
+import com.avia.model.request.DocumentTypeRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.DocumentTypeMapper;
 import jakarta.transaction.Transactional;
@@ -19,21 +19,21 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     @Override
     @Transactional
-    public DocumentType createDocumentType(DocumentTypeDto documentTypeDto) {
+    public DocumentType createDocumentType(DocumentTypeRequest documentTypeRequest) {
 
-        DocumentType documentType = documentTypeMapper.toEntity(documentTypeDto);
+        DocumentType documentType = documentTypeMapper.toEntity(documentTypeRequest);
 
         return documentTypeRepository.save(documentType);
     }
 
     @Override
     @Transactional
-    public DocumentType updateDocumentType(Integer id, DocumentTypeDto documentTypeDto) {
+    public DocumentType updateDocumentType(Integer id, DocumentTypeRequest documentTypeRequest) {
 
         DocumentType documentType = documentTypeRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Document type with id " + id + " not found"));
 
-        documentTypeMapper.partialUpdate(documentTypeDto, documentType);
+        documentTypeMapper.partialUpdate(documentTypeRequest, documentType);
 
         return documentTypeRepository.save(documentType);
     }

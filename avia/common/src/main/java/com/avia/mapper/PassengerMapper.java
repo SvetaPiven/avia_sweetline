@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.Passenger;
-import com.avia.model.dto.PassengerDto;
+import com.avia.model.request.PassengerRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,16 +18,16 @@ public interface PassengerMapper {
             @Mapping(target = "miles", constant = "0.0"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    Passenger toEntity(PassengerDto passengerDto);
+    Passenger toEntity(PassengerRequest passengerRequest);
 
     @Mappings({
             @Mapping(target = "idPass", ignore = true),
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", ignore = true)
+//            @Mapping(target = "isDeleted", ignore = true)
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Passenger partialUpdate(PassengerDto passengerDto, @MappingTarget Passenger passenger);
+    Passenger partialUpdate(PassengerRequest passengerRequest, @MappingTarget Passenger passenger);
 }

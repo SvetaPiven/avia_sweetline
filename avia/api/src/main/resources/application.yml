@@ -20,7 +20,7 @@ spring:
     validate-on-migrate: false
   jpa:
     hibernate:
-        ddl-auto: validate
+      ddl-auto: validate
     show-sql: true
   google:
     maps:
@@ -39,6 +39,54 @@ spring:
 
 ---
 
+airlines:
+  page-capacity: 4
+
+airports:
+  page-capacity: 5
+
+documentPass:
+  page-capacity: 10
+
+documentType:
+  page-capacity: 3
+
+flight:
+  page-capacity: 5
+
+flightStatus:
+  page-capacity: 5
+
+passenger:
+  page-capacity: 10
+
+planeType:
+  page-capacity: 3
+
+role:
+  page-capacity: 2
+
+ticket:
+  page-capacity: 15
+
+ticketClass:
+  page-capacity: 3
+
+ticketStatus:
+  page-capacity: 3
+
+user:
+  page-capacity: 5
+
+---
+
 config:
   secret: "secret"
   expiration: 600000
+
+---
+
+caffeine:
+  initialCapacity: 30
+  maximumSize: 1000
+  expireAfterAccessDays: 1

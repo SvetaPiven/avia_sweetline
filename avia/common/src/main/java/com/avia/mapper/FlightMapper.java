@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.Flight;
-import com.avia.model.dto.FlightDto;
+import com.avia.model.request.FlightRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,9 +21,9 @@ public interface FlightMapper {
             @Mapping(target = "idFlightStatus.idFlightStatus", source = "idFlightStatus"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    Flight toEntity(FlightDto flightDto);
+    Flight toEntity(FlightRequest flightRequest);
 
     @Mappings({
             @Mapping(target = "idFlight", ignore = true),
@@ -32,8 +32,8 @@ public interface FlightMapper {
             @Mapping(target = "idArrivalAirport.idAirport", source = "idArrivalAirport"),
             @Mapping(target = "idFlightStatus.idFlightStatus", source = "idFlightStatus"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Flight partialUpdate(FlightDto flightDto, @MappingTarget Flight flight);
+    Flight partialUpdate(FlightRequest flightRequest, @MappingTarget Flight flight);
 }

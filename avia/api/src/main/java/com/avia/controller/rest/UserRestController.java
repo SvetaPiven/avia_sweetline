@@ -3,9 +3,10 @@ package com.avia.controller.rest;
 import com.avia.model.entity.User;
 import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
-import com.avia.model.dto.UserDto;
+import com.avia.model.request.UserRequest;
 import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class UserRestController {
 
     private final UserRepository userRepository;
 
+    @Value("${user.page-capacity}")
+    private Integer userPageCapacity;
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
 
@@ -44,7 +48,7 @@ public class UserRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllUsersWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("idUser").ascending());
+        Pageable pageable = PageRequest.of(page, userPageCapacity, Sort.by("idUser").ascending());
 
         Page<User> users = userRepository.findAll(pageable);
 
@@ -56,8 +60,8 @@ public class UserRestController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserDto userDto) {
-        User createdUser = userService.createUser(userDto);
+    public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest) {
+        User createdUser = userService.createUser(userRequest);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
@@ -69,8 +73,8 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        User updatedUser = userService.updateUser(id, userDto);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+        User updatedUser = userService.updateUser(id, userRequest);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
@@ -88,13 +92,13 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deactivateUser(@PathVariable("id") Long id) {
 
         Optional<User> userOptional = userRepository.findById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setIsDeleted(true);
+            user.setDeleted(true);
             userRepository.save(user);
             return ResponseEntity.noContent().build();
         } else {

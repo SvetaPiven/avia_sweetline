@@ -1,11 +1,13 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.Airline;
+import com.avia.model.request.AirlineRequest;
 import com.avia.repository.AirlineRepository;
 import com.avia.service.AirlineService;
-import com.avia.model.dto.AirlineDto;
 import com.avia.exception.EntityNotFoundException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -34,6 +37,9 @@ public class AirlineRestController {
 
     private final AirlineService airlineService;
 
+    @Value("${airlines.page-capacity}")
+    private Integer airlinesPageCapacity;
+
     @GetMapping()
     public ResponseEntity<List<Airline>> getAllAirlines() {
 
@@ -43,7 +49,7 @@ public class AirlineRestController {
     @GetMapping("/page/{page}")
     public ResponseEntity<Object> getAllAirlinesWithPageAndSort(@PathVariable int page) {
 
-        Pageable pageable = PageRequest.of(page, 4, Sort.by("idAirline").ascending());
+        Pageable pageable = PageRequest.of(page, airlinesPageCapacity, Sort.by("idAirline").ascending());
 
         Page<Airline> airlines = airlineRepository.findAll(pageable);
 
@@ -55,9 +61,9 @@ public class AirlineRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Airline> createAirline(@RequestBody AirlineDto airlineDto) {
+    public ResponseEntity<Airline> createAirline(@RequestBody AirlineRequest airlineRequest) {
 
-        Airline createdAirline = airlineService.createAirline(airlineDto);
+        Airline createdAirline = airlineService.createAirline(airlineRequest);
 
         return new ResponseEntity<>(createdAirline, HttpStatus.CREATED);
     }
@@ -73,9 +79,9 @@ public class AirlineRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Airline> updateAirline(@PathVariable Integer id, @RequestBody AirlineDto airlineDto) {
+    public ResponseEntity<Airline> updateAirline(@PathVariable Integer id, @RequestBody AirlineRequest airlineRequest) {
 
-        Airline updatedAirline = airlineService.updateAirline(id, airlineDto);
+        Airline updatedAirline = airlineService.updateAirline(id, airlineRequest);
 
         return new ResponseEntity<>(updatedAirline, HttpStatus.OK);
     }
@@ -93,12 +99,12 @@ public class AirlineRestController {
     }
 
     @PutMapping("/{id}/delete")
-    public ResponseEntity<Void> softDeleteAirline(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deactivateAirline(@PathVariable("id") Integer id) {
         Optional<Airline> airlineOptional = airlineRepository.findById(id);
 
         if (airlineOptional.isPresent()) {
             Airline airline = airlineOptional.get();
-            airline.setIsDeleted(true);
+            airline.setDeleted(true);
             airlineRepository.save(airline);
             return ResponseEntity.noContent().build();
         } else {
@@ -106,18 +112,23 @@ public class AirlineRestController {
         }
     }
 
+//    @GetMapping("/popular")
+//    public List<Airline> getPopularAirlines() {
+//        List<Object[]> result = airlineRepository.findPopularAirlines();
+//        List<Airline> airlines = new ArrayList<>();
+//        for (Object[] row : result) {
+//            Airline airline = new Airline();
+//            airline.setIdAirline((Integer) row[0]);
+//            airline.setNameAirline((String) row[1]);
+//            airline.setCodeAirline((String) row[2]);
+//            airlines.add(airline);
+//        }
+//        return airlines;
+//    }
+
     @GetMapping("/popular")
     public List<Airline> getPopularAirlines() {
-        List<Object[]> result = airlineRepository.findPopularAirlines();
-        List<Airline> airlines = new ArrayList<>();
-        for (Object[] row : result) {
-            Airline airline = new Airline();
-            airline.setIdAirline((Integer) row[0]);
-            airline.setNameAirline((String) row[1]);
-            airline.setCodeAirline((String) row[2]);
-            airlines.add(airline);
-        }
-        return airlines;
+        return airlineRepository.findPopularAirlines();
     }
 }
 

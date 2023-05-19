@@ -45,15 +45,17 @@ public class FlightStatus {
     @Column(name = "name_flight_status", nullable = false, length = 30)
     private String nameFlightStatus;
 
+    @NotNull
     @Column
     private Timestamp created;
 
+    @NotNull
     @Column
     private Timestamp changed;
 
     @NotNull
     @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = false;
+    private boolean isDeleted = false;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude

@@ -3,7 +3,7 @@ package com.avia.service.impl;
 import com.avia.model.entity.PlaneType;
 import com.avia.repository.PlaneTypeRepository;
 import com.avia.service.PlaneTypeService;
-import com.avia.model.dto.PlaneTypeDto;
+import com.avia.model.request.PlaneTypeRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.PlaneTypeMapper;
 import jakarta.transaction.Transactional;
@@ -19,17 +19,17 @@ public class PlaneTypeServiceImpl implements PlaneTypeService {
 
     @Override
     @Transactional
-    public PlaneType createPlaneType(PlaneTypeDto planeTypeDto) {
-        PlaneType planeType = planeTypeMapper.toEntity(planeTypeDto);
+    public PlaneType createPlaneType(PlaneTypeRequest planeTypeRequest) {
+        PlaneType planeType = planeTypeMapper.toEntity(planeTypeRequest);
         return planeTypeRepository.save(planeType);
     }
 
     @Override
     @Transactional
-    public PlaneType updatePlaneType(Integer id, PlaneTypeDto planeTypeDto) {
+    public PlaneType updatePlaneType(Integer id, PlaneTypeRequest planeTypeRequest) {
         PlaneType planeType = planeTypeRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Plane type with id " + id + " not found"));
-        planeTypeMapper.partialUpdate(planeTypeDto, planeType);
+        planeTypeMapper.partialUpdate(planeTypeRequest, planeType);
         return planeTypeRepository.save(planeType);
     }
 }

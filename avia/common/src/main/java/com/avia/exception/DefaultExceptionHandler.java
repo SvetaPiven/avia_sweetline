@@ -1,7 +1,7 @@
 package com.avia.exception;
 
 import com.avia.exception.response.ApplicationErrorCodes;
-import com.avia.exception.util.RandomValuesGenerator;
+import com.avia.util.RandomValuesGenerator;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;

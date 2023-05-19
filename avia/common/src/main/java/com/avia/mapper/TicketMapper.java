@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.Ticket;
-import com.avia.model.dto.TicketDto;
+import com.avia.model.request.TicketRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,9 +23,9 @@ public interface TicketMapper {
             @Mapping(target = "numberPlace", constant = "On registration"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    Ticket toEntity(TicketDto ticketDto);
+    Ticket toEntity(TicketRequest ticketRequest);
 
     @Mappings({
             @Mapping(target = "idTicket", ignore = true),
@@ -36,8 +36,8 @@ public interface TicketMapper {
             @Mapping(target = "idAirline.idAirline", source = "idAirline"),
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Ticket partialUpdate(TicketDto ticketDto, @MappingTarget Ticket ticket);
+    Ticket partialUpdate(TicketRequest ticketRequest, @MappingTarget Ticket ticket);
 }

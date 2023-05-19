@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.PlaneType;
-import com.avia.model.dto.PlaneTypeDto;
+import com.avia.model.request.PlaneTypeRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,15 +16,15 @@ public interface PlaneTypeMapper {
     @Mappings({
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    PlaneType toEntity(PlaneTypeDto planeTypeDto);
+    PlaneType toEntity(PlaneTypeRequest planeTypeRequest);
 
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", ignore = true)
+//            @Mapping(target = "isDeleted", ignore = true)
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    PlaneType partialUpdate(PlaneTypeDto planeTypeDto, @MappingTarget PlaneType planeType);
+    PlaneType partialUpdate(PlaneTypeRequest planeTypeRequest, @MappingTarget PlaneType planeType);
 }

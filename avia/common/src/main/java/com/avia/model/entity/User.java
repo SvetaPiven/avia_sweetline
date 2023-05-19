@@ -49,15 +49,17 @@ public class User {
     @Column(name = "id_pass")
     private Long idPass;
 
+    @NotNull
     @Column
     private Timestamp created;
 
+    @NotNull
     @Column
     private Timestamp changed;
 
     @NotNull
     @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    private boolean isDeleted = false;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

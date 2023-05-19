@@ -3,11 +3,11 @@ package com.avia.service.impl;
 import com.avia.model.entity.DocumentType;
 import com.avia.model.entity.DocumentPass;
 import com.avia.model.entity.Passenger;
+import com.avia.model.request.DocumentPassRequest;
 import com.avia.repository.DocumentPassRepository;
 import com.avia.repository.DocumentTypeRepository;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.DocumentPassService;
-import com.avia.model.dto.DocumentPassDto;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.DocumentPassMapper;
 import jakarta.transaction.Transactional;
@@ -25,17 +25,17 @@ public class DocumentPassServiceImpl implements DocumentPassService {
 
     @Override
     @Transactional
-    public DocumentPass createDocumentPass(DocumentPassDto documentPassDto) {
+    public DocumentPass createDocumentPass(DocumentPassRequest documentPassRequest) {
 
-        DocumentType documentType = documentTypeRepository.findById(documentPassDto.getIdDocumentType()).orElseThrow(() ->
-                new EntityNotFoundException("Document pass class with id " + documentPassDto.getIdDocumentType() + " not found"));
+        DocumentType documentType = documentTypeRepository.findById(documentPassRequest.getIdDocumentType()).orElseThrow(() ->
+                new EntityNotFoundException("Document pass class with id " + documentPassRequest.getIdDocumentType() + " not found"));
 
-        DocumentPass documentPass = documentPassMapper.toEntity(documentPassDto);
+        DocumentPass documentPass = documentPassMapper.toEntity(documentPassRequest);
         documentPass.getIdDocumentType().setIdDocumentType(documentPass.getIdDocumentType().getIdDocumentType());
         documentPass.setIdDocumentType(documentType);
 
-        Passenger passenger = passengerRepository.findById(documentPassDto.getIdPass()).orElseThrow(() ->
-                new EntityNotFoundException("Passenger with id " + documentPassDto.getIdPass() + " not found"));
+        Passenger passenger = passengerRepository.findById(documentPassRequest.getIdPass()).orElseThrow(() ->
+                new EntityNotFoundException("Passenger with id " + documentPassRequest.getIdPass() + " not found"));
         documentPass.getIdPass().setIdPass(passenger.getIdPass());
         documentPass.setIdPass(passenger);
 
@@ -44,12 +44,12 @@ public class DocumentPassServiceImpl implements DocumentPassService {
 
     @Override
     @Transactional
-    public DocumentPass updateDocumentPass(Long id, DocumentPassDto documentPassDto) {
+    public DocumentPass updateDocumentPass(Long id, DocumentPassRequest documentPassRequest) {
 
         DocumentPass documentPass = documentPassRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Document pass with id " + id + " not found"));
 
-        documentPassMapper.partialUpdate(documentPassDto, documentPass);
+        documentPassMapper.partialUpdate(documentPassRequest, documentPass);
 
         return documentPassRepository.save(documentPass);
     }

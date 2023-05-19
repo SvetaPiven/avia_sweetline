@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.FlightStatus;
-import com.avia.model.dto.FlightStatusDto;
+import com.avia.model.request.FlightStatusRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,15 +16,15 @@ public interface FlightStatusMapper {
     @Mappings({
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false")
+//            @Mapping(target = "isDeleted", constant = "false")
     })
-    FlightStatus toEntity(FlightStatusDto flightStatusDto);
+    FlightStatus toEntity(FlightStatusRequest flightStatusRequest);
 
     @Mappings({
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", ignore = true)
+//            @Mapping(target = "isDeleted", ignore = true)
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    FlightStatus partialUpdate(FlightStatusDto flightStatusDto, @MappingTarget FlightStatus flightStatus);
+    FlightStatus partialUpdate(FlightStatusRequest flightStatusRequest, @MappingTarget FlightStatus flightStatus);
 }

@@ -1,7 +1,7 @@
 package com.avia.mapper;
 
 import com.avia.model.entity.User;
-import com.avia.model.dto.UserDto;
+import com.avia.model.request.UserRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,9 +20,9 @@ public interface UserMapper {
             @Mapping(target = "idRole.idRole", source = "idRole"),
             @Mapping(target = "created", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", constant = "false"),
+//            @Mapping(target = "isDeleted", constant = "false"),
     })
-    User toEntity(UserDto userDto);
+    User toEntity(UserRequest userRequest);
 
     @Mappings({
             @Mapping(target = "authenticationInfo.email", source = "email"),
@@ -30,8 +30,8 @@ public interface UserMapper {
             @Mapping(target = "idRole.idRole", source = "idRole"),
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "changed", expression = "java(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()))"),
-            @Mapping(target = "isDeleted", ignore = true),
+//            @Mapping(target = "isDeleted", ignore = true),
     })
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User partialUpdate(UserDto userDto, @MappingTarget User user);
+    User partialUpdate(UserRequest userRequest, @MappingTarget User user);
 }

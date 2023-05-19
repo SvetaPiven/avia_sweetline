@@ -1,3 +1,7 @@
+CREATE DATABASE aviatickets
+    WITH
+    OWNER = development;
+
 create table public.airports
 (
     id_airport   bigserial not null
@@ -26,28 +30,27 @@ create index coordinates_index
 
 create table public.c_plane_types
 (
-    id_plane_type serial not null
+    id_plane_type serial
         constraint plane_type_pkey
-            primary key
-        unique,
-    plane_type    varchar(20)                                                       not null,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
-    is_deleted    boolean default false                                             not null
+            primary key,
+    plane_type    varchar(20)           not null,
+    created       timestamp(6)          not null,
+    changed       timestamp(6)          not null,
+    is_deleted    boolean default false not null
 );
 
 alter table public.c_plane_types
     owner to development;
 
+
 create table public.c_flight_status
 (
-    id_flight_status   serial not null
-        primary key
-        unique,
-    name_flight_status varchar(30)                                                                not null,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
-    is_deleted         boolean default false                                                      not null
+    id_flight_status   serial
+        primary key,
+    name_flight_status varchar(30)           not null,
+    created            timestamp(6)          not null,
+    changed            timestamp(6)          not null,
+    is_deleted         boolean default false not null
 );
 
 alter table public.c_flight_status
@@ -55,9 +58,8 @@ alter table public.c_flight_status
 
 create table public.flights
 (
-    id_flight           bigserial       not null
-        primary key
-        unique,
+    id_flight            bigserial
+        primary key,
     flight_number        varchar(10)  not null
         unique,
     id_plane_type        bigint       not null
@@ -74,8 +76,8 @@ create table public.flights
     id_flight_status     bigint       not null
         constraint flight_status_fk
             references public.c_flight_status,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
+    created              timestamp(6) not null,
+    changed              timestamp(6) not null,
     is_deleted           boolean default false
 );
 
@@ -87,9 +89,8 @@ create index time_flight_index
 
 create table public.c_airlines
 (
-    id_airline   serial not null
-        primary key
-        unique,
+    id_airline   serial
+        primary key,
     name_airline varchar(50)           not null,
     code_airline varchar(3)            not null,
     created      timestamp(6)          not null,
@@ -102,13 +103,12 @@ alter table public.c_airlines
 
 create table public.c_ticket_status
 (
-    id_ticket_status   serial not null
+    id_ticket_status   serial
         constraint ticket_status_pkey
-            primary key
-        unique,
+            primary key,
     name_ticket_status varchar(20)           not null,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
+    created            timestamp(6)          not null,
+    changed            timestamp(6)          not null,
     is_deleted         boolean default false not null
 );
 
@@ -118,13 +118,12 @@ alter table public.c_ticket_status
 
 create table public.c_ticket_class
 (
-    id_ticket_class serial not null
+    id_ticket_class serial
         constraint class_ticket_pkey
-            primary key
-        unique,
+            primary key,
     name_class      varchar(30)           not null,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
+    created         timestamp(6)          not null,
+    changed         timestamp(6)          not null,
     is_deleted      boolean default false not null
 );
 
@@ -133,15 +132,14 @@ alter table public.c_ticket_class
 
 create table public.passengers
 (
-    id_pass     bigserial not null
-        primary key
-        unique,
+    id_pass     bigserial
+        primary key,
     full_name   varchar(50)           not null,
     personal_id varchar(50)           not null
         unique,
-    miles       float4,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
+    miles       real,
+    created     timestamp(6)          not null,
+    changed     timestamp(6)          not null,
     is_deleted  boolean default false not null
 );
 
@@ -153,17 +151,15 @@ create unique index full_name_index
 
 create table public.c_document_type
 (
-    id_document_type serial not null
+    id_document_type serial
         constraint document_type_pkey
-            primary key
-        unique,
-    doc_type         varchar(30)                                                             not null
+            primary key,
+    doc_type         varchar(30)           not null
         constraint document_type_document_type_key
             unique,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
+    created          timestamp(6)          not null,
+    changed          timestamp(6)          not null,
     is_deleted       boolean default false not null
-
 );
 
 alter table public.c_document_type
@@ -172,26 +168,25 @@ alter table public.c_document_type
 create table public.tickets
 (
     id_ticket        bigserial
-        primary key
-        unique,
+        primary key,
     id_pass          bigint
         constraint id_pass_fk
             references public.passengers,
-    id_ticket_status int                not null
+    id_ticket_status integer               not null
         constraint id_ticket_status_fk
             references public.c_ticket_status,
     price            numeric(10, 2)        not null,
     id_flight        bigint                not null
         constraint id_flight_fk
             references public.flights,
-    number_place       varchar(15),
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
+    number_place     varchar(15),
+    created          timestamp(6)          not null,
+    changed          timestamp(6)          not null,
     is_deleted       boolean default false not null,
-    id_ticket_class  int                not null
+    id_ticket_class  integer               not null
         constraint id_ticket_class_fk
             references public.c_ticket_class,
-    id_airline       int                not null
+    id_airline       integer               not null
         constraint airlines_fk
             references public.c_airlines
 );
@@ -244,9 +239,8 @@ alter table public.users
 
 create table public.document_pass
 (
-    id_document_pass bigserial not null
-        primary key
-        unique,
+    id_document_pass bigserial
+        primary key,
     id_document_type bigint                not null
         constraint id_document_type_fk
             references public.c_document_type,
@@ -254,8 +248,8 @@ create table public.document_pass
     id_pass          bigint                not null
         constraint id_pass_fk
             references public.passengers,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
+    created          timestamp(6)          not null,
+    changed          timestamp(6)          not null,
     is_deleted       boolean default false not null
 );
 
