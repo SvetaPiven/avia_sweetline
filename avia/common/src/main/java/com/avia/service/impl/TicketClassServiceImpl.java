@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class TicketClassServiceImpl implements TicketClassService {
 
     private final TicketClassRepository ticketClassRepository;
+
     private final TicketClassMapper ticketClassMapper;
 
     @Override
@@ -31,5 +32,11 @@ public class TicketClassServiceImpl implements TicketClassService {
                 new EntityNotFoundException("Ticket class with id " + id + " not found"));
         ticketClassMapper.partialUpdate(ticketClassRequest, ticketClass);
         return ticketClassRepository.save(ticketClass);
+    }
+
+    @Override
+    public TicketClass findById(Integer idTicketClass) {
+        return ticketClassRepository.findById(idTicketClass)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket class with id " + idTicketClass + " not found"));
     }
 }

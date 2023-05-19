@@ -16,7 +16,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PassengerServiceImpl implements PassengerService {
+
     private final PassengerRepository passengerRepository;
+
     private final PassengerMapper passengerMapper;
 
     @Override
@@ -37,5 +39,11 @@ public class PassengerServiceImpl implements PassengerService {
         } else {
             throw new EntityNotFoundException("Passenger not found with id " + id);
         }
+    }
+
+    @Override
+    public Passenger findById(Long idPass) {
+        return passengerRepository.findById(idPass)
+                .orElseThrow(() -> new EntityNotFoundException("Passenger with id " + idPass + " not found"));
     }
 }

@@ -14,8 +14,12 @@ import com.avia.repository.PassengerRepository;
 import com.avia.repository.TicketClassRepository;
 import com.avia.repository.TicketRepository;
 import com.avia.repository.UserRepository;
+import com.avia.service.AirlineService;
 import com.avia.service.AirportService;
 import com.avia.service.EmailService;
+import com.avia.service.FlightService;
+import com.avia.service.PassengerService;
+import com.avia.service.TicketClassService;
 import com.avia.service.TicketService;
 import com.avia.util.CalculateDistance;
 import jakarta.transaction.Transactional;
@@ -33,17 +37,17 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
-    private final PassengerRepository passengerRepository;
+    private final PassengerService passengerService;
 
     private final TicketRepository ticketRepository;
 
     private final TicketMapper ticketMapper;
 
-    private final FlightRepository flightRepository;
+    private final FlightService flightService;
 
-    private final TicketClassRepository ticketClassRepository;
+    private final TicketClassService ticketClassService;
 
-    private final AirlineRepository airlineRepository;
+    private final AirlineService airlineService;
 
     private final AirportService airportService;
 
@@ -58,24 +62,21 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public Ticket createTicket(TicketRequest ticketRequest) {
-        Passenger passenger = passengerRepository.findById(ticketRequest.getIdPass()).orElseThrow(() ->
-                new EntityNotFoundException("Passenger with id " + ticketRequest.getIdPass() + " not found"));
+
+        Passenger passenger = passengerService.findById(ticketRequest.getIdPass());
         Ticket ticket = ticketMapper.toEntity(ticketRequest);
         ticket.getIdPass().setIdPass(passenger.getIdPass());
         ticket.setIdPass(passenger);
 
-        TicketClass ticketClass = ticketClassRepository.findById(ticketRequest.getIdTicketClass()).orElseThrow(() ->
-                new EntityNotFoundException("Ticket class with id " + ticketRequest.getIdTicketClass() + " not found"));
+        TicketClass ticketClass = ticketClassService.findById(ticketRequest.getIdTicketClass());
         ticket.getIdTicketClass().setIdTicketClass(ticketClass.getIdTicketClass());
         ticket.setIdTicketClass(ticketClass);
 
-        Flight flight = flightRepository.findById(ticketRequest.getIdFlight()).orElseThrow(() ->
-                new EntityNotFoundException("Flight with id " + ticketRequest.getIdFlight() + " not found"));
+        Flight flight = flightService.findById(ticketRequest.getIdFlight());
         ticket.getIdFlight().setIdFlight(flight.getIdFlight());
         ticket.setIdFlight(flight);
 
-        Airline airline = airlineRepository.findById(ticketRequest.getIdAirline()).orElseThrow(() ->
-                new EntityNotFoundException("Airline with id " + ticketRequest.getIdAirline() + " not found"));
+        Airline airline = airlineService.findById(ticketRequest.getIdAirline());
         ticket.getIdAirline().setIdAirline(airline.getIdAirline());
         ticket.setIdAirline(airline);
 
@@ -86,17 +87,21 @@ public class TicketServiceImpl implements TicketService {
         try {
             String emailTemplate = ResourceBundle.getBundle("email").getString("application.email.buy.ticket");
 
-            String formattedMessage = MessageFormat.format(emailTemplate, ticketClass.getNameClass(),
-                    airportService.getAddressFromLatLng(flight.getIdDepartureAirport().getLatitude(), flight.getIdDepartureAirport().getLongitude()),
-                    airportService.getAddressFromLatLng(flight.getIdArrivalAirport().getLatitude(), flight.getIdArrivalAirport().getLongitude()),
-                    flight.getFlightNumber(), airline.getNameAirline(), flight.getDepartureTime(), ticket.getPrice());
-
+            String formattedMessage =
+                    MessageFormat.format(emailTemplate, ticketClass.getNameClass(),
+                    airportService.getAddressFromLatLng(flight.getIdDepartureAirport().getLatitude(),
+                    flight.getIdDepartureAirport().getLongitude()),
+                    airportService.getAddressFromLatLng(flight.getIdArrivalAirport().getLatitude(),
+                    flight.getIdArrivalAirport().getLongitude()),
+                    flight.getFlightNumber(), airline.getNameAirline(),
+                    flight.getDepartureTime(), ticket.getPrice());
 
             emailService.sendSimpleEmail(userRepository.findByIdPass(ticketRequest.getIdPass()).getAuthenticationInfo().getEmail(),
                     "Congrats from SweetLine Avia! Your created the ticket!", formattedMessage);
         } catch (MailException mailException) {
-            log.error("Error while sending out email.." + mailException);
+            log.error("Error while sending out email: " + mailException.getMessage(), mailException);
         } catch (Exception e) {
+            log.error("Error occurred: " + e.getMessage(), e);
             throw new EntityNotFoundException("No results found");
         }
 

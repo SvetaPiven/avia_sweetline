@@ -70,6 +70,6 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public Flight findById(Long idFlight) {
         return flightRepository.findById(idFlight)
-                .orElseThrow(() -> new IllegalArgumentException("Flight not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Flight with id " + idFlight + " not found"));
     }
 }

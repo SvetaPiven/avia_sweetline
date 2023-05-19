@@ -33,4 +33,10 @@ public class AirlineServiceImpl implements AirlineService {
         airlineMapper.partialUpdate(airlineRequest, airline);
         return airlineRepository.save(airline);
     }
+
+    @Override
+    public Airline findById(Integer idAirline) {
+        return airlineRepository.findById(idAirline)
+                .orElseThrow(() -> new EntityNotFoundException("Airline with id " + idAirline + " not found"));
+    }
 }
