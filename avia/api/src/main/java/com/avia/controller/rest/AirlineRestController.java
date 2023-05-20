@@ -49,7 +49,7 @@ public class AirlineRestController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllAirlinesWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<Airline>> getAllAirlinesWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, airlinesPageCapacity, Sort.by("idAirline").ascending());
 

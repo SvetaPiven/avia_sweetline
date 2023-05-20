@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.exception.ValidationException;
+import com.avia.model.entity.PlaneType;
 import com.avia.model.entity.Role;
 import com.avia.model.request.RoleRequest;
 import com.avia.repository.RoleRepository;
@@ -48,7 +49,7 @@ public class RoleRestController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllRolesWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<Role>> getAllRolesWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, rolePageCapacity, Sort.by("idRoles").ascending());
 

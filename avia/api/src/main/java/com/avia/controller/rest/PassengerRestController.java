@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.exception.ValidationException;
+import com.avia.model.entity.FlightStatus;
 import com.avia.model.entity.Passenger;
 import com.avia.model.request.PassengerRequest;
 import com.avia.repository.PassengerRepository;
@@ -54,7 +55,7 @@ PassengerRestController {
 
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllPassengersWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<Passenger>> getAllPassengersWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, passengerPageCapacity, Sort.by("idPass").ascending());
 

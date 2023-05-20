@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.Ticket;
+import com.avia.model.entity.TicketClass;
 import com.avia.repository.TicketRepository;
 import com.avia.service.TicketService;
 import com.avia.model.request.TicketRequest;
@@ -46,7 +47,7 @@ public class TicketRestController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllTicketsWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<Ticket>> getAllTicketsWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, ticketPageCapacity, Sort.by("idTicket").ascending());
 

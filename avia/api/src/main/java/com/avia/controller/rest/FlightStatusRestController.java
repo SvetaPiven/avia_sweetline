@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.exception.ValidationException;
+import com.avia.model.entity.Flight;
 import com.avia.model.entity.FlightStatus;
 import com.avia.model.request.FlightStatusRequest;
 import com.avia.repository.FlightStatusRepository;
@@ -49,7 +50,7 @@ public class FlightStatusRestController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllFlightsStatusWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<FlightStatus>> getAllFlightsStatusWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, flightStatusPageCapacity, Sort.by("idFlightStatus").ascending());
 

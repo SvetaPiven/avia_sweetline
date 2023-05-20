@@ -18,10 +18,12 @@ import java.util.List;
 public class LocationRestController {
 
     private final LocationService locationService;
+
     private final PassengerRepository passengerRepository;
 
     @PutMapping("/calculate-miles")
     public ResponseEntity<String> calculatePassengerMiles() {
+
         List<Passenger> passengers = passengerRepository.findAll();
         for (Passenger passenger : passengers) {
             locationService.calculatePassengerMiles(passenger);

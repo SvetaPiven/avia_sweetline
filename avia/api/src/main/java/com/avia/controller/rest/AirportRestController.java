@@ -52,7 +52,7 @@ public class AirportRestController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllAirportsWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<Airport>> getAllAirportsWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, airportsPageCapacity, Sort.by("idAirport").ascending());
 

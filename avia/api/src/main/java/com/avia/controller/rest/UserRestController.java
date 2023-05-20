@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.exception.ValidationException;
+import com.avia.model.entity.TicketStatus;
 import com.avia.model.entity.User;
 import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
@@ -8,6 +9,7 @@ import com.avia.model.request.UserRequest;
 import com.avia.exception.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -60,8 +62,10 @@ public class UserRestController {
                     @ApiResponse(
                             responseCode = "OK",
                             description = "Successfully loaded Users",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
-                    )
+                            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class)))
+
+                    ),
+                    @ApiResponse(responseCode = "INTERVAL_SERVER_ERROR", description = "Internal Server Error")
             }
     )
     @GetMapping
@@ -90,7 +94,7 @@ public class UserRestController {
             }
     )
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllUsersWithPageAndSort(@Parameter(name = "page", example = "0", required = true) @PathVariable int page) {
+    public ResponseEntity<Page<User>> getAllUsersWithPageAndSort(@Parameter(name = "page", example = "0", required = true) @PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, userPageCapacity, Sort.by("idUser").ascending());
 
@@ -123,7 +127,7 @@ public class UserRestController {
     )
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserRequest userRequest, BindingResult bindingResult) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody @Parameter(description = "User information", required = true) UserRequest userRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
             throw new ValidationException(errorMessage);
@@ -153,7 +157,7 @@ public class UserRestController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@Parameter(description = "User ID") @PathVariable("id") Long id) {
+    public ResponseEntity<User> getUserById(@Parameter(description = "User ID", example = "5", required = true) @PathVariable("id") Long id) {
         Optional<User> user = userRepository.findById(id);
         return user.map(ResponseEntity::ok).orElseThrow(() ->
                 new EntityNotFoundException("User with id " + id + " not found"));
@@ -194,11 +198,7 @@ public class UserRestController {
             description = "Get User by email",
             parameters = {
                     @Parameter(
-                            name = "email",
-                            description = "User email",
-                            required = true,
-                            example = "svetapiven93@gmail.com"
-                    )
+                            schema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "svetapiven93@gmail.com", type = "string", description = "User email"))
             },
             responses = {
                     @ApiResponse(

@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.exception.ValidationException;
+import com.avia.model.entity.Airport;
 import com.avia.model.entity.DocumentPass;
 import com.avia.model.request.DocumentPassRequest;
 import com.avia.repository.DocumentPassRepository;
@@ -51,7 +52,7 @@ public class DocumentPassRestController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllDocumentPassWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<DocumentPass>> getAllDocumentPassWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, documentPassPageCapacity, Sort.by("idDocumentPass").ascending());
 

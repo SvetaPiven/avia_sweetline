@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.exception.ValidationException;
+import com.avia.model.entity.Ticket;
 import com.avia.model.entity.TicketStatus;
 import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketStatusService;
@@ -52,7 +53,7 @@ public class TicketStatusRestController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllTicketStatusesWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<TicketStatus>> getAllTicketStatusesWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, ticketStatusPageCapacity, Sort.by("idTicketStatus").ascending());
 

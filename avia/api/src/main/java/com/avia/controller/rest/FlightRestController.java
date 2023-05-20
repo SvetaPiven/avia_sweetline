@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.exception.ValidationException;
 import com.avia.model.entity.Airport;
+import com.avia.model.entity.DocumentType;
 import com.avia.model.entity.Flight;
 import com.avia.model.request.FlightRequest;
 import com.avia.repository.FlightRepository;
@@ -52,7 +53,7 @@ public class FlightRestController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllFlightsWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Page<Flight>> getAllFlightsWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, flightPageCapacity, Sort.by("idFlight").ascending());
 
