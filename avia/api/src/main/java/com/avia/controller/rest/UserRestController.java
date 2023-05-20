@@ -1,22 +1,20 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
-import com.avia.model.entity.TicketStatus;
+import com.avia.model.entity.Airport;
 import com.avia.model.entity.User;
+import com.avia.model.request.UserRequest;
 import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
-import com.avia.model.request.UserRequest;
-import com.avia.exception.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,18 +26,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -62,7 +59,9 @@ public class UserRestController {
                     @ApiResponse(
                             responseCode = "OK",
                             description = "Successfully loaded Users",
-                            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class)))
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = User.class)))
 
                     ),
                     @ApiResponse(responseCode = "INTERVAL_SERVER_ERROR", description = "Internal Server Error")
@@ -85,23 +84,24 @@ public class UserRestController {
                             description = "Successfully loaded Users",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = PageImpl.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = User.class)))
                     ),
                     @ApiResponse(
                             responseCode = "NOT_FOUND",
-                            description = "No users found"
+                            description = "Users not found"
                     )
             }
     )
     @GetMapping("/page/{page}")
-    public ResponseEntity<Page<User>> getAllUsersWithPageAndSort(@Parameter(name = "page", example = "0", required = true) @PathVariable int page) {
+    public ResponseEntity<Map<String, Page<User>>> getAllUsersWithPageAndSort(@Parameter(name = "page", example = "0", required = true) @PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, userPageCapacity, Sort.by("idUser").ascending());
 
         Page<User> users = userRepository.findAll(pageable);
 
         if (users.hasContent()) {
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            Map<String, Page<User>> resultMap = Collections.singletonMap("result", users);
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

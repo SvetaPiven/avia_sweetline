@@ -3,10 +3,16 @@ package com.avia.controller.rest;
 import com.avia.exception.ValidationException;
 import com.avia.model.entity.Airline;
 import com.avia.model.entity.Airport;
+import com.avia.model.entity.User;
 import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;
 import com.avia.model.request.AirportRequest;
 import com.avia.exception.EntityNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
@@ -29,7 +35,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -45,21 +53,54 @@ public class AirportRestController {
     @Value("${airports.page-capacity}")
     private Integer airportsPageCapacity;
 
+    @Operation(
+            summary = "Get All Airports",
+            description = "Find All airports without limitations",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "Ok",
+                            description = "Successfully loaded airports",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Airport.class))
+                            )
+                    ),
+                    @ApiResponse(responseCode = "INTERVAL_SERVER_ERROR", description = "Internal Server Error")
+            }
+    )
     @GetMapping()
     public ResponseEntity<List<Airport>> getAllAirlines() {
 
         return new ResponseEntity<>(airportRepository.findAll(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Spring Data Airport Search with Pageable Params",
+            description = "Load page by number with sort and offset params",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Airports",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Airport.class)))
+                    ),
+                    @ApiResponse(
+                            responseCode = "NOT_FOUND",
+                            description = "Airports not found"
+                    )
+            }
+    )
     @GetMapping("/page/{page}")
-    public ResponseEntity<Page<Airport>> getAllAirportsWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Map<String, Page<Airport>>> getAllAirportsWithPageAndSort(@PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, airportsPageCapacity, Sort.by("idAirport").ascending());
 
         Page<Airport> airports = airportRepository.findAll(pageable);
 
         if (airports.hasContent()) {
-            return new ResponseEntity<>(airports, HttpStatus.OK);
+            Map<String, Page<Airport>> resultMap = Collections.singletonMap("result", airports);
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
