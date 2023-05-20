@@ -16,7 +16,7 @@ public class PassengerMilesCalculator {
     private final LocationService locationService;
     private final PassengerRepository passengerRepository;
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void calculatePassengerMiles() {
         List<Passenger> passengers = passengerRepository.findAll();
         for (Passenger passenger : passengers) {

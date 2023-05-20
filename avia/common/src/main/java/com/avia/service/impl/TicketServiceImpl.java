@@ -94,6 +94,8 @@ public class TicketServiceImpl implements TicketService {
         BigDecimal ticketPrice = ticketPriceCalculator.calculateTicketPrice(latitudeDeparture, longitudeDeparture, latitudeArrival, longitudeArrival);
         ticket.setPrice(ticketPrice);
 
+        ticketRepository.applyDiscount(ticket.getIdTicket(), 0.1);
+
         sendEmail(ticket, ticketRequest);
 
         return ticketRepository.save(ticket);
