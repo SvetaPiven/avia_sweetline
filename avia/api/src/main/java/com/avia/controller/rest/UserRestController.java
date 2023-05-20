@@ -6,16 +6,25 @@ import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
 import com.avia.model.request.UserRequest;
 import com.avia.exception.EntityNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +53,17 @@ public class UserRestController {
     @Value("${user.page-capacity}")
     private Integer userPageCapacity;
 
+    @Operation(
+            summary = "Spring Data User Find All Search",
+            description = "Find All Users without limitations",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Users",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+                    )
+            }
+    )
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
 
@@ -52,8 +72,25 @@ public class UserRestController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Spring Data User Search with Pageable Params",
+            description = "Load page by number with sort and offset params",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Users",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PageImpl.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "NOT_FOUND",
+                            description = "No users found"
+                    )
+            }
+    )
     @GetMapping("/page/{page}")
-    public ResponseEntity<Object> getAllUsersWithPageAndSort(@PathVariable int page) {
+    public ResponseEntity<Object> getAllUsersWithPageAndSort(@Parameter(name = "page", example = "0", required = true) @PathVariable int page) {
 
         Pageable pageable = PageRequest.of(page, userPageCapacity, Sort.by("idUser").ascending());
 
@@ -66,6 +103,25 @@ public class UserRestController {
         }
     }
 
+    @Operation(
+            summary = "Spring Data Create User",
+            description = "Creates a new user",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "CREATED",
+                            description = "User created",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = User.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "BAD_REQUEST",
+                            description = "Validation error"
+                    )
+            }
+    )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody UserRequest userRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -77,15 +133,52 @@ public class UserRestController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
+
+    @Operation(
+            summary = "Spring Data Get User by ID",
+            description = "Get user based on specified id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "User found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = User.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "BAD_REQUEST",
+                            description = "User with ID not found"
+                    )
+            }
+    )
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+    public ResponseEntity<User> getUserById(@Parameter(description = "User ID") @PathVariable("id") Long id) {
         Optional<User> user = userRepository.findById(id);
         return user.map(ResponseEntity::ok).orElseThrow(() ->
                 new EntityNotFoundException("User with id " + id + " not found"));
     }
 
+    @Operation(
+            summary = "Spring Data Update User",
+            description = "Updating an existing user",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "User updated successfully",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = User.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "BAD_REQUEST",
+                            description = "Validation error"
+                    )
+            }
+    )
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
+    public ResponseEntity<User> updateUser(@Parameter(description = "User ID") @PathVariable Long id,
                                            @Valid @RequestBody UserRequest userRequest,
                                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -96,35 +189,34 @@ public class UserRestController {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
-
-        Optional<User> user = userRepository.findById(id);
-
-        if (user.isPresent()) {
-            userRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            throw new EntityNotFoundException("User with id " + id + " not found");
-        }
-    }
-
-    @PutMapping("/{id}/status")
-    public String changeStatus(@PathVariable("id") Long id, @RequestParam("isDeleted") boolean isDeleted) {
-        Optional<User> userOptional = userRepository.findById(id);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setDeleted(isDeleted);
-            userRepository.save(user);
-            return "Status changed successfully";
-        } else {
-            throw new EntityNotFoundException("User with id " + id + " not found!");
-        }
-    }
-
+    @Operation(
+            summary = "Spring Data Get User by Email",
+            description = "Get User by email",
+            parameters = {
+                    @Parameter(
+                            name = "email",
+                            description = "User email",
+                            required = true,
+                            example = "svetapiven93@gmail.com"
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded User by Email",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = User.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "NOT_FOUND",
+                            description = "User not found"
+                    )
+            }
+    )
     @GetMapping("/search-by-email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<User> getUserByEmail(@Parameter(hidden = true) @PathVariable String email) {
 
         Optional<User> user = userRepository.findUserByEmail(email);
 
