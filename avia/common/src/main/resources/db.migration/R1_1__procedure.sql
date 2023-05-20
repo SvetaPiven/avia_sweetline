@@ -1,7 +1,8 @@
-CREATE OR REPLACE PROCEDURE sale(idticket bigint, discount real)
+CREATE OR REPLACE PROCEDURE IF NOT EXISTS sale(idticket bigint, discount real)
 LANGUAGE plpgsql
 AS $$
 BEGIN
+  -- Тело процедуры
 UPDATE tickets
 SET price = tickets.price - tickets.price * discount
 WHERE id_ticket = idticket AND id_ticket_class = 2;
