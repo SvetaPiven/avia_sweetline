@@ -1,7 +1,3 @@
-CREATE DATABASE aviatickets
-    WITH
-    OWNER = development;
-
 create table public.airports
 (
     id_airport   bigserial not null
