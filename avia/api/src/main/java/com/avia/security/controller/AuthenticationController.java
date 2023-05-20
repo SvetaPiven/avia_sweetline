@@ -1,5 +1,6 @@
 package com.avia.security.controller;
 
+import com.avia.security.config.JwtConfiguration;
 import com.avia.security.dto.AuthRequest;
 import com.avia.security.dto.AuthResponse;
 import com.avia.security.jwt.TokenProvider;
@@ -26,13 +27,15 @@ public class AuthenticationController {
 
     private final UserDetailsService userDetailsService;
 
+    private final JwtConfiguration jwtConfiguration;
+
     @PostMapping("/auth")
     public ResponseEntity<AuthResponse> loginUser(@RequestBody AuthRequest request) {
 
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getLogin(),
-                        request.getUserPassword()
+                        request.getUserPassword() + jwtConfiguration.getPasswordSalt()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authenticate);

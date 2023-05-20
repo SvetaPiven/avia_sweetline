@@ -42,7 +42,7 @@ public class User {
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "email", column = @Column(name = "email", nullable = false, length = 30)),
-            @AttributeOverride(name = "userPassword", column = @Column(name = "user_password", nullable = false, length = 30))
+            @AttributeOverride(name = "userPassword", column = @Column(name = "user_password", nullable = false, length = 200))
     })
     private AuthenticationInfo authenticationInfo;
 

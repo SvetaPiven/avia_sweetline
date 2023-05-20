@@ -83,6 +83,7 @@ user:
 config:
   secret: "secret"
   expiration: 600000
+  passwordSalt: cd022728-f6e1-11ed-b67e-0242ac120002
 
 ---
 

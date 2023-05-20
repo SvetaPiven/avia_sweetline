@@ -1,5 +1,6 @@
 package com.avia.security.config;
 
+import com.avia.configuration.JwtConfigurationProvider;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,9 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Configuration
 @ConfigurationProperties(prefix = "config")
-public class JwtConfiguration {
+public class JwtConfiguration implements JwtConfigurationProvider {
 
     private String secret;
 
     private Integer expiration;
+
+    private String passwordSalt;
+
 }

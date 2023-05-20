@@ -6,9 +6,11 @@ import com.avia.repository.UserRepository;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.UserMapper;
 import com.avia.service.UserService;
+import com.avia.util.PasswordEncode;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,11 +21,16 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
+    private final PasswordEncode passwordEncode;
+
     @Override
     @Transactional
     public User createUser(UserRequest userRequest) {
 
         User user = userMapper.toEntity(userRequest);
+
+        String encodedPassword = passwordEncode.encodePassword(user.getAuthenticationInfo().getUserPassword());
+        user.getAuthenticationInfo().setUserPassword(encodedPassword);
 
         return userRepository.save(user);
     }
