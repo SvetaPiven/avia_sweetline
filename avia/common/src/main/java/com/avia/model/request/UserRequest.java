@@ -18,7 +18,7 @@ public class UserRequest implements Serializable {
     private String email;
 
     @Size(min = 8, max = 200)
-    @Pattern(regexp = "^.*(?=.{6,})(?=.*d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z]).{6,}$")
     @NotNull
     private String userPassword;
 
