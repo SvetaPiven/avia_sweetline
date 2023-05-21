@@ -19,8 +19,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <caffeine.version>3.1.5</caffeine.version>
         <swagger.version>3.0.0</swagger.version>
-<!--        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>-->
-<!--        <springfox-swagger-ui.version>3.0.0</springfox-swagger-ui.version>-->
+        <!--        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>-->
+        <!--        <springfox-swagger-ui.version>3.0.0</springfox-swagger-ui.version>-->
     </properties>
 
     <dependencies>
@@ -37,7 +37,7 @@
             <version>${caffeine.version}</version>
         </dependency>
 
-         <!-- Swagger 3 -->
+        <!-- Swagger 3 -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
