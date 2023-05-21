@@ -13,6 +13,3 @@ CREATE DATABASE aviatickets
     OWNER = development
 ENCODING = 'UTF8'
 CONNECTION LIMIT = 20;
-
-CREATE SCHEMA public
-    AUTHORIZATION development;
