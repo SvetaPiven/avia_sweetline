@@ -18,12 +18,10 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <caffeine.version>3.1.5</caffeine.version>
-<!--        <swagger.version>3.0.0</swagger.version>-->
-        <!--        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>-->
-        <!--        <springfox-swagger-ui.version>3.0.0</springfox-swagger-ui.version>-->
     </properties>
 
     <dependencies>
+
         <!-- Spring Boot Starter Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -36,25 +34,6 @@
             <artifactId>caffeine</artifactId>
             <version>${caffeine.version}</version>
         </dependency>
-
-<!--        &lt;!&ndash; Swagger 3 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springdoc</groupId>-->
-<!--            <artifactId>springdoc-openapi-ui</artifactId>-->
-<!--            <version>1.7.0</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.springdoc</groupId>-->
-<!--            <artifactId>springdoc-openapi-security</artifactId>-->
-<!--            <version>1.7.0</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-boot-starter</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
 
     </dependencies>
 

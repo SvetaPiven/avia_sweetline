@@ -16,18 +16,15 @@ import java.io.Serializable;
 @Schema(description = "User Request")
 public class UserRequest implements Serializable {
 
-    @Value("${validation.passwordPattern}")
-    private String passwordPattern;
-
-    @NotNull
-    @Size(min = 10, max = 30)
+    @NotNull(message = "User email must not be null")
+    @Size(message = "User email must be between 10 and 30 characters", min = 10, max = 30)
     @Email(message = "Invalid email address")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "svetapiven93@gmail.com",
             type = "string", description = "User email")
     private String email;
 
-    @NotNull
-    @Size(min = 8, max = 200)
+    @NotNull(message = "User password must not be null")
+    @Size(message = "User password must be between 8 and 200 characters", min = 8, max = 200)
     @ValidPassword
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "123456qW",
             type = "string", description = "User password")
@@ -36,7 +33,7 @@ public class UserRequest implements Serializable {
     @Schema(description = "ID passenger")
     private Long idPass;
 
-    @NotNull
+    @NotNull(message = "ID role must not be null")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
             type = "string", description = "ID Role")
     private Integer idRole;

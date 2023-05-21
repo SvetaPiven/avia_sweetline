@@ -2,7 +2,6 @@ package com.avia.controller.rest;
 
 import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
-import com.avia.model.entity.Airport;
 import com.avia.model.entity.User;
 import com.avia.model.request.UserRequest;
 import com.avia.repository.UserRepository;
@@ -17,21 +16,23 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -222,5 +223,64 @@ public class UserRestController {
 
         return user.map(ResponseEntity::ok).orElseThrow(() ->
                 new EntityNotFoundException("User with email " + email + " not found"));
+    }
+
+    @Operation(
+            summary = "Spring Data Delete User",
+            description = "Delete User by ID",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "User deleted successfully",
+                            content = @Content(mediaType = "text/plain")
+                    ),
+                    @ApiResponse(
+                            responseCode = "NOT_FOUND",
+                            description = "User not found"
+                    )
+            }
+    )
+    @DeleteMapping("/{id}")
+    public String deleteUser(@Parameter(description = "User ID") @PathVariable("id") Long id) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()) {
+            userRepository.deleteById(id);
+            return "User with ID " + id + " deleted successfully.";
+        } else {
+            throw new EntityNotFoundException("User with ID " + id + " not found");
+        }
+    }
+
+    @Operation(
+            summary = "Change User Status",
+            description = "Changes the status (isDeleted) of a user by ID",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Status changed successfully"
+                    ),
+                    @ApiResponse(
+                            responseCode = "NOT_FOUND",
+                            description = "User not found"
+                    )
+            }
+    )
+    @Secured("ROLE_ADMIN")
+    @PutMapping("/{id}/status")
+    public String changeStatus(
+            @Parameter(description = "User ID") @PathVariable("id") Long id,
+            @Parameter(description = "Status value") @RequestParam("isDeleted") boolean isDeleted) {
+
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setDeleted(isDeleted);
+            userRepository.save(user);
+            return "Status changed successfully";
+        } else {
+            throw new EntityNotFoundException("User with id " + id + " not found!");
+        }
     }
 }
