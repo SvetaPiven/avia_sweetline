@@ -10,4 +10,4 @@ ALTER SEQUENCE public.document_pass_id_document_pass_seq  start 119 increment 1 
 ALTER SEQUENCE public.flights_id_flight_seq  start 27 increment 1 restart 26;
 ALTER SEQUENCE public.passengers_id_pass_seq  start 129 increment 1 restart 128;
 ALTER SEQUENCE public.tickets_id_ticket_seq  start 219 increment 1 restart 218;
-ALTER SEQUENCE public.users_id_user_seq  start 40 increment 1 restart 39;
+ALTER SEQUENCE public.users_id_user_seq  start 19 increment 1 restart 39;

@@ -441,14 +441,24 @@ values  (1, 'ROLE_USER', '2023-04-09 11:19:32.000000', '2023-04-09 11:19:32.0000
         (3, 'ROLE_OTHER', '2023-04-09 07:29:52.253814', '2023-04-09 07:29:52.253814', false);
 
 insert into public.users (id_user, email, user_password, created, changed, is_deleted, id_pass, id_role)
-values  (1, 'svetapiven93@gmail.com', '43490137', '2023-04-09 11:16:28.000000', '2023-04-09 11:16:28.000000', false, 1, 1),
-        (2, 'svetapiven81@gmail.com', '43490136', '2023-04-09 07:34:34.919696', '2023-04-09 07:34:34.919696', false, 103, 1),
-        (4, 'svetapiven111@gmail.com', '12345678', '2023-05-07 15:10:42.127376', '2023-05-07 15:10:42.127376', false, null, 2),
-        (6, 'svetapiven112@gmail.com', '123456789', '2023-05-07 15:24:20.812843', '2023-05-07 15:24:20.812843', false, 100, 3),
-        (7, 'svetapiven1@gmail.com', '30544531', '2023-04-09 07:34:38.323433', '2023-04-09 07:34:38.323433', false, 37, 4),
-        (17, 'svetapiven84@gmail.com', '28919390', '2023-04-09 07:34:40.348058', '2023-04-09 07:34:40.348058', false, 78, 1),
-        (38, 'svetapiven89@gmail.com', '1234567890', '2023-05-10 14:49:22.059663', '2023-05-10 14:49:22.059663', false, 12, 1),
-        (39, 'svetapiven689@gmail.com', '12345676890', '2023-05-10 14:52:13.768557', '2023-05-10 14:52:13.768557', false, 14, 1);
+values  (1, 'svetapiven81@gmail.com', '$2a$06$bdv7/Z.vSzMWr4PUdnDwGuSCMfCGGfI7zOa8SD.ar4mjcz3GcDpBS', '2023-04-09 07:34:34.919696', '2023-04-09 07:34:34.919696', false, 103, 1),
+        (2, 'svetapiven111@gmail.com', '$2a$06$tslk/etpMqjKQvENT.ELAe3Mv7N86Ob6yfEqXozAu2tfhS35rlA16', '2023-05-07 15:10:42.127376', '2023-05-07 15:10:42.127376', false, null, 2),
+        (3, 'svetapiven112@gmail.com', '$2a$06$R6Fm/aDdPT0BqCOCp391NOMVbUXdDw97oXI6wK.HkkMdVsI75RaTq', '2023-05-07 15:24:20.812843', '2023-05-07 15:24:20.812843', false, 100, 3),
+        (4, 'svetapiven1@gmail.com', '$2a$06$rBQ8yxzYNIbnh7akS6ObDubaKuAHWOfgqLUywLQZNCF9RTrGwTKMu', '2023-04-09 07:34:38.323433', '2023-04-09 07:34:38.323433', false, 37, 4),
+        (5, 'svetapiven84@gmail.com', '$2a$06$bKVo8uLML8RbMvHv6ElvEeqT4QdxHZFJJ7da0sx8Es2hi7ZIhjeRm', '2023-04-09 07:34:40.348058', '2023-04-09 07:34:40.348058', false, 78, 1),
+        (6, 'svetapiven89@gmail.com', '$2a$06$TGTD23f3Li1SHrqcC7DZXeKSld4KDx./2bf9mbtqIOyRA69c1K6wC', '2023-05-10 14:49:22.059663', '2023-05-10 14:49:22.059663', false, 12, 1),
+        (7, 'svetapiven689@gmail.com', '$2a$06$CF64EDPuK6V4DWVRunvyFOc1bEYEPSCZdCh12UIHM3CJltlQjoKJq', '2023-05-10 14:52:13.768557', '2023-05-10 14:52:13.768557', false, 14, 1),
+        (8, 'svetapiven232@gmail.com', '$2a$06$Vgdz87zE5NUrpUu.1cfYve5g9GjHdpV8.6rCFxgOAJmruGiobdqHi', '2023-05-17 21:22:40.694755', '2023-05-17 21:22:40.694755', false, 23, 1),
+        (9, 'svetapiven255@gmail.com', '$2a$06$qSQtY4kuKOvH0uM4CnjbQuG9TKh4ULcE0Xddp/oiLnI3XgCaXoVfu', '2023-05-17 21:28:08.311793', '2023-05-17 21:28:08.311793', false, 24, 2),
+        (10, 'svetapiven455@gmail.com', '$2a$06$Uazn8lxnnB57KHN76kB2Ie1RJkdHfTXKvYnO1VAX2o0kgPaMTiIje', '2023-05-17 21:34:44.700952', '2023-05-17 21:34:44.700952', false, 25, 1),
+        (11, 'svetapiven465@gmail.com', '$2a$06$vdKcau/KL4FHHuyqt30GyedZ2wezUyo8nJIWHNFZpiEhllOZpnFq.', '2023-05-17 21:37:45.952333', '2023-05-17 21:37:45.952333', false, 26, 1),
+        (12, 'svetapiven565@gmail.com', '$2a$06$ZuuMWPoT5wwWulfkOn6DtuYm6rCNkBamhKyyIpRfpVyGGPb.U5FuG', '2023-05-17 22:39:48.591587', '2023-05-17 22:39:48.591587', false, 27, 1),
+        (13, 'svetapiven567@gmail.com', '$2a$06$hOWBobmXbsBPmt0RtLIMjeU1Lxk/UlrV3xFsmAVLJ6JTRI15.Y39y', '2023-05-17 23:07:19.327995', '2023-05-17 23:07:19.327995', false, 28, 1),
+        (14, 'svetapiv', '$2a$06$wG1MHZ8HLRzqwegRlJZW5eLg38aS/O7a7mC7.JJfzDj4pAYXWSncS', '2023-05-19 23:21:53.346465', '2023-05-19 23:21:53.346465', false, 79, 2),
+        (15, 'svetapiven28736@gmail.com', '$2a$06$GgB6xScalIsjHlCa7FyWaeENOnR5zYrFL7fFS4YSp9.klIz6YfvKG', '2023-05-20 12:14:09.384586', '2023-05-20 12:14:09.384586', false, null, 1),
+        (16, 'svetapiven928727@gmail.com', '$2a$06$DKaGXMLkZhlwxpFi17uObuQ2cm/3TC/0TcBmhbnHx4UGZJw1DQ4.6', '2023-05-20 15:29:24.453038', '2023-05-20 15:29:24.453038', false, null, 1),
+        (17, 'svetapiven93@gmail.com', '$2a$06$l0kpYO4WIknVq5EVMoQin.ShK8yuLBWTqgpAgU9eEXe1AHuXOW3T2', '2023-04-09 11:16:28.000000', '2023-04-09 11:16:28.000000', false, 1, 1),
+        (18, 'sverrrrrrrrrr', '$2a$06$8kZLodd/x2VM3ZrA.DQEFONJmn/rM8EFGqt.1TX0S6vp1PiI8uyoC', '2023-05-21 10:58:16.013454', '2023-05-21 10:58:16.013454', false, null, 1);
 
 insert into public.document_pass (id_document_pass, id_document_type, document_num, id_pass, created, changed, is_deleted)
 values  (3, 4, 'MP2643444', 3, '2023-02-23 14:08:25.000000', '2023-02-23 14:08:25.000000', false),
