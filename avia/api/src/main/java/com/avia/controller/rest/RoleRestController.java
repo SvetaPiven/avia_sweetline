@@ -93,13 +93,14 @@ public class RoleRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRole(@PathVariable("id") Integer id) {
+    public String deleteRole(@PathVariable("id") Integer id) {
         Optional<Role> roleOptional = roleRepository.findById(id);
+
         if (roleOptional.isPresent()) {
             roleRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Role with ID " + id + " deleted successfully.";
         } else {
-            throw new EntityNotFoundException("Role with id " + id + " not found!");
+            throw new EntityNotFoundException("Role with ID " + id + " not found!");
         }
     }
 

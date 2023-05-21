@@ -100,12 +100,12 @@ public class AirlineRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTicket(@PathVariable("id") Integer id) {
+    public String deleteTicket(@PathVariable("id") Integer id) {
         Optional<Airline> airlineOptional = airlineRepository.findById(id);
 
         if (airlineOptional.isPresent()) {
             airlineRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Airline with id " + id + " deleted successfully.";
         } else {
             throw new EntityNotFoundException("Airline with id " + id + " not found!");
         }

@@ -101,15 +101,14 @@ public class TicketStatusRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTicketStatus(@PathVariable("id") Integer id) {
-
+    public String deleteTicketStatus(@PathVariable("id") Integer id) {
         Optional<TicketStatus> ticketStatusOptional = ticketStatusRepository.findById(id);
 
         if (ticketStatusOptional.isPresent()) {
             ticketStatusRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Ticket status with ID " + id + " deleted successfully.";
         } else {
-            throw new EntityNotFoundException("Ticket status with id " + id + " not found");
+            throw new EntityNotFoundException("Ticket status with ID " + id + " not found!");
         }
     }
 

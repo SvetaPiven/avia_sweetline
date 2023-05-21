@@ -93,8 +93,9 @@ public class UserAdminDataController {
             description = "Delete User by ID",
             responses = {
                     @ApiResponse(
-                            responseCode = "NO_CONTENT",
-                            description = "User deleted successfully"
+                            responseCode = "OK",
+                            description = "User deleted successfully",
+                            content = @Content(mediaType = "text/plain")
                     ),
                     @ApiResponse(
                             responseCode = "NOT_FOUND",
@@ -103,15 +104,14 @@ public class UserAdminDataController {
             }
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@Parameter(description = "User ID") @PathVariable("id") Long id) {
-
+    public String deleteUser(@Parameter(description = "User ID") @PathVariable("id") Long id) {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
             userRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "User with ID " + id + " deleted successfully.";
         } else {
-            throw new EntityNotFoundException("User with id " + id + " not found");
+            throw new EntityNotFoundException("User with ID " + id + " not found");
         }
     }
 

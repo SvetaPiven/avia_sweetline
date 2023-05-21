@@ -103,13 +103,12 @@ public class FlightRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFlight(@PathVariable("id") Long id) {
-
+    public String deleteFlight(@PathVariable("id") Long id) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
 
         if (flightOptional.isPresent()) {
             flightRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Flight with id " + id + " deleted successfully.";
         } else {
             throw new EntityNotFoundException("Flight with id " + id + " not found!");
         }

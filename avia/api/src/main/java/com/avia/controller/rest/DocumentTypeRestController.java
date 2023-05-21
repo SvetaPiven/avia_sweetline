@@ -101,15 +101,14 @@ public class DocumentTypeRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDocumentType(@PathVariable("id") Integer id) {
-
+    public String deleteDocumentType(@PathVariable("id") Integer id) {
         Optional<DocumentType> documentTypeOptional = documentTypeRepository.findById(id);
 
         if (documentTypeOptional.isPresent()) {
             documentTypeRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Document type with id " + id + " deleted successfully.";
         } else {
-            throw new EntityNotFoundException("Document type with id " + id + " not found!");
+            throw new EntityNotFoundException("Document type with id " + id + " not found.");
         }
     }
 

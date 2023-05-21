@@ -103,15 +103,14 @@ public class TicketClassRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTicketClass(@PathVariable("id") Integer id) {
-
+    public String deleteTicketClass(@PathVariable("id") Integer id) {
         Optional<TicketClass> ticketClassOptional = ticketClassRepository.findById(id);
 
         if (ticketClassOptional.isPresent()) {
             ticketClassRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Ticket class with ID " + id + " deleted successfully.";
         } else {
-            throw new EntityNotFoundException("Ticket class with id " + id + " not found!");
+            throw new EntityNotFoundException("Ticket class with ID " + id + " not found!");
         }
     }
 

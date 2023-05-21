@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//        @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
 
@@ -54,8 +54,17 @@ public class WebSecurityConfiguration {
                 .and()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests()
-                .requestMatchers("/v3/api-docs/**", "/v2/api-docs", "/configuration/ui/**", "/swagger-resources/**", "/configuration/security/**", "/swagger-ui/**", "/swagger-ui.html", "/webjars/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/swagger-ui.html#").permitAll()
+                .requestMatchers(
+                        "/v3/api-docs/**",
+                        "/v2/api-docs",
+                        "/configuration/ui/**",
+                        "/swagger-resources/**",
+                        "/configuration/security/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/webjars/**"
+                ).permitAll()
+                .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/rest/auth").permitAll()

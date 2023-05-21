@@ -144,13 +144,12 @@ public class AirportRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTicket(@PathVariable("id") Long id) {
-
+    public String deleteTicket(@PathVariable("id") Long id) {
         Optional<Airport> airportOptional = airportRepository.findById(id);
 
         if (airportOptional.isPresent()) {
             airportRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Airport with id " + id + " deleted successfully.";
         } else {
             throw new EntityNotFoundException("Airport with id " + id + " not found!");
         }

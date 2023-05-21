@@ -100,15 +100,14 @@ public class DocumentPassRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDocumentPass(@PathVariable("id") Long id) {
-
+    public String deleteDocumentPass(@PathVariable("id") Long id) {
         Optional<DocumentPass> documentPassOptional = documentPassRepository.findById(id);
 
         if (documentPassOptional.isPresent()) {
             documentPassRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Ticket status with id " + id + " deleted successfully.";
         } else {
-            throw new EntityNotFoundException("Ticket status with id " + id + " not found");
+            throw new EntityNotFoundException("Ticket status with id " + id + " not found.");
         }
     }
 

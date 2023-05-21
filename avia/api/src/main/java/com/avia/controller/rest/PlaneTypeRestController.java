@@ -102,15 +102,14 @@ public class PlaneTypeRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePlaneType(@PathVariable("id") Integer id) {
-
+    public String deletePlaneType(@PathVariable("id") Integer id) {
         Optional<PlaneType> planeTypeOptional = planeTypeRepository.findById(id);
 
         if (planeTypeOptional.isPresent()) {
             planeTypeRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return "Plane type with ID " + id + " deleted successfully.";
         } else {
-            throw new EntityNotFoundException("Plane type with id " + id + " not found!");
+            throw new EntityNotFoundException("Plane type with ID " + id + " not found!");
         }
     }
 

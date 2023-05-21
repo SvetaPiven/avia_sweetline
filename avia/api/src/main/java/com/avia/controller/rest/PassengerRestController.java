@@ -106,16 +106,15 @@ PassengerRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePassenger(@PathVariable("id") Long id) {
-
+    public String deletePassenger(@PathVariable("id") Long id) {
         Optional<Passenger> passengerOptional = passengerRepository.findById(id);
 
         if (passengerOptional.isPresent()) {
             passengerRepository.deleteById(id);
-            log.info("Passenger with this id is deleted!");
-            return ResponseEntity.noContent().build();
+            log.info("Passenger with id " + id + " deleted!");
+            return "Passenger with id " + id + " deleted successfully.";
         } else {
-            throw new EntityNotFoundException("Passenger with" + id + "not found!");
+            throw new EntityNotFoundException("Passenger with id " + id + " not found!");
         }
     }
 
