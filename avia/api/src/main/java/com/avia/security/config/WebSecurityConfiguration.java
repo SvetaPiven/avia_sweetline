@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-//        @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
 
@@ -32,7 +32,7 @@ public class WebSecurityConfiguration {
     private final JwtTokenFilter jwtTokenFilter;
 
     @Bean
-    public PasswordEncoder bCryptPasswordEncoder(){
+    public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder(6);
     }
 
@@ -61,12 +61,13 @@ public class WebSecurityConfiguration {
                         "/swagger-resources/**",
                         "/configuration/security/**",
                         "/swagger-ui/**",
-                        "/swagger-ui.html",
+                        "/swagger-ui.html#",
                         "/webjars/**"
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE,"/rest/**").hasRole("ADMIN")
                 .requestMatchers("/rest/auth").permitAll()
                 .requestMatchers("/rest/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
                 .anyRequest().authenticated();

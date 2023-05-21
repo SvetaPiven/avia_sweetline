@@ -221,6 +221,6 @@ public class UserRestController {
         Optional<User> user = userRepository.findUserByEmail(email);
 
         return user.map(ResponseEntity::ok).orElseThrow(() ->
-                new EntityNotFoundException("User with id " + email + " not found"));
+                new EntityNotFoundException("User with email " + email + " not found"));
     }
 }

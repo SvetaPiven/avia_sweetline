@@ -36,8 +36,8 @@ import org.springframework.context.annotation.Configuration;
         @SecurityScheme(name = "authToken",
                 type = SecuritySchemeType.APIKEY,
                 in = SecuritySchemeIn.HEADER,
-                paramName = "X-Auth-Token",
-                description = "X-Auth-Token for JWT Authentication")
+                paramName = "Authorization",
+                description = "Token for JWT Authentication")
 })
 public class SwaggerConfig {
 
