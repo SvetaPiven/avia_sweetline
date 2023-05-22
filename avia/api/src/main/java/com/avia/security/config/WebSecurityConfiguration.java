@@ -66,7 +66,6 @@ public class WebSecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/rest/ticket-class/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/rest/ticket-statuses/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/rest/flights/**").permitAll()
-
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/rest/**").hasRole("ADMIN")

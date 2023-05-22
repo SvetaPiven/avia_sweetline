@@ -33,7 +33,6 @@ public class UserRequest implements Serializable {
     private Long idPass;
 
     @NotNull(message = "ID role must not be null")
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
-            type = "number", format = "integer", description = "ID Role")
+    @Schema(example = "1", type = "number", format = "integer", description = "ID Role")
     private Integer idRole;
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class FlightStatusServiceImpl implements FlightStatusService {
 
     private final FlightStatusMapper flightStatusMapper;
+
     private final FlightStatusRepository flightStatusRepository;
 
     @Override

@@ -25,13 +25,20 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TokenProvider {
 
-    public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
-    public static final String CREATE_VALUE = "created";
-    public static final String ROLES = "roles";
-    public static final String JWT = "JWT";
-    public static final Integer LIFETIME = 1000;
     private static final Logger log = Logger.getLogger(TokenProvider.class);
+
+    public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
+
+    public static final String CREATE_VALUE = "created";
+
+    public static final String ROLES = "roles";
+
+    public static final String JWT = "JWT";
+
+    public static final Integer LIFETIME = 1000;
+
     private final JwtConfiguration jwtConfiguration;
+
     private final UserDetailsProvider userDetailsProvider;
 
     private String generateToken(Map<String, Object> claims) {

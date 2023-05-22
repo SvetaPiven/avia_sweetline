@@ -19,8 +19,11 @@ import org.springframework.stereotype.Service;
 public class DocumentPassServiceImpl implements DocumentPassService {
 
     private final DocumentPassRepository documentPassRepository;
+
     private final DocumentPassMapper documentPassMapper;
+
     private final DocumentTypeRepository documentTypeRepository;
+
     private final PassengerRepository passengerRepository;
 
     @Override

@@ -68,7 +68,7 @@ public class UserRestController {
                                     array = @ArraySchema(schema = @Schema(implementation = User.class)))
 
                     ),
-                    @ApiResponse(responseCode = "INTERVAL_SERVER_ERROR", description = "Internal Server Error")
+                    @ApiResponse(responseCode = "INTERNAL_SERVER_ERROR", description = "Internal Server Error")
             }
     )
     @GetMapping
@@ -158,8 +158,7 @@ public class UserRestController {
                             responseCode = "BAD_REQUEST",
                             description = "User with ID not found",
                             content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiError.class))
+                                    schema = @Schema())
                     )
             }
     )

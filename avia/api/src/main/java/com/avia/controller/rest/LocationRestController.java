@@ -32,5 +32,4 @@ public class LocationRestController {
         }
         return ResponseEntity.ok("Miles calculated for all passengers.");
     }
-
 }

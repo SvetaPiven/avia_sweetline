@@ -145,5 +145,3 @@ public class PassengerRestController {
         return passenger.map(ResponseEntity::ok).orElseThrow(() -> new EntityNotFoundException("Passenger with personalId " + personalId + " not found"));
     }
 }
-
-

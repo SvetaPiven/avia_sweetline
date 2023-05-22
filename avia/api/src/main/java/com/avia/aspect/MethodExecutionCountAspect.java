@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MethodExecutionCountAspect {
 
     private static final Logger log = Logger.getLogger(MethodExecutionCountAspect.class);
+
     private static final Map<String, AtomicInteger> count = new ConcurrentHashMap<>();
 
     @Pointcut("execution(* com.avia.service.impl.*.*(..))")
@@ -24,7 +25,9 @@ public class MethodExecutionCountAspect {
 
     @AfterReturning("executionCountAllMethod()")
     public Object logCountExecutionMethods(JoinPoint joinPoint) {
+
         String methodName = joinPoint.getSignature().getName();
+
         if (count.containsKey(methodName)) {
             count.get(methodName).incrementAndGet();
         } else {

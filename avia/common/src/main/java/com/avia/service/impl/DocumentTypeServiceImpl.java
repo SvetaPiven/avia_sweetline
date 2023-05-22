@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     private final DocumentTypeMapper documentTypeMapper;
+
     private final DocumentTypeRepository documentTypeRepository;
 
     @Override

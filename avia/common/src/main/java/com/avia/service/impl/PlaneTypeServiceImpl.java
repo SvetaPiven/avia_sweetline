@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class PlaneTypeServiceImpl implements PlaneTypeService {
 
     private final PlaneTypeMapper planeTypeMapper;
+
     private final PlaneTypeRepository planeTypeRepository;
 
     @Override

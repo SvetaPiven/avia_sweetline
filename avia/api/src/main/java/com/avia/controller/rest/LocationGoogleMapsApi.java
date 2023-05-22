@@ -18,7 +18,6 @@ public class LocationGoogleMapsApi {
 
     private final AirportService airportService;
 
-
     @GetMapping("/location/{id}")
     public ResponseEntity<String> getAirportAddress(@PathVariable Long id) throws Exception {
         Airport airport = airportService.findById(id);

@@ -34,15 +34,25 @@ import java.util.ResourceBundle;
 public class TicketServiceImpl implements TicketService {
 
     private static final Logger log = Logger.getLogger(TicketServiceImpl.class);
+
     private final PassengerService passengerService;
+
     private final TicketRepository ticketRepository;
+
     private final TicketMapper ticketMapper;
+
     private final FlightService flightService;
+
     private final TicketClassService ticketClassService;
+
     private final AirlineService airlineService;
+
     private final AirportService airportService;
+
     private final EmailService emailService;
+
     private final UserRepository userRepository;
+
     private final TicketPriceCalculator ticketPriceCalculator;
 
     @Override

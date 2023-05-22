@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class TicketStatusServiceImpl implements TicketStatusService {
 
     private final TicketStatusMapper ticketStatusMapper;
+
     private final TicketStatusRepository ticketStatusRepository;
 
     @Override

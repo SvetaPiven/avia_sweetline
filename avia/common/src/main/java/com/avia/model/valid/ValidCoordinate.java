@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
 @ReportAsSingleViolation
 public @interface ValidCoordinate {
 
-    String message() default "Invalid coordinate";
+    String message() default "Invalid coordinate format";
 
     Class<?>[] groups() default {};
 

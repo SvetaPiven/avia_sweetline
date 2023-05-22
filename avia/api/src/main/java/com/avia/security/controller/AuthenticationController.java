@@ -4,7 +4,6 @@ import com.avia.security.config.JwtConfiguration;
 import com.avia.security.dto.AuthRequest;
 import com.avia.security.dto.AuthResponse;
 import com.avia.security.jwt.TokenProvider;
-import com.avia.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/rest")
 public class AuthenticationController {
-
-    private final EmailService emailService;
 
     private final AuthenticationManager authenticationManager;
 
