@@ -552,7 +552,7 @@ values (1, 'svetapiven81@gmail.com', '$2a$06$bdv7/Z.vSzMWr4PUdnDwGuSCMfCGGfI7zOa
         '2023-04-09 11:16:28.000000', '2023-04-09 11:16:28.000000', false, 1, 1),
        (18, 'sverrrrrrrrrr', '$2a$06$8kZLodd/x2VM3ZrA.DQEFONJmn/rM8EFGqt.1TX0S6vp1PiI8uyoC',
         '2023-05-21 10:58:16.013454', '2023-05-21 10:58:16.013454', false, null, 1),
-       (49, 'svetapiven123@gmail.com', '$2a$06$YzdoSvF5UuSuYuotr20xTumcuPfGiB3O2tTbW6TWvkAxUZboP9/Lu',
+       (19, 'svetapiven123@gmail.com', '$2a$06$YzdoSvF5UuSuYuotr20xTumcuPfGiB3O2tTbW6TWvkAxUZboP9/Lu',
         '2023-05-21 18:57:26.503912', '2023-05-21 18:57:26.503912', false, null, 2);
 
 insert into public.document_pass (id_document_pass, id_document_type, document_num, id_pass, created, changed,
