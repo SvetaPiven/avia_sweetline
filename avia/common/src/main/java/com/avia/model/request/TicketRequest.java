@@ -1,5 +1,6 @@
 package com.avia.model.request;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,12 +13,11 @@ import java.math.BigDecimal;
 public class TicketRequest implements Serializable {
 
     @NotNull(message = "ID Passenger must not be null")
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "95",
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
             type = "number", format = "long", description = "ID Passenger")
     private Long idPass;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
-            type = "number", format = "integer", description = "ID Ticket Status")
+    @Hidden
     private Integer idTicketStatus;
 
     @NotNull(message = "ID Ticket Class must not be null")
@@ -35,12 +35,10 @@ public class TicketRequest implements Serializable {
             type = "number", format = "integer", description = "ID Airline")
     private Integer idAirline;
 
+    @Hidden
     @Size(min = 3, max = 15, message = "Number place must be between 3 and 15 characters")
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "A13",
-            type = "string", description = "Number place")
     private String numberPlace;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "247.74",
-            type = "number", format = "double", description = "Price")
+    @Hidden
     private BigDecimal price;
 }

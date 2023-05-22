@@ -71,7 +71,6 @@ public class WebSecurityConfiguration {
                 .requestMatchers(HttpMethod.DELETE, "/rest/**").hasRole("ADMIN")
                 .requestMatchers("/rest/auth").permitAll()
                 .requestMatchers("/rest/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
-                .requestMatchers("/rest/**/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
                 .anyRequest().authenticated();
 
         return http.build();

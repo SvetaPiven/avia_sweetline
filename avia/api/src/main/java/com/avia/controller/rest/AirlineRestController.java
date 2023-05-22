@@ -6,6 +6,7 @@ import com.avia.model.entity.Airline;
 import com.avia.model.request.AirlineRequest;
 import com.avia.repository.AirlineRepository;
 import com.avia.service.AirlineService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rest/airlines")
+@Tag(name = "AirlineRestController", description = "Airline management methods")
 public class AirlineRestController {
 
     private final AirlineRepository airlineRepository;
