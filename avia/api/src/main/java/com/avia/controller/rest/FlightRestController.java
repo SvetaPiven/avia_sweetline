@@ -130,7 +130,7 @@ public class FlightRestController {
     @GetMapping("/search")
     public ResponseEntity<List<Flight>> getFlightByIdArrivalAirport(@RequestParam(value = "id") Airport id) {
 
-        List<Flight> flights = flightRepository.findFlightByIdArrivalAirport(id);
+        List<Flight> flights = flightRepository.findFlightByArrivalAirport(id);
 
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }

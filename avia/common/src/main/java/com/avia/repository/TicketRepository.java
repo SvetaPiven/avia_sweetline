@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
-    List<Ticket> findTicketByIdPass(Passenger idPass);
+    List<Ticket> findTicketByPassenger(Passenger idPass);
 
     @Modifying
     @Query(value = "CALL sale(:idTicket, :discount)", nativeQuery = true)

@@ -6,6 +6,7 @@ import com.avia.model.entity.User;
 import com.avia.model.request.UserRequest;
 import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
+import com.google.maps.errors.ApiError;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -153,7 +154,10 @@ public class UserRestController {
                     ),
                     @ApiResponse(
                             responseCode = "BAD_REQUEST",
-                            description = "User with ID not found"
+                            description = "User with ID not found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiError.class))
                     )
             }
     )
@@ -284,14 +288,5 @@ public class UserRestController {
         } else {
             throw new EntityNotFoundException("User with id " + id + " not found!");
         }
-    }
-
-    @GetMapping("/searchbyemail/{email}")
-    public ResponseEntity<User> getUserByEmailOld(@PathVariable String email) {
-
-        Optional<User> user = userRepository.findUserByEmailOld(email);
-
-        return user.map(ResponseEntity::ok).orElseThrow(() ->
-                new EntityNotFoundException("User with id " + email + " not found"));
     }
 }

@@ -35,7 +35,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void calculatePassengerMiles(Passenger passenger) {
-        List<Ticket> tickets = ticketRepository.findTicketByIdPass(passenger);
+        List<Ticket> tickets = ticketRepository.findTicketByPassenger(passenger);
         double passengerMiles = 0;
         for (Ticket ticket : tickets) {
             if (Objects.equals(ticket.getTicketStatus().getNameTicketStatus(), "Used")) {

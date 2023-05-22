@@ -18,7 +18,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByAuthenticationInfoEmail(String username);
 
-
-    @Query(value = "select * from users where email = :email", nativeQuery = true)
-    Optional<User> findUserByEmailOld(String email);
 }

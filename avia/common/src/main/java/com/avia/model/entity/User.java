@@ -64,6 +64,6 @@ public class User {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_role")
-    @JsonIgnoreProperties({"users", "roleName", "created", "changed", "isDeleted"})
+    @JsonIgnoreProperties({"users", "roleName", "created", "changed", "isDeleted", "hibernateLazyInitializer", "handler"})
     private Role idRole;
 }
