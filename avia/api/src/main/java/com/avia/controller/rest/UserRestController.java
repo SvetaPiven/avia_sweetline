@@ -8,7 +8,6 @@ import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -286,5 +284,14 @@ public class UserRestController {
         } else {
             throw new EntityNotFoundException("User with id " + id + " not found!");
         }
+    }
+
+    @GetMapping("/searchbyemail/{email}")
+    public ResponseEntity<User> getUserByEmailOld(@PathVariable String email) {
+
+        Optional<User> user = userRepository.findUserByEmailOld(email);
+
+        return user.map(ResponseEntity::ok).orElseThrow(() ->
+                new EntityNotFoundException("User with id " + email + " not found"));
     }
 }

@@ -52,7 +52,7 @@ public class Flight {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
     @JoinColumn(name = "id_plane_type", nullable = false)
-    private PlaneType idPlaneType;
+    private PlaneType planeType;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -60,7 +60,7 @@ public class Flight {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_departure_airport", referencedColumnName = "id_airport", nullable = false)
     @JsonBackReference
-    private Airport idDepartureAirport;
+    private Airport departureAirport;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -68,7 +68,7 @@ public class Flight {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_arrival_airport", referencedColumnName = "id_airport", nullable = false)
     @JsonBackReference
-    private Airport idArrivalAirport;
+    private Airport arrivalAirport;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -76,7 +76,7 @@ public class Flight {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_flight_status", nullable = false)
     @JsonBackReference
-    private FlightStatus idFlightStatus;
+    private FlightStatus flightStatus;
 
     @NotNull
     @Column(name = "departure_time", nullable = false)
@@ -94,7 +94,6 @@ public class Flight {
     @Column
     private Timestamp changed;
 
-    @NotNull
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
@@ -102,7 +101,7 @@ public class Flight {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "idFlight", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
 }

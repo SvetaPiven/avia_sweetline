@@ -13,7 +13,7 @@ public class PasswordEncode {
 
     private final JwtConfigurationProvider jwtConfigurationProvider;
 
-    public String encodePassword(String password){
+    public String encodePassword(String password) {
         String passwordWithSalt = password + jwtConfigurationProvider.getPasswordSalt();
         return passwordEncoder.encode(passwordWithSalt);
     }

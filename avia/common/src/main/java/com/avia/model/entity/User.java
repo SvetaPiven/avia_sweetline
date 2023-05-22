@@ -57,7 +57,6 @@ public class User {
     @Column
     private Timestamp changed;
 
-    @NotNull
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 

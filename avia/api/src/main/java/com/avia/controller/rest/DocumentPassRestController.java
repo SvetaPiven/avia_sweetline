@@ -1,12 +1,11 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
-import com.avia.model.entity.Airport;
 import com.avia.model.entity.DocumentPass;
 import com.avia.model.request.DocumentPassRequest;
 import com.avia.repository.DocumentPassRepository;
 import com.avia.service.DocumentPassService;
-import com.avia.exception.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

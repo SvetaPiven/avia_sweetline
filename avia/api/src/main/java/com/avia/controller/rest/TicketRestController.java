@@ -1,11 +1,11 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
 import com.avia.model.entity.Ticket;
+import com.avia.model.request.TicketRequest;
 import com.avia.repository.TicketRepository;
 import com.avia.service.TicketService;
-import com.avia.model.request.TicketRequest;
-import com.avia.exception.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -126,7 +126,7 @@ public class TicketRestController {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PostMapping
     public ResponseEntity<Ticket> createTicket(@Valid @RequestBody @Parameter(description = "Ticket information", required = true)
-                                                   TicketRequest ticketRequest, BindingResult bindingResult) {
+                                               TicketRequest ticketRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
             throw new ValidationException(errorMessage);
@@ -157,7 +157,7 @@ public class TicketRestController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getTicketById(@Parameter(description = "Ticket ID", example = "1", required = true)
-                                                    @PathVariable("id") Long id) {
+                                                @PathVariable("id") Long id) {
 
         Optional<Ticket> ticket = ticketRepository.findById(id);
 

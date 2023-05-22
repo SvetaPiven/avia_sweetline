@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
+
 @Data
 @Validated
 public class FlightStatusRequest implements Serializable {

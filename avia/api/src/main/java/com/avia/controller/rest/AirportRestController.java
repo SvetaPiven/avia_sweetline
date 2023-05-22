@@ -1,13 +1,11 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
-import com.avia.model.entity.Airline;
 import com.avia.model.entity.Airport;
-import com.avia.model.entity.User;
+import com.avia.model.request.AirportRequest;
 import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;
-import com.avia.model.request.AirportRequest;
-import com.avia.exception.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

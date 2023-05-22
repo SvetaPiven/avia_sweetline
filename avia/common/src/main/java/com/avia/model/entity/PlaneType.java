@@ -53,14 +53,13 @@ public class PlaneType {
     @Column
     private Timestamp changed;
 
-    @NotNull
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "idPlaneType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "planeType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Flight> flights = Collections.emptySet();
 }

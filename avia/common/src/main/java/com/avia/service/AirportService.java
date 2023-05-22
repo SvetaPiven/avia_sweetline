@@ -1,9 +1,7 @@
 package com.avia.service;
 
-import com.avia.model.request.AirportRequest;
 import com.avia.model.entity.Airport;
-
-import java.util.Optional;
+import com.avia.model.request.AirportRequest;
 
 public interface AirportService {
 

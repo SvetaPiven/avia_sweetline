@@ -1,6 +1,6 @@
 create table public.airports
 (
-    id_airport   bigserial not null
+    id_airport   bigserial             not null
         constraint airports_pk
             primary key
         unique,

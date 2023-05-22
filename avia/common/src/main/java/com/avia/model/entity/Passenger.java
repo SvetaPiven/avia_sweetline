@@ -59,14 +59,13 @@ public class Passenger {
     @Column
     private Timestamp changed;
 
-    @NotNull
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "idPass", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
 

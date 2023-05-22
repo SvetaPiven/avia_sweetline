@@ -1,15 +1,15 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.DocumentType;
+import com.avia.exception.EntityNotFoundException;
+import com.avia.mapper.DocumentPassMapper;
 import com.avia.model.entity.DocumentPass;
+import com.avia.model.entity.DocumentType;
 import com.avia.model.entity.Passenger;
 import com.avia.model.request.DocumentPassRequest;
 import com.avia.repository.DocumentPassRepository;
 import com.avia.repository.DocumentTypeRepository;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.DocumentPassService;
-import com.avia.exception.EntityNotFoundException;
-import com.avia.mapper.DocumentPassMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.avia.model.valid;
 
-import jakarta.validation.Payload;
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import jakarta.validation.ReportAsSingleViolation;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -22,7 +22,9 @@ import java.lang.annotation.Target;
 @ReportAsSingleViolation
 public @interface ValidPassword {
     String message() default "Invalid password";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }
 

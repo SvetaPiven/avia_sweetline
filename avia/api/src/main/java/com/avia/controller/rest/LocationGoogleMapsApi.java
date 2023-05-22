@@ -1,9 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.model.entity.Airport;
-import com.avia.repository.AirportRepository;
 import com.avia.service.AirportService;
-import com.avia.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

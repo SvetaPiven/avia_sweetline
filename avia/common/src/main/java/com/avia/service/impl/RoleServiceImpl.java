@@ -1,11 +1,11 @@
 package com.avia.service.impl;
 
+import com.avia.exception.EntityNotFoundException;
+import com.avia.mapper.RoleMapper;
 import com.avia.model.entity.Role;
 import com.avia.model.request.RoleRequest;
 import com.avia.repository.RoleRepository;
 import com.avia.service.RoleService;
-import com.avia.exception.EntityNotFoundException;
-import com.avia.mapper.RoleMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

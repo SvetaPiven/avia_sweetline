@@ -1,11 +1,11 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.Airline;
-import com.avia.repository.AirlineRepository;
-import com.avia.service.AirlineService;
-import com.avia.model.request.AirlineRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.AirlineMapper;
+import com.avia.model.entity.Airline;
+import com.avia.model.request.AirlineRequest;
+import com.avia.repository.AirlineRepository;
+import com.avia.service.AirlineService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

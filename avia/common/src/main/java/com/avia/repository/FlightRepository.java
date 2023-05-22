@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
     List<Flight> findFlightByIdArrivalAirport(@NotNull Airport idArrivalAirport);
+
     Flight findFlightByFlightNumber(String flightNumber);
+
     List<Flight> findFlightsByDepartureTimeAfter(Timestamp curDataTime);
 
 }

@@ -1,7 +1,7 @@
 package com.avia.service;
 
-import com.avia.model.request.PlaneTypeRequest;
 import com.avia.model.entity.PlaneType;
+import com.avia.model.request.PlaneTypeRequest;
 
 public interface PlaneTypeService {
 

@@ -7,7 +7,6 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 @Data
 @Validated

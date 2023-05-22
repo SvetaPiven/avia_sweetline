@@ -41,7 +41,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pass")
     @JsonBackReference
-    private Passenger idPass;
+    private Passenger passenger;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -49,7 +49,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_ticket_status", nullable = false)
     @JsonBackReference
-    private TicketStatus idTicketStatus;
+    private TicketStatus ticketStatus;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -57,7 +57,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_ticket_class", nullable = false)
     @JsonBackReference
-    private TicketClass idTicketClass;
+    private TicketClass ticketClass;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -65,7 +65,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_flight", nullable = false)
     @JsonBackReference
-    private Flight idFlight;
+    private Flight flight;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -73,7 +73,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_airline", nullable = false)
     @JsonBackReference
-    private Airline idAirline;
+    private Airline airline;
 
     @Size(max = 15)
     @Column(name = "number_place", length = 15)
@@ -90,7 +90,6 @@ public class Ticket {
     @Column
     private Timestamp changed;
 
-    @NotNull
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 

@@ -60,7 +60,6 @@ public class Airline {
     @Column
     private Timestamp changed;
 
-    @NotNull
     @JsonIgnore
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
@@ -68,7 +67,7 @@ public class Airline {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "idAirline", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Ticket> tickets = Collections.emptySet();
 }

@@ -1,11 +1,11 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.Airport;
-import com.avia.repository.AirportRepository;
-import com.avia.service.AirportService;
-import com.avia.model.request.AirportRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.AirportMapper;
+import com.avia.model.entity.Airport;
+import com.avia.model.request.AirportRequest;
+import com.avia.repository.AirportRepository;
+import com.avia.service.AirportService;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
@@ -13,8 +13,6 @@ import com.google.maps.model.LatLng;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,11 +1,11 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.FlightStatus;
-import com.avia.repository.FlightStatusRepository;
-import com.avia.service.FlightStatusService;
-import com.avia.model.request.FlightStatusRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.FlightStatusMapper;
+import com.avia.model.entity.FlightStatus;
+import com.avia.model.request.FlightStatusRequest;
+import com.avia.repository.FlightStatusRepository;
+import com.avia.service.FlightStatusService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

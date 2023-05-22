@@ -1,11 +1,11 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
 import com.avia.model.entity.Passenger;
 import com.avia.model.request.PassengerRequest;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
-import com.avia.exception.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
@@ -37,12 +37,9 @@ import java.util.Optional;
 public class
 PassengerRestController {
 
-    private final PassengerRepository passengerRepository;
-
-    private final PassengerService passengerService;
-
     private static final Logger log = Logger.getLogger(PassengerRestController.class);
-
+    private final PassengerRepository passengerRepository;
+    private final PassengerService passengerService;
     @Value("${passenger.page-capacity}")
     private Integer passengerPageCapacity;
 

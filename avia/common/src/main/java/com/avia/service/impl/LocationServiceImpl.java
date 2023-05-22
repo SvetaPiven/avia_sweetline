@@ -38,12 +38,12 @@ public class LocationServiceImpl implements LocationService {
         List<Ticket> tickets = ticketRepository.findTicketByIdPass(passenger);
         double passengerMiles = 0;
         for (Ticket ticket : tickets) {
-            if (Objects.equals(ticket.getIdTicketStatus().getNameTicketStatus(), "Used")) {
+            if (Objects.equals(ticket.getTicketStatus().getNameTicketStatus(), "Used")) {
 
-                Flight flight = flightService.findById(ticket.getIdFlight().getIdFlight());
+                Flight flight = flightService.findById(ticket.getFlight().getIdFlight());
 
-                Airport departureAirport = airportService.findById(flight.getIdDepartureAirport().getIdAirport());
-                Airport arrivalAirport = airportService.findById(flight.getIdArrivalAirport().getIdAirport());
+                Airport departureAirport = airportService.findById(flight.getDepartureAirport().getIdAirport());
+                Airport arrivalAirport = airportService.findById(flight.getArrivalAirport().getIdAirport());
 
                 double latitudeDeparture = departureAirport.getLatitude();
                 double latitudeArrival = arrivalAirport.getLatitude();
@@ -52,8 +52,8 @@ public class LocationServiceImpl implements LocationService {
                 double distance = calculateDistance.calculate(latitudeDeparture, longitudeDeparture,
                         latitudeArrival, longitudeArrival);
 
-                if (Objects.equals(flight.getIdFlightStatus().getNameFlightStatus(), "Arrived")) {
-                    if (Objects.equals(ticket.getIdTicketClass().getNameClass(), "Business class")) {
+                if (Objects.equals(flight.getFlightStatus().getNameFlightStatus(), "Arrived")) {
+                    if (Objects.equals(ticket.getTicketClass().getNameClass(), "Business class")) {
                         passengerMiles += distance * 1.5;
                     } else {
                         passengerMiles += distance;

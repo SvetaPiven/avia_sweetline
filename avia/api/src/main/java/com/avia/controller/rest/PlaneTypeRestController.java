@@ -1,15 +1,13 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
-import com.avia.model.entity.Passenger;
 import com.avia.model.entity.PlaneType;
 import com.avia.model.request.PlaneTypeRequest;
 import com.avia.repository.PlaneTypeRepository;
 import com.avia.service.PlaneTypeService;
-import com.avia.exception.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

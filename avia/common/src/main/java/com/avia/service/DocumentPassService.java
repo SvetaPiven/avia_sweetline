@@ -1,7 +1,7 @@
 package com.avia.service;
 
-import com.avia.model.request.DocumentPassRequest;
 import com.avia.model.entity.DocumentPass;
+import com.avia.model.request.DocumentPassRequest;
 
 public interface DocumentPassService {
 

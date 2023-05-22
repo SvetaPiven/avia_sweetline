@@ -1,10 +1,10 @@
 package com.avia.service.impl;
 
-import com.avia.model.entity.TicketStatus;
-import com.avia.repository.TicketStatusRepository;
-import com.avia.model.request.TicketStatusRequest;
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.TicketStatusMapper;
+import com.avia.model.entity.TicketStatus;
+import com.avia.model.request.TicketStatusRequest;
+import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketStatusService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,16 +1,14 @@
 package com.avia.service.impl;
 
+import com.avia.exception.EntityNotFoundException;
+import com.avia.mapper.UserMapper;
 import com.avia.model.entity.User;
 import com.avia.model.request.UserRequest;
 import com.avia.repository.UserRepository;
-import com.avia.exception.EntityNotFoundException;
-import com.avia.mapper.UserMapper;
 import com.avia.service.UserService;
 import com.avia.util.PasswordEncode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service

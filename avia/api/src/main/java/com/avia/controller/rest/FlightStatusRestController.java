@@ -1,12 +1,11 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
-import com.avia.model.entity.Flight;
 import com.avia.model.entity.FlightStatus;
 import com.avia.model.request.FlightStatusRequest;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.service.FlightStatusService;
-import com.avia.exception.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

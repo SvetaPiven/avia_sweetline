@@ -2,13 +2,13 @@ package com.avia.service.impl;
 
 import com.avia.exception.EntityNotFoundException;
 import com.avia.mapper.TicketMapper;
-import com.avia.model.entity.Airport;
-import com.avia.model.request.TicketRequest;
 import com.avia.model.entity.Airline;
+import com.avia.model.entity.Airport;
 import com.avia.model.entity.Flight;
 import com.avia.model.entity.Passenger;
 import com.avia.model.entity.Ticket;
 import com.avia.model.entity.TicketClass;
+import com.avia.model.request.TicketRequest;
 import com.avia.repository.TicketRepository;
 import com.avia.repository.UserRepository;
 import com.avia.service.AirlineService;
@@ -33,50 +33,40 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
-    private final PassengerService passengerService;
-
-    private final TicketRepository ticketRepository;
-
-    private final TicketMapper ticketMapper;
-
-    private final FlightService flightService;
-
-    private final TicketClassService ticketClassService;
-
-    private final AirlineService airlineService;
-
-    private final AirportService airportService;
-
-    private final EmailService emailService;
-
-    private final UserRepository userRepository;
-
-    private final TicketPriceCalculator ticketPriceCalculator;
-
     private static final Logger log = Logger.getLogger(TicketServiceImpl.class);
+    private final PassengerService passengerService;
+    private final TicketRepository ticketRepository;
+    private final TicketMapper ticketMapper;
+    private final FlightService flightService;
+    private final TicketClassService ticketClassService;
+    private final AirlineService airlineService;
+    private final AirportService airportService;
+    private final EmailService emailService;
+    private final UserRepository userRepository;
+    private final TicketPriceCalculator ticketPriceCalculator;
 
     @Override
     @Transactional
     public Ticket createTicket(TicketRequest ticketRequest) {
         Passenger passenger = passengerService.findById(ticketRequest.getIdPass());
         Ticket ticket = ticketMapper.toEntity(ticketRequest);
-        ticket.getIdPass().setIdPass(passenger.getIdPass());
-        ticket.setIdPass(passenger);
+        ticket.getPassenger().setIdPass(passenger.getIdPass());
+        ticket.setPassenger(passenger);
 
         TicketClass ticketClass = ticketClassService.findById(ticketRequest.getIdTicketClass());
-        ticket.getIdTicketClass().setIdTicketClass(ticketClass.getIdTicketClass());
-        ticket.setIdTicketClass(ticketClass);
+        ticket.getTicketClass().setIdTicketClass(ticketClass.getIdTicketClass());
+        ticket.setTicketClass(ticketClass);
 
         Flight flight = flightService.findById(ticketRequest.getIdFlight());
-        ticket.getIdFlight().setIdFlight(flight.getIdFlight());
-        ticket.setIdFlight(flight);
+        ticket.getFlight().setIdFlight(flight.getIdFlight());
+        ticket.setFlight(flight);
 
         Airline airline = airlineService.findById(ticketRequest.getIdAirline());
-        ticket.getIdAirline().setIdAirline(airline.getIdAirline());
-        ticket.setIdAirline(airline);
+        ticket.getAirline().setIdAirline(airline.getIdAirline());
+        ticket.setAirline(airline);
 
-        Airport departureAirport = airportService.findById(flight.getIdDepartureAirport().getIdAirport());
-        Airport arrivalAirport = airportService.findById(flight.getIdArrivalAirport().getIdAirport());
+        Airport departureAirport = airportService.findById(flight.getDepartureAirport().getIdAirport());
+        Airport arrivalAirport = airportService.findById(flight.getArrivalAirport().getIdAirport());
 
         double latitudeDeparture = departureAirport.getLatitude();
         double latitudeArrival = arrivalAirport.getLatitude();
@@ -98,13 +88,13 @@ public class TicketServiceImpl implements TicketService {
             String emailTemplate = ResourceBundle.getBundle("email").getString("application.email.buy.ticket");
 
             String formattedMessage =
-                    MessageFormat.format(emailTemplate, ticket.getIdTicketClass().getNameClass(),
-                            airportService.getAddressFromLatLng(ticket.getIdFlight().getIdDepartureAirport().getLatitude(),
-                                    ticket.getIdFlight().getIdDepartureAirport().getLongitude()),
-                            airportService.getAddressFromLatLng(ticket.getIdFlight().getIdArrivalAirport().getLatitude(),
-                                    ticket.getIdFlight().getIdArrivalAirport().getLongitude()),
-                            ticket.getIdFlight().getFlightNumber(), ticket.getIdAirline().getNameAirline(),
-                            ticket.getIdFlight().getDepartureTime(), ticket.getPrice());
+                    MessageFormat.format(emailTemplate, ticket.getTicketClass().getNameClass(),
+                            airportService.getAddressFromLatLng(ticket.getFlight().getDepartureAirport().getLatitude(),
+                                    ticket.getFlight().getDepartureAirport().getLongitude()),
+                            airportService.getAddressFromLatLng(ticket.getFlight().getArrivalAirport().getLatitude(),
+                                    ticket.getFlight().getArrivalAirport().getLongitude()),
+                            ticket.getFlight().getFlightNumber(), ticket.getAirline().getNameAirline(),
+                            ticket.getFlight().getDepartureTime(), ticket.getPrice());
 
             emailService.sendSimpleEmail(userRepository.findByIdPass(ticketRequest.getIdPass()).getAuthenticationInfo().getEmail(),
                     "Congrats from SweetLine Avia! Your created the ticket!", formattedMessage);

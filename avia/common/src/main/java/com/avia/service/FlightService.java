@@ -1,9 +1,7 @@
 package com.avia.service;
 
-import com.avia.model.request.FlightRequest;
 import com.avia.model.entity.Flight;
-
-import java.util.Optional;
+import com.avia.model.request.FlightRequest;
 
 public interface FlightService {
 

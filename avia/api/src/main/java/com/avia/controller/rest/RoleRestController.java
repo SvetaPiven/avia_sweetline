@@ -1,12 +1,11 @@
 package com.avia.controller.rest;
 
+import com.avia.exception.EntityNotFoundException;
 import com.avia.exception.ValidationException;
-import com.avia.model.entity.PlaneType;
 import com.avia.model.entity.Role;
 import com.avia.model.request.RoleRequest;
 import com.avia.repository.RoleRepository;
 import com.avia.service.RoleService;
-import com.avia.exception.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

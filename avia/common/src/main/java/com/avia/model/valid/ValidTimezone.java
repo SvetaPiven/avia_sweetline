@@ -21,6 +21,8 @@ import java.lang.annotation.Target;
 @ReportAsSingleViolation
 public @interface ValidTimezone {
     String message() default "Invalid timezone";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

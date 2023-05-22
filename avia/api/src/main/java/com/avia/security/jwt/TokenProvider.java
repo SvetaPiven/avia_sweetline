@@ -1,7 +1,7 @@
 package com.avia.security.jwt;
 
-import com.avia.security.provider.UserDetailsProvider;
 import com.avia.security.config.JwtConfiguration;
+import com.avia.security.provider.UserDetailsProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,28 +21,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static io.jsonwebtoken.Claims.SUBJECT;
-import static java.util.Calendar.MILLISECOND;
-
 @Component
 @RequiredArgsConstructor
 public class TokenProvider {
 
-    private static final Logger log = Logger.getLogger(TokenProvider.class);
-
-    private final JwtConfiguration jwtConfiguration;
-
-    private final UserDetailsProvider userDetailsProvider;
-
     public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
-
     public static final String CREATE_VALUE = "created";
-
     public static final String ROLES = "roles";
-
     public static final String JWT = "JWT";
-
     public static final Integer LIFETIME = 1000;
+    private static final Logger log = Logger.getLogger(TokenProvider.class);
+    private final JwtConfiguration jwtConfiguration;
+    private final UserDetailsProvider userDetailsProvider;
 
     private String generateToken(Map<String, Object> claims) {
 

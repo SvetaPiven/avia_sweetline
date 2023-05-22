@@ -55,17 +55,18 @@ public class WebSecurityConfiguration {
                 .and()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests()
-                .requestMatchers(
-                        "/v3/api-docs/**",
-                        "/v2/api-docs",
-                        "/configuration/ui/**",
-                        "/swagger-resources/**",
-                        "/configuration/security/**",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html#",
-                        "/webjars/**"
+                .requestMatchers("/v3/api-docs/**", "/v2/api-docs", "/configuration/ui/**", "/swagger-resources/**",
+                        "/configuration/security/**", "/swagger-ui/**", "/swagger-ui.html#", "/webjars/**"
                 ).permitAll()
-                .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
+                .requestMatchers(HttpMethod.GET, "/rest/airlines/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/rest/airports/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/rest/document-types/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/rest/flight-statuses/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/rest/plane-types/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/rest/ticket-class/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/rest/ticket-statuses/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/rest/flights/**").permitAll()
+
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/rest/**").hasRole("ADMIN")

@@ -53,7 +53,6 @@ public class Role {
     @Column
     private Timestamp changed;
 
-    @NotNull
     @Column
     private boolean isDeleted;
 

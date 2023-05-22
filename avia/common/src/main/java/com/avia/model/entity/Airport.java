@@ -74,7 +74,6 @@ public class Airport {
     private Timestamp changed;
 
     @JsonIgnore
-    @NotNull
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
@@ -86,14 +85,14 @@ public class Airport {
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "idArrivalAirport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "arrivalAirport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Flight> flightsArrival = new LinkedHashSet<>();
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "idDepartureAirport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "departureAirport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Flight> flightsDeparture = new LinkedHashSet<>();
 }

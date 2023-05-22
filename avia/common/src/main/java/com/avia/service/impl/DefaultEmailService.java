@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class DefaultEmailService implements EmailService {
 
     public final JavaMailSender emailSender;
+
     @Override
     public void sendSimpleEmail(String toAddress, String subject, String message) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();

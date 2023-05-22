@@ -22,7 +22,8 @@ $$
 begin
 update tickets
 set price = tickets.price - tickets.price * discount
-where id_ticket = idTicket and id_ticket_class = 2;
+where id_ticket = idTicket
+  and id_ticket_class = 2;
 
 end;
 $$;

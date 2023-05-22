@@ -53,14 +53,13 @@ public class TicketStatus {
     @Column
     private Timestamp changed;
 
-    @NotNull
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "idTicketStatus", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ticketStatus", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Ticket> tickets = new LinkedHashSet<>();
 }

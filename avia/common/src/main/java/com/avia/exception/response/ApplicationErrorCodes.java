@@ -6,13 +6,13 @@ public enum ApplicationErrorCodes {
     USER_NOT_FOUND(40),
     FATAL_ERROR(1);
 
-    public int getCodeId() {
-        return codeId;
-    }
-
     private int codeId;
 
     ApplicationErrorCodes(int codeId) {
         this.codeId = codeId;
+    }
+
+    public int getCodeId() {
+        return codeId;
     }
 }
