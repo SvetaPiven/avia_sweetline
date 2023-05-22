@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class DefaultExceptionHandler {
+
     private static final Logger log = Logger.getLogger(DefaultExceptionHandler.class);
 
     private final RandomValuesGenerator generator;

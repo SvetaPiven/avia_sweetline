@@ -1,6 +1,6 @@
-create table public.airports
+create table if not exists public.airports
 (
-    id_airport   bigserial             not null
+    id_airport   bigserial
         constraint airports_pk
             primary key
         unique,
@@ -24,7 +24,7 @@ create index location_index
 create index coordinates_index
     on public.airports (longitude, latitude);
 
-create table public.c_plane_types
+create table if not exists public.c_plane_types
 (
     id_plane_type serial
         constraint plane_type_pkey
@@ -39,7 +39,7 @@ alter table public.c_plane_types
     owner to development;
 
 
-create table public.c_flight_status
+create table if not exists public.c_flight_status
 (
     id_flight_status   serial
         primary key,
@@ -52,7 +52,7 @@ create table public.c_flight_status
 alter table public.c_flight_status
     owner to development;
 
-create table public.flights
+create table if not exists public.flights
 (
     id_flight            bigserial
         primary key,
@@ -83,7 +83,7 @@ alter table public.flights
 create index time_flight_index
     on public.flights (arrival_time, departure_time);
 
-create table public.c_airlines
+create table if not exists public.c_airlines
 (
     id_airline   serial
         primary key,
@@ -97,7 +97,7 @@ create table public.c_airlines
 alter table public.c_airlines
     owner to development;
 
-create table public.c_ticket_status
+create table if not exists public.c_ticket_status
 (
     id_ticket_status   serial
         constraint ticket_status_pkey
@@ -112,7 +112,7 @@ alter table public.c_ticket_status
     owner to development;
 
 
-create table public.c_ticket_class
+create table if not exists public.c_ticket_class
 (
     id_ticket_class serial
         constraint class_ticket_pkey
@@ -126,7 +126,7 @@ create table public.c_ticket_class
 alter table public.c_ticket_class
     owner to development;
 
-create table public.passengers
+create table if not exists public.passengers
 (
     id_pass     bigserial
         primary key,
@@ -145,7 +145,7 @@ alter table public.passengers
 create unique index full_name_index
     on public.passengers (full_name);
 
-create table public.c_document_type
+create table if not exists public.c_document_type
 (
     id_document_type serial
         constraint document_type_pkey
@@ -161,7 +161,7 @@ create table public.c_document_type
 alter table public.c_document_type
     owner to development;
 
-create table public.tickets
+create table if not exists public.tickets
 (
     id_ticket        bigserial
         primary key,
@@ -196,7 +196,7 @@ create index changed_index
 create index created_index
     on public.tickets (created desc);
 
-create table public.c_roles
+create table if not exists public.c_roles
 (
     id_role    serial
         constraint roles_pkey
@@ -210,7 +210,7 @@ create table public.c_roles
 alter table public.c_roles
     owner to development;
 
-create table public.users
+create table if not exists public.users
 (
     id_user       bigserial
         constraint user_id_user_key
@@ -233,7 +233,7 @@ create table public.users
 alter table public.users
     owner to development;
 
-create table public.document_pass
+create table if not exists public.document_pass
 (
     id_document_pass bigserial
         primary key,
