@@ -129,5 +129,10 @@ public class AirlineRestController {
     public List<Airline> getPopularAirlines() {
         return airlineRepository.findPopularAirlines();
     }
+
+    @GetMapping("/{id}/profit")
+    public Double profitByAirline(@PathVariable("id") Integer idAirline) {
+        return airlineService.calculateProfitByAirline(idAirline.longValue());
+    }
 }
 

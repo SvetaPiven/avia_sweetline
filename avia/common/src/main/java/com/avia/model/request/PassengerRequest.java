@@ -14,7 +14,7 @@ public class PassengerRequest implements Serializable {
 
     @NotNull(message = "ID Passenger must not be null")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
-            type = "string", description = "ID Passenger")
+            type = "number", format = "long", description = "ID Passenger")
     private Long idPass;
 
     @Size(min = 4, max = 50, message = "Full Name must be between 4 and 50 characters")

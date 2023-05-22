@@ -8,6 +8,7 @@ import com.avia.repository.UserRepository;
 import com.avia.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -140,7 +142,7 @@ public class UserRestController {
 
 
     @Operation(
-            summary = "Spring Data Get User by ID",
+            summary = "Get User by ID",
             description = "Get user based on specified id",
             responses = {
                     @ApiResponse(
@@ -165,7 +167,7 @@ public class UserRestController {
     }
 
     @Operation(
-            summary = "Spring Data Update User",
+            summary = "Update User",
             description = "Updating an existing user",
             responses = {
                     @ApiResponse(
@@ -182,6 +184,7 @@ public class UserRestController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@Parameter(description = "User ID") @PathVariable Long id,
                                            @Valid @RequestBody UserRequest userRequest,
@@ -195,12 +198,8 @@ public class UserRestController {
     }
 
     @Operation(
-            summary = "Spring Data Get User by Email",
-            description = "Get User by email",
-            parameters = {
-                    @Parameter(
-                            schema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "svetapiven93@gmail.com", type = "string", description = "User email"))
-            },
+            summary = "Search user by email",
+            description = "Search user by email",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
@@ -216,17 +215,18 @@ public class UserRestController {
                     )
             }
     )
-    @GetMapping("/search-by-email/{email}")
-    public ResponseEntity<User> getUserByEmail(@Parameter(hidden = true) @PathVariable String email) {
+    @GetMapping("/search/{email}")
+    public ResponseEntity<User> searchUserByEmail(@Parameter(description = "User email",
+            example = "svetapiven93@gmail.com", required = true) @PathVariable("email") String email) {
 
-        Optional<User> user = userRepository.findUserByEmail(email);
-
-        return user.map(ResponseEntity::ok).orElseThrow(() ->
+        User user = userRepository.findUserByEmail(email).orElseThrow(() ->
                 new EntityNotFoundException("User with email " + email + " not found"));
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @Operation(
-            summary = "Spring Data Delete User",
+            summary = "Delete User (for admins only)",
             description = "Delete User by ID",
             responses = {
                     @ApiResponse(
@@ -253,7 +253,7 @@ public class UserRestController {
     }
 
     @Operation(
-            summary = "Change User Status",
+            summary = "Change User Status (for admins only)",
             description = "Changes the status (isDeleted) of a user by ID",
             responses = {
                     @ApiResponse(

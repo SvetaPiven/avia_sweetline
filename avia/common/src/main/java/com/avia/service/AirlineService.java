@@ -12,4 +12,7 @@ public interface AirlineService {
     Airline updateAirline(Integer id, AirlineRequest airlineRequest);
 
     Airline findById(Integer idAirline);
+
+    Double calculateProfitByAirline(Long query);
+
 }

@@ -26,17 +26,17 @@ public class FlightRequest implements Serializable {
 
     @NotNull(message = "Departure airport ID must not be null")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
-            type = "long", description = "Departure airport ID")
+            type = "number", format = "long", description = "Departure airport ID")
     private Long idDepartureAirport;
 
     @NotNull(message = "Arrival airport ID must not be null")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "2",
-            type = "long", description = "Arrival airport ID")
+            type = "number", format = "long", description = "Arrival airport ID")
     private Long idArrivalAirport;
 
     @NotNull(message = "Flight status ID must not be null")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
-            type = "integer", description = "Flight status ID")
+            type = "number", format = "integer", description = "Flight status ID")
     private Integer idFlightStatus;
 
 }

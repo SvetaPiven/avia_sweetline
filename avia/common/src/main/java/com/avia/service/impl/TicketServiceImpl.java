@@ -9,10 +9,6 @@ import com.avia.model.entity.Flight;
 import com.avia.model.entity.Passenger;
 import com.avia.model.entity.Ticket;
 import com.avia.model.entity.TicketClass;
-import com.avia.repository.AirlineRepository;
-import com.avia.repository.FlightRepository;
-import com.avia.repository.PassengerRepository;
-import com.avia.repository.TicketClassRepository;
 import com.avia.repository.TicketRepository;
 import com.avia.repository.UserRepository;
 import com.avia.service.AirlineService;
@@ -22,7 +18,6 @@ import com.avia.service.FlightService;
 import com.avia.service.PassengerService;
 import com.avia.service.TicketClassService;
 import com.avia.service.TicketService;
-import com.avia.util.CalculateDistance;
 import com.avia.util.TicketPriceCalculator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +26,6 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -56,8 +50,6 @@ public class TicketServiceImpl implements TicketService {
     private final EmailService emailService;
 
     private final UserRepository userRepository;
-
-    private final CalculateDistance calculateDistance;
 
     private final TicketPriceCalculator ticketPriceCalculator;
 
@@ -94,7 +86,7 @@ public class TicketServiceImpl implements TicketService {
         BigDecimal ticketPrice = ticketPriceCalculator.calculateTicketPrice(latitudeDeparture, longitudeDeparture, latitudeArrival, longitudeArrival);
         ticket.setPrice(ticketPrice);
 
-        ticketRepository.applyDiscount(ticket.getIdTicket(), 0.1);
+        ticketRepository.applyDiscount(ticket.getIdTicket(), 0.1F);
 
         sendEmail(ticket, ticketRequest);
 
@@ -132,4 +124,11 @@ public class TicketServiceImpl implements TicketService {
         ticketMapper.partialUpdate(ticketRequest, ticket);
         return ticketRepository.save(ticket);
     }
+
+    @Override
+    public BigDecimal findMostExpensiveTicketPrice(Long id) {
+        return ticketRepository.findMostExpensiveTicketPrice(id);
+    }
+
+
 }

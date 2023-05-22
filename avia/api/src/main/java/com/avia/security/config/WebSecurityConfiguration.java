@@ -69,10 +69,9 @@ public class WebSecurityConfiguration {
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/rest/**").hasRole("ADMIN")
-                //.requestMatchers(HttpMethod.PUT, "/rest/**/status").hasRole("ADMIN")
                 .requestMatchers("/rest/auth").permitAll()
                 .requestMatchers("/rest/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
-                // .requestMatchers("/rest/**/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
+                .requestMatchers("/rest/**/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
                 .anyRequest().authenticated();
 
         return http.build();

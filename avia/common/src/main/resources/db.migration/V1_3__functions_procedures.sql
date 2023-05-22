@@ -1,4 +1,4 @@
-create function public.find_most_expensive_ticket(id_p integer) returns numeric
+create function public.find_most_expensive_ticket(id_p bigint) returns numeric
     language plpgsql
 as
 $$
@@ -13,7 +13,7 @@ RETURN itemPrice;
 end;
 $$;
 
-alter function public.find_most_expensive_ticket(integer) owner to development;
+alter function public.find_most_expensive_ticket(bigint) owner to development;
 
 create procedure public.sale(IN idticket bigint, IN discount real)
     language plpgsql

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
@@ -14,5 +15,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Modifying
     @Query(value = "CALL sale(:idTicket, :discount)", nativeQuery = true)
-    void applyDiscount(@Param("idTicket") Long idTicket, @Param("discount") Double discount);
+    void applyDiscount(@Param("idTicket") Long idTicket, @Param("discount") Float discount);
+
+    @Query(value = "SELECT find_most_expensive_ticket(:id)", nativeQuery = true)
+    BigDecimal findMostExpensiveTicketPrice(Long id);
 }

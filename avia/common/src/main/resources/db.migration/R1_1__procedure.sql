@@ -1,12 +1,11 @@
-CREATE OR REPLACE PROCEDURE IF NOT EXISTS sale(idticket bigint, discount real)
-LANGUAGE plpgsql
-AS $$
-BEGIN
-
-UPDATE tickets
-SET price = tickets.price - tickets.price * discount
-WHERE id_ticket = idticket AND id_ticket_class = 2;
-
-COMMIT;
-END;
-$$;
+-- CREATE OR REPLACE PROCEDURE public.sale(IN idTicket bigint, IN discount real)
+--     LANGUAGE plpgsql
+-- AS $$
+-- BEGIN
+--     UPDATE tickets
+--     SET price = tickets.price - tickets.price * discount
+--     WHERE id_ticket = idTicket AND id_ticket_class = 2;
+-- END;
+-- $$;
+--
+-- alter procedure sale(bigint, real) owner to development;

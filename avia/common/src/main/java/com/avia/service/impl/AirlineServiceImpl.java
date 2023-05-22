@@ -39,4 +39,9 @@ public class AirlineServiceImpl implements AirlineService {
         return airlineRepository.findById(idAirline)
                 .orElseThrow(() -> new EntityNotFoundException("Airline with id " + idAirline + " not found"));
     }
+
+    @Override
+    public Double calculateProfitByAirline(Long query) {
+        return airlineRepository.calculateProfitByAirline(query);
+    }
 }

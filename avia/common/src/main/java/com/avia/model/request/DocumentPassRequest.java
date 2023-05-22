@@ -14,7 +14,7 @@ public class DocumentPassRequest implements Serializable {
 
     @NotNull(message = "Document type ID must not be null")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
-            type = "integer", description = "ID Document Type")
+            type = "number", format = "integer", description = "ID Document Type")
     private Integer idDocumentType;
 
     @Size(min = 8, max = 30, message = "Document number must be between 8 and 30 characters")

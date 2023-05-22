@@ -18,4 +18,7 @@ public interface AirlineRepository extends JpaRepository<Airline, Integer> {
             "GROUP BY a.idAirline, a.nameAirline, a.codeAirline " +
             "ORDER BY COUNT(t) DESC")
     List<Airline> findPopularAirlines();
+
+    @Query(value = "SELECT calculate_profit_airline(:query)", nativeQuery = true)
+    Double calculateProfitByAirline(Long query);
 }

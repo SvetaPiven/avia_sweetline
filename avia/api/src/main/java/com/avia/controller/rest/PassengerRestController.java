@@ -1,7 +1,6 @@
 package com.avia.controller.rest;
 
 import com.avia.exception.ValidationException;
-import com.avia.model.entity.FlightStatus;
 import com.avia.model.entity.Passenger;
 import com.avia.model.request.PassengerRequest;
 import com.avia.repository.PassengerRepository;
