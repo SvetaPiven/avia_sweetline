@@ -198,31 +198,35 @@ public class UserRestController {
     }
 
     @Operation(
-            summary = "Search user by email",
-            description = "Search user by email",
+            summary = "Search users by email",
+            description = "Search users by email",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded User by Email",
+                            description = "Successfully loaded Users by Email",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = User.class)
+                                    array = @ArraySchema(schema = @Schema(implementation = User.class))
                             )
                     ),
                     @ApiResponse(
                             responseCode = "NOT_FOUND",
-                            description = "User not found"
+                            description = "Users not found"
                     )
             }
     )
     @GetMapping("/search/{email}")
-    public ResponseEntity<User> searchUserByEmail(@Parameter(description = "User email",
-            example = "svetapiven93@gmail.com", required = true) @PathVariable("email") String email) {
-
-        User user = userRepository.findUserByEmail(email).orElseThrow(() ->
-                new EntityNotFoundException("User with email " + email + " not found"));
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<List<User>> searchUsersByEmail(
+            @Parameter(description = "User email",
+                    example = "svetapiven93@gmail.com", required = true)
+            @PathVariable("email") String email
+    ) {
+        List<User> users = userRepository.findUsersByEmail(email);
+        if (!users.isEmpty()) {
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } else {
+            throw new EntityNotFoundException("Users with email " + email + " not found");
+        }
     }
 
     @Operation(

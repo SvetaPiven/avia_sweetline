@@ -16,7 +16,6 @@ public class TicketRequest implements Serializable {
             type = "number", format = "long", description = "ID Passenger")
     private Long idPass;
 
-    @NotNull(message = "ID Ticket Status must not be null")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1",
             type = "number", format = "integer", description = "ID Ticket Status")
     private Integer idTicketStatus;

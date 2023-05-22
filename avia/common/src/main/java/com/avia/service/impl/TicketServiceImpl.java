@@ -129,6 +129,4 @@ public class TicketServiceImpl implements TicketService {
     public BigDecimal findMostExpensiveTicketPrice(Long id) {
         return ticketRepository.findMostExpensiveTicketPrice(id);
     }
-
-
 }
