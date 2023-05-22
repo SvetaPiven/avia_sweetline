@@ -1,4 +1,4 @@
-# avia_sweetline
+# Avia_sweetline
 Swetline Avia - Air Ticket Project
 Swetline Avia is an air ticket project designed for managing and selling air tickets.
 The project includes a database for storing information about airports, airlines, document types,
