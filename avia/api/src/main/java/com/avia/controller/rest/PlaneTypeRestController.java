@@ -6,6 +6,7 @@ import com.avia.model.entity.PlaneType;
 import com.avia.model.request.PlaneTypeRequest;
 import com.avia.repository.PlaneTypeRepository;
 import com.avia.service.PlaneTypeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "PlaneTypeRestController", description = "PlaneType management methods")
 @RequestMapping("/rest/plane-types")
 public class PlaneTypeRestController {
 

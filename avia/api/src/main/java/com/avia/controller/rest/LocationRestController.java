@@ -3,6 +3,7 @@ package com.avia.controller.rest;
 import com.avia.model.entity.Passenger;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.LocationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "LocationRestController", description = "Location management method")
 @RequestMapping("/rest/passengers")
 public class LocationRestController {
 

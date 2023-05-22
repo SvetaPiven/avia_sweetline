@@ -6,6 +6,7 @@ import com.avia.model.entity.TicketStatus;
 import com.avia.model.request.TicketStatusRequest;
 import com.avia.repository.TicketStatusRepository;
 import com.avia.service.TicketStatusService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "TicketStatusRestController", description = "TicketStatus management methods")
 @RequestMapping("/rest/ticket-statuses")
 public class TicketStatusRestController {
 

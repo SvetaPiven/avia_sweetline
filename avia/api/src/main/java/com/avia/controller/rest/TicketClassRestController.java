@@ -6,6 +6,7 @@ import com.avia.model.entity.TicketClass;
 import com.avia.model.request.TicketClassRequest;
 import com.avia.repository.TicketClassRepository;
 import com.avia.service.TicketClassService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "TicketClassRestController", description = "TicketClass management methods")
 @RequestMapping("/rest/ticket-class")
 @RequiredArgsConstructor
 public class TicketClassRestController {

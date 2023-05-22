@@ -1,6 +1,7 @@
 package com.avia.controller.rest;
 
 import com.avia.service.EmailService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "EmailController", description = "Email management method")
 @RequestMapping("/email")
 @RequiredArgsConstructor
 public class EmailController {

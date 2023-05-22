@@ -6,6 +6,7 @@ import com.avia.model.entity.Passenger;
 import com.avia.model.request.PassengerRequest;
 import com.avia.repository.PassengerRepository;
 import com.avia.service.PassengerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
@@ -32,10 +33,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "PassengerRestController", description = "Passenger management methods")
 @RequestMapping("/rest/passengers")
 @RequiredArgsConstructor
-public class
-PassengerRestController {
+public class PassengerRestController {
 
     private static final Logger log = Logger.getLogger(PassengerRestController.class);
     private final PassengerRepository passengerRepository;

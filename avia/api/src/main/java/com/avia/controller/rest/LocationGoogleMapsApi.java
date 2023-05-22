@@ -2,6 +2,7 @@ package com.avia.controller.rest;
 
 import com.avia.model.entity.Airport;
 import com.avia.service.AirportService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "LocationGoogleMapsApi", description = "GoogleMapsApi management method")
 @RequestMapping("/api")
 public class LocationGoogleMapsApi {
 

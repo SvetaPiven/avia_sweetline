@@ -6,6 +6,7 @@ import com.avia.model.entity.FlightStatus;
 import com.avia.model.request.FlightStatusRequest;
 import com.avia.repository.FlightStatusRepository;
 import com.avia.service.FlightStatusService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "FlightStatusRestController", description = "FlightStatus management methods")
 @RequestMapping("/rest/flight-statuses")
 public class FlightStatusRestController {
 

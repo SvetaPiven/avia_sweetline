@@ -6,6 +6,7 @@ import com.avia.model.entity.DocumentPass;
 import com.avia.model.request.DocumentPassRequest;
 import com.avia.repository.DocumentPassRepository;
 import com.avia.service.DocumentPassService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "DocumentPassRestController", description = "DocumentPass management methods")
 @RequestMapping("/rest/documents")
 @RequiredArgsConstructor
 public class DocumentPassRestController {

@@ -16,12 +16,11 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@NotNull(message = "Invalid password")
-@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z]).{6,}$",
-        message = "Password must contain 6 characters and at least one lowercase and one uppercase")
+@NotNull()
+@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z]).{6,}$")
 @ReportAsSingleViolation
 public @interface ValidPassword {
-    String message() default "Invalid password";
+    String message() default "Password must contain 6 characters and at least one lowercase and one uppercase character";
 
     Class<?>[] groups() default {};
 

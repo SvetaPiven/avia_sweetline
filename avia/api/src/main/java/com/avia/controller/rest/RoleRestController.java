@@ -6,6 +6,7 @@ import com.avia.model.entity.Role;
 import com.avia.model.request.RoleRequest;
 import com.avia.repository.RoleRepository;
 import com.avia.service.RoleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "RoleRestController", description = "Role management methods")
 @RequestMapping("/rest/roles")
 public class RoleRestController {
 

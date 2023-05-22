@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "UserRestController", description = "User management methods")
 @RequestMapping("/rest/users")
 @RequiredArgsConstructor
 public class UserRestController {
@@ -164,6 +166,7 @@ public class UserRestController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@Parameter(description = "User ID", example = "5", required = true) @PathVariable("id") Long id) {
         Optional<User> user = userRepository.findById(id);
+
         return user.map(ResponseEntity::ok).orElseThrow(() ->
                 new EntityNotFoundException("User with id " + id + " not found"));
     }
