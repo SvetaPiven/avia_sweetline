@@ -75,18 +75,10 @@ public class TicketServiceImpl implements TicketService {
         ticket.getAirline().setIdAirline(airline.getIdAirline());
         ticket.setAirline(airline);
 
-        Airport departureAirport = airportService.findById(flight.getDepartureAirport().getIdAirport());
-        Airport arrivalAirport = airportService.findById(flight.getArrivalAirport().getIdAirport());
-
-        double latitudeDeparture = departureAirport.getLatitude();
-        double latitudeArrival = arrivalAirport.getLatitude();
-        double longitudeDeparture = departureAirport.getLongitude();
-        double longitudeArrival = arrivalAirport.getLongitude();
-
-        BigDecimal ticketPrice = ticketPriceCalculator.calculateTicketPrice(latitudeDeparture, longitudeDeparture, latitudeArrival, longitudeArrival);
+        BigDecimal ticketPrice = ticketPriceCalculator.calculateTicketPrice(flight);
         ticket.setPrice(ticketPrice);
 
-        ticketRepository.applyDiscount(ticket.getIdTicket(), 0.1F);
+        ticketRepository.applyDiscount(ticket.getIdTicket(), (float) (passenger.getMiles() * 0.1));
 
         sendEmail(ticket, ticketRequest);
 
@@ -98,13 +90,16 @@ public class TicketServiceImpl implements TicketService {
             String emailTemplate = ResourceBundle.getBundle("email").getString("application.email.buy.ticket");
 
             String formattedMessage =
-                    MessageFormat.format(emailTemplate, ticket.getTicketClass().getNameClass(),
+                    MessageFormat.format(emailTemplate,
+                            ticket.getTicketClass().getNameClass(),
                             airportService.getAddressFromLatLng(ticket.getFlight().getDepartureAirport().getLatitude(),
                                     ticket.getFlight().getDepartureAirport().getLongitude()),
                             airportService.getAddressFromLatLng(ticket.getFlight().getArrivalAirport().getLatitude(),
                                     ticket.getFlight().getArrivalAirport().getLongitude()),
-                            ticket.getFlight().getFlightNumber(), ticket.getAirline().getNameAirline(),
-                            ticket.getFlight().getDepartureTime(), ticket.getPrice());
+                            ticket.getFlight().getFlightNumber(),
+                            ticket.getAirline().getNameAirline(),
+                            ticket.getFlight().getDepartureTime(),
+                            ticket.getPrice());
 
             emailService.sendSimpleEmail(userRepository.findByIdPass(ticketRequest.getIdPass()).getAuthenticationInfo().getEmail(),
                     "Congrats from SweetLine Avia! Your created the ticket!", formattedMessage);

@@ -1,5 +1,6 @@
 package com.avia.util;
 
+import com.avia.model.entity.Flight;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +13,10 @@ public class TicketPriceCalculator {
 
     private final CalculateDistance calculateDistance;
 
-    public BigDecimal calculateTicketPrice(double latitudeDeparture, double longitudeDeparture,
-                                           double latitudeArrival, double longitudeArrival) {
-        double distance = calculateDistance.calculate(latitudeDeparture, longitudeDeparture, latitudeArrival, longitudeArrival);
+    private final FlightCoordinatesTaker flightCoordinatesTaker;
+
+    public BigDecimal calculateTicketPrice(Flight flight) {
+        double distance = calculateDistance.calculate(flightCoordinatesTaker.flightCoordinatesTaker(flight));
         double price = distance * 0.3;
         return BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP);
     }

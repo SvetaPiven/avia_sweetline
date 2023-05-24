@@ -2,10 +2,17 @@ package com.avia.util;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CalculateDistance {
 
-    public double calculate(double lat1, double lon1, double lat2, double lon2) {
+    public double calculate(List<Double> coordinates) {
+        double lat1 = coordinates.get(0);
+        double lon1 = coordinates.get(1);
+        double lat2 = coordinates.get(2);
+        double lon2 = coordinates.get(3);
+
         double earthRadius = 6371;
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);

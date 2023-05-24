@@ -10,6 +10,7 @@ import com.avia.service.AirportService;
 import com.avia.service.FlightService;
 import com.avia.service.LocationService;
 import com.avia.util.CalculateDistance;
+import com.avia.util.FlightCoordinatesTaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,8 @@ public class LocationServiceImpl implements LocationService {
 
     private final CalculateDistance calculateDistance;
 
+    private final FlightCoordinatesTaker flightCoordinatesTaker;
+
     @Override
     public void calculatePassengerMiles(Passenger passenger) {
         List<Ticket> tickets = ticketRepository.findTicketByPassenger(passenger);
@@ -42,15 +45,7 @@ public class LocationServiceImpl implements LocationService {
 
                 Flight flight = flightService.findById(ticket.getFlight().getIdFlight());
 
-                Airport departureAirport = airportService.findById(flight.getDepartureAirport().getIdAirport());
-                Airport arrivalAirport = airportService.findById(flight.getArrivalAirport().getIdAirport());
-
-                double latitudeDeparture = departureAirport.getLatitude();
-                double latitudeArrival = arrivalAirport.getLatitude();
-                double longitudeDeparture = departureAirport.getLongitude();
-                double longitudeArrival = arrivalAirport.getLongitude();
-                double distance = calculateDistance.calculate(latitudeDeparture, longitudeDeparture,
-                        latitudeArrival, longitudeArrival);
+                double distance = calculateDistance.calculate(flightCoordinatesTaker.flightCoordinatesTaker(flight));
 
                 if (Objects.equals(flight.getFlightStatus().getNameFlightStatus(), "Arrived")) {
                     if (Objects.equals(ticket.getTicketClass().getNameClass(), "Business class")) {
